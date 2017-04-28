@@ -15,28 +15,25 @@
         </h1>
     </section>
     <section class="content">
-        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>user/user/user_add')" class="btn btn-primary btn-lg" style="">Add</button></p>
+        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>user/user/config_add')" class="btn btn-primary btn-lg" style="">Add</button></p>
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email Id</th>
-                            <th>Role</th>
+                            <th>Configuration key</th>
+                            <th>Configuration value</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
+                        <?php if(!empty($result)) { ?>
                         <?php foreach ($result as $row) {
                             ?>
                             <tr>
                                 <td><?php echo $row['id']; ?></td>
-                                <td><?php echo $row['firstname']; ?></td>
-                                <td><?php echo $row['lastname']; ?></td>
-                                <td><?php echo $row['email']; ?></td>
-                                <td><?php echo $row['role_key']; ?></td>
+                                <td><?php echo $row['conf_key']; ?></td>
+                                <td><?php echo $row['conf_value']; ?></td>
                                 <td><?php if ($row['status'] == 1) {
                                 ?>
                                         <span class="label label-success">Active</span>
@@ -46,7 +43,7 @@
                                 <td>
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="<?php echo base_url(); ?>user/user/user_add/<?php echo $row['id']; ?>">
+                                            <a href="<?php echo base_url(); ?>user/user/config_add/<?php echo $row['id']; ?>">
                                                 <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
                                             </a>
                                         </li>
@@ -54,8 +51,9 @@
                                 </td>
                             </tr>
                             <?php
-                        }
-                        ?>
+                        }}else{?>
+                            <tr> <td colspan="5"><center>No data found</center></td></tr>
+                        <?php }?>
                     </tbody>
                 </table>
             </div>

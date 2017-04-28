@@ -192,14 +192,20 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
-            <a href="<?php echo base_url();?>admin/index">
+            <a href="<?php echo base_url();?>profile/dashboard/view">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
         <li class="treeview">
-            <a href="<?php echo base_url()?>/user/user/view">
+            <a href="<?php echo base_url()?>user/user/view">
             <i class="fa fa-user"></i> 
-            <span>User</span>
+            <span>Admin User</span>
+          </a>
+        </li>
+        <li class="treeview">
+            <a href="<?php echo base_url()?>user/user/config_view">
+            <i class="fa fa-cog"></i> 
+            <span>Configuration</span>
           </a>
         </li>
         <li class="treeview active">
