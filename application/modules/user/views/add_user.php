@@ -1,3 +1,12 @@
+<?php
+
+if(isset($roless)){
+    $role_ids = explode(',',$roless);
+}else{
+    $role_ids =[];
+}
+
+?> 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -71,14 +80,13 @@
                             <!-- select -->
                             <div class="form-group">
                                 <label>Role</label>
-                                <select class="form-control" name="select_role" id="select role">
-                                            <?php if (!isset($role_id)) { ?>
-                                        <option value="">Select Role</option>
-    <?php } ?>
-    <?php foreach ($role as $row) { ?>
+                                <select class="form-control" name="select_role[]" id="select role" multiple="">
+    <?php
+    foreach ($role as $row) { ?>
                                             <option value="<?php echo $row['role_id'] ?>" <?php
-        if (isset($role_id)) {
-            if ($role_id == $row['role_id']) {
+        if (!empty($role_ids)) {
+            
+            if (in_array($row['role_id'],$role_ids)) {
                 echo 'selected="selected"';
             }
         }

@@ -12,7 +12,6 @@ class Login_model extends CI_Model{
         $this->db->where('status',1);
         $this->db->where('email',$email);
         $this->db->where('password',$password);
-        $this->db->where('role_id!=',5);
         $query=$this->db->get('user');
         if($query->num_rows() > 0){
             return $query->row_array();

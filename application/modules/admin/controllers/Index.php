@@ -36,11 +36,11 @@ class Index extends CI_Controller {
             } else {
                 $session_data = array(
                     'logged_in'=>true,
-                    'admin_id'=> $user['id'],
+                    'user_id'=> $user['user_id'],
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
-                    'email' => $user['email'],
-                    'role_id' => $user['role_id'],
+                    'email' => $user['email']
+//                    'role_id' => $user['role_id'],
                 );
                 $this->session->set_userdata($session_data);
                 redirect('/profile/dashboard/view');
