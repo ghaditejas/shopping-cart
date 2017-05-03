@@ -70,6 +70,40 @@ class User_model extends CI_Model {
             return false;
         }
     }
+    
+    
+    //configuration
+    
+    public function get_configs(){
+        $query=$this->db->get('configuration');
+        return $query->result_array();
+    }
+    
+    public function get_config($id) {
+        $this->db->from('configuration');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function insert_config($data) {
+         $this->db->insert('configuration', $data);
+        if ($this->db->insert_id()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function update_config($id,$data) {
+        $this->db->where('id',$id);
+        $query=$this->db->update('configuration',$data);
+        if($this->db->affected_rows()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 ?>
 

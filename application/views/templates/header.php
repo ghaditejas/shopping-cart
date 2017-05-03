@@ -203,7 +203,7 @@
           </a>
         </li>
         <li class="treeview">
-            <a href="<?php echo base_url()?>user/user/config_view">
+            <a href="<?php echo base_url()?>config/config/config_view">
             <i class="fa fa-cog"></i> 
             <span>Configuration</span>
           </a>

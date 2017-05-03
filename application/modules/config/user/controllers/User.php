@@ -80,7 +80,67 @@ class User extends CI_Controller {
             $data['page'] = "user/add_user";
             $this->load->view('main_template', $data);
         }
-    }    
+    }
+
+    //Configuration
+
+    public function config_view() {
+        if ($this->session->userdata('role_id') == 1 || $this->session->userdata('role_id') == 2) {
+            $data['result'] = $this->user_model->get_configs();
+            $data['page'] = "user/config_list";
+        } else {
+            $data['page'] = "no_permission";
+        }
+        $this->load->view('main_template', $data);
+    }
+
+    public function config_add($id = "") {
+        $data['stat'] = 1;
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $this->form_validation->set_rules('conf_key', 'Configuration key', 'required|alpha');
+            $this->form_validation->set_rules('conf_val', 'Configuration value', 'required');
+            if ($this->form_validation->run() == False) {
+                $data['page'] = "user/add_config";
+                $this->load->view('main_template', $data);
+            } else {
+                $data = array(
+                    'conf_key' => $this->input->post('conf_key'),
+                    'conf_value' => $this->input->post('conf_val'),
+                    'status' => $this->input->post('status'),
+                    'created_by' => $this->session->userdata('admin_id'),
+                    'created_date' => date('Y-m-d')
+                );
+                if (empty($id)) {
+                    $result = $this->user_model->insert_config($data);
+                    if ($result) {
+                        $this->session->set_flashdata('success', 'Configuration added Successfully');
+                        redirect('/user/user/config_view');
+                    } else {
+                        $this->session->set_flashdata('error', 'Error occurred while adding user');
+                        redirect('/user/user/config_add');
+                    }
+                } else {
+                    $result = $this->user_model->update_config($id, $data);
+                    if ($result) {
+                        $this->session->set_flashdata('success', 'Configuration modified Successfully');
+                        redirect('/user/user/config_view');
+                    } else {
+                        $this->session->set_flashdata('error', 'Error occurred while modifying user');
+                        redirect('/user/user/config_add');
+                    }
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data = $this->user_model->get_config($id);
+                $data['stat'] = $data['status'];
+                $data['edit_id'] = $id;
+            }
+            $data['page'] = "user/add_config";
+            $this->load->view('main_template', $data);
+        }
+    }
+
 }
 ?>
 
