@@ -17,6 +17,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>public/dist/css/skins/_all-skins.min.css">
+  <script src="<?php echo base_url(); ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -208,8 +209,8 @@
             <span>Configuration</span>
           </a>
         </li>
-        <li class="treeview active">
-          <a href="#">
+        <li class="treeview">
+            <a href='<?php echo base_url()?>banner/banner/banner_view'>
             <i class="fa fa-files-o"></i>
             <span>Banners</span>
             <span class="pull-right-container">
