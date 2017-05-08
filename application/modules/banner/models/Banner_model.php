@@ -31,7 +31,7 @@ class Banner_model extends CI_Model{
     }
     
     public function get_banners() {
-        $this->db->where('status',1);
+//        $this->db->where('status',1);
         $query=$this->db->get('banners');
         return $query->result_array();
     }

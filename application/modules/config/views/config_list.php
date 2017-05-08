@@ -43,7 +43,7 @@
                                 <td>
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="<?php echo base_url(); ?>config/config/config_update/<?php echo $row['config_value_id']; ?>">
+                                            <a href="<?php echo base_url(); ?>config/config/config_update/<?php echo $row['config_value_id']; ?>" style="padding:0px">
                                                 <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
                                             </a>
                                         </li>
