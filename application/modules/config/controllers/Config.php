@@ -31,7 +31,7 @@ class Config extends CI_Controller {
 //                    'conf_key' => $this->input->post('conf_key'),
                     'config_value' => $this->input->post('conf_val'),
                     'status' => $this->input->post('status'),
-                    'created_by' => $this->session->userdata('admin_id'),
+                    'created_by' => $this->session->userdata('user_id'),
                     'created_on' => date('Y-m-d')
                 );
                 if (empty($id)) {

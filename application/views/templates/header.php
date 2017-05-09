@@ -226,7 +226,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-angle-double-right "></i>Category</a></li>
+              <li><a href="<?php echo base_url();?>category/category/view"><i class="fa fa-angle-double-right "></i>Category</a></li>
             <li><a href="#"><i class="fa fa-angle-double-right "></i>Product</a></li>
             <li><a href="#"><i class="fa fa-angle-double-right "></i>Attributes</a></li>
           </ul>

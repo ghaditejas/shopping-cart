@@ -15,8 +15,7 @@
         </h1>
     </section>
     <section class="content">
-        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>banner/banner/add')" class="btn btn-primary btn-lg" style="">Add</button>
-        <button type="button"  onclick="javascript: del()" class="btn btn-danger btn-lg" style="">Delete</button></p>
+        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>category/category/add')" class="btn btn-primary btn-lg" style="">Add</button>
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">
@@ -24,33 +23,31 @@
                         <tr>
                             <th><label><input class="checkbox uncheck" id="checkall" type="checkbox"></label></th>
                             <th>ID</th>
-                            <th>Banner Preview</th>
+                            <th>Name</th>
                             <th>Status</th>
+                            <th>Parent Category</th>
                             <th>Actions</th>
                         </tr>
                         <?php if(!empty($result)) { ?>
                         <?php foreach ($result as $row) {
                             ?>
                             <tr>
-                                <td><label><input class="checkbox checkbox_check" id="<?php echo $row['banner_id']; ?>" type="checkbox" name="cat_ids[]" value="<?php echo $row['banner_id'];?>"></label></td>
-                                <td><?php echo $row['banner_id']; ?></td>
-                                <td><img src="../../upload/<?php echo $row['banner_path']; ?>" style="height:120px;width:150px"></td>
+                                <td><label><input class="checkbox checkbox_check" id="<?php echo $row['category_id']; ?>" type="checkbox" name="cat_ids[]" value="<?php echo $row['category_id'];?>"></label></td>
+                                <td><?php echo $row['category_id']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
                                 <td><?php if ($row['status'] == 1) {
                                 ?>
                                         <span class="label label-success">Active</span>
                                     <?php } else { ?>
                                         <span class="label label-danger">Inactive</span>
                                     <?php } ?></td>
+                                <td><?php echo $row['parent_id']; ?></td>
                                 <td>
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="<?php echo base_url(); ?>banner/banner/add/<?php echo $row['banner_id']; ?>" style="padding-top:0px">
+                                            <a href="<?php echo base_url(); ?>category/category/add/<?php echo $row['category_id']; ?>" style="padding-top:0px">
                                                 <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
                                             </a>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-danger" id="delete" onclick="javascript:del()">
-                                                <span class=""><i class="fa fa-remove"></i></span></button>
                                         </li>
                                     </ul>  
                                 </td>
@@ -79,7 +76,7 @@
             console.log(arr);
             if (r)
                 $.ajax({
-                    url: 'http://localhost/shopping-cart/banner/banner/delete',
+                    url: 'http://localhost/shopping-cart/category/category/delete',
                     data: {banner_id: arr},
                     type: 'post',
                     success: function (output) {
