@@ -11,6 +11,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
+  <link rel="stylesheet" href="<?php echo base_url(); ?>public//plugins/datepicker/datepicker3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>public/dist/css/AdminLTE.min.css">
@@ -227,8 +228,8 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="<?php echo base_url();?>category/category/view"><i class="fa fa-angle-double-right "></i>Category</a></li>
-            <li><a href="#"><i class="fa fa-angle-double-right "></i>Product</a></li>
-            <li><a href="#"><i class="fa fa-angle-double-right "></i>Attributes</a></li>
+            <li><a href="<?php echo base_url();?>product/product/view"><i class="fa fa-angle-double-right "></i>Product</a></li>
+            <li><a href="<?php echo base_url();?>product/product/attribute_view"><i class="fa fa-angle-double-right "></i>Attributes</a></li>
           </ul>
         </li>
         <li class="treeview">
