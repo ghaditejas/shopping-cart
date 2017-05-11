@@ -18,7 +18,7 @@
                         $urlstring = '';
                     }
                     ?>
-                    <form id="add_user" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>category/category/add<?php echo $urlstring; ?>" method="post">
+                    <form id="add_user" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>product/product/add<?php echo $urlstring; ?>" method="post">
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -28,33 +28,33 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('product_name');?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Product Image</label>
                                     <input class="form-control" name="product_img" id="product_img" type="file">
-                                    <label><img src="" id="image_preview"></label>
+                                    <label><?php echo $error_img; ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Select Category</label>
-                                    <select class="form-control" name="parent_category" id="parent_category">
+                                    <select class="form-control" name="category" id="category">
                                         <?php
                                         echo "<option value=''>Select Parent Category </option>";
-                                        foreach ($parent_category as $row) {
+                                        foreach ($categories as $row) {
                                             ?>
-
-                                            <option value="<?php echo $row['category_id'] ?>" <?php
-                                            if (!empty($parent_id)) {
-                                                if ($row['category_id'] == $parent_id) {
-                                                    echo 'selected="selected"';
-                                                }
-                                            }
+                                            <?php if($row['parent_id']!=0){?>
+                                            <option value="<?php echo $row['category_id']; ?>" <?php
+//                                            if (!empty($parent_id)) {
+//                                                if ($row['category_id'] == $parent_id) {
+//                                                    echo 'selected="selected"';
+//                                                }
+//                                            }
                                             ?>><?php echo $row['name']; ?></option>
-                                                <?php } ?>
+                                        <?php }} ?>
                                     </select>
-                                    <label><?php echo form_error('select_role'); ?></label>
+                                    <label><?php echo form_error('category'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Status</label>
@@ -86,7 +86,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('price');?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Special Price</label>
@@ -95,7 +95,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('special_price');?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -107,6 +107,7 @@
                                         </div>
                                         <input class="form-control pull-right" name="special_price_from" id="special_price_from" type="text">
                                     </div>
+                                    <label><?php echo form_error('special_price_from');?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Special Prize Date To</label>
@@ -116,6 +117,7 @@
                                         </div>
                                         <input class="form-control pull-right" name="special_price_to" id="special_price_to" type="text">
                                     </div>
+                                    <label><?php echo form_error('special_price_to');?></label>
                                 </div>
                             </div>
                             <div class="box-header with-border">
@@ -129,7 +131,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('quantity');?></label>
                                 </div>
                                 <div class="form-grou col-md-6">
                                     <label>SKU</label>
@@ -138,7 +140,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('sku');?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -149,7 +151,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('short_description');?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Long Description</label>
@@ -158,7 +160,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+<!--                                    <label><?php // echo form_error('category_name');                         ?></label>-->
                                 </div>
                             </div>
                             <div class="row">
@@ -169,7 +171,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('meta_title');?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Meta Description</label>
@@ -178,7 +180,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('meta_description');?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -189,8 +191,29 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php // echo form_error('category_name');                         ?></label>
+                                    <label><?php echo form_error('meta_keywords');?></label>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label>Featured</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input name="feature" id="optionsRadios1" value="1" <?php
+                                            if ($feature == 1) {
+                                                echo'checked=""';
+                                            }
+                                            ?> type="radio">
+                                            Active
+                                        </label>
+                                        <label>
+                                            <input name="feature" id="optionsRadios2" value="0" type="radio" <?php
+                                            if ($feature == 0) {
+                                                echo'checked=""';
+                                            }
+                                            ?> >
+                                            Inactive
+                                        </label>
+                                    </div>
+                            </div>
                             </div>
                             <div class="box-header with-border">
                                 <h3 class="box-title">Product Attributes</h3>
@@ -202,23 +225,24 @@
                                         <select class="form-control select_attrbute" name="attribute[]">
                                             <?php
                                             echo "<option value=''>Select attribute </option>";
-                                            foreach ($parent_category as $row) {
+                                            foreach ($attributes as $row1) {
                                                 ?>
-
-                                                <option value="<?php echo $row['category_id'] ?>" <?php
-                                                if (!empty($parent_id)) {
-                                                    if ($row['category_id'] == $parent_id) {
-                                                        echo 'selected="selected"';
-                                                    }
-                                                }
-                                                ?>><?php echo $row['name']; ?></option>
-                                                    <?php } ?>
+                                                <?php if ($row1['status']!=0){?>
+                                                <option value="<?php echo $row1['product_attribute_id'] ?>" <?php
+//                                                if (!empty($parent_id)) {
+//                                                    if ($row['category_id'] == $parent_id) {
+//                                                        echo 'selected="selected"';
+//                                                    }
+//                                                }
+                                                ?>><?php echo $row1['name']; ?></option>
+                                            <?php }} ?>
                                         </select>
+                                        <label><?php echo form_error('attribute[]'); ?></label>
                                     </div>
                                     <div class="form-group col-md-5">
                                         <label>Value</label>
                                         <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="">
-                                        <label><?php // echo form_error('category_name');                ?></label>
+                                        <label><?php echo form_error('attr_value[]');?></label>
                                     </div>
                                     <div class=col-md-2>
                                         <button type="button" class="btn_remove_parent"><i class="fa fa-remove"></i></button>
@@ -244,7 +268,7 @@
                             $(document).ready(function () {
                                 
                                 $('#btn_add_more').click(function () {
-                                    $('#attribute_container').append($('#attribute_container').first('.row').html()).append('');
+                                    $('#attribute_container').append($('#attribute_container').first('.row').html());
                                 });
 
                                 $('#special_price_from').datepicker();
