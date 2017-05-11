@@ -15,25 +15,22 @@
         </h1>
     </section>
     <section class="content">
-        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>category/category/add')" class="btn btn-primary btn-lg" style="">Add</button>
+        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>product/product/attribute_add')" class="btn btn-primary btn-lg" style="">Add</button>
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th><label><input class="checkbox uncheck" id="checkall" type="checkbox"></label></th>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Status</th>
-                            <th>Parent Category</th>
                             <th>Actions</th>
                         </tr>
                         <?php if(!empty($result)) { ?>
                         <?php foreach ($result as $row) {
                             ?>
                             <tr>
-                                <td><label><input class="checkbox checkbox_check" id="<?php echo $row['category_id']; ?>" type="checkbox" name="cat_ids[]" value="<?php echo $row['category_id'];?>"></label></td>
-                                <td><?php echo $row['category_id']; ?></td>
+                                <td><?php echo $row['product_attribute_id']; ?></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php if ($row['status'] == 1) {
                                 ?>
@@ -41,11 +38,10 @@
                                     <?php } else { ?>
                                         <span class="label label-danger">Inactive</span>
                                     <?php } ?></td>
-                                <td><?php echo $row['parent_id']; ?></td>
                                 <td>
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="<?php echo base_url(); ?>category/category/add/<?php echo $row['category_id']; ?>" style="padding-top:0px">
+                                            <a href="<?php echo base_url(); ?>product/product/attribute_add/<?php echo $row['product_attribute_id']; ?>" style="padding-top:0px">
                                                 <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
                                             </a>
                                         </li>
@@ -76,7 +72,7 @@
             console.log(arr);
             if (r)
                 $.ajax({
-                    url: 'http://localhost/shopping-cart/category/category/delete',
+                    url: 'http://localhost/shopping-cart/product/product/delete',
                     data: {banner_id: arr},
                     type: 'post',
                     success: function (output) {

@@ -10,7 +10,6 @@ class Banner extends CI_Controller {
     }
 
     public function banner_view() {
-        print_r($this->session->userdata('user_id'));
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
         if ($result) {
             $data['result'] = $this->banner_model->get_banners();

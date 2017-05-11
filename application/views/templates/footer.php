@@ -214,6 +214,7 @@
 <script src="<?php echo base_url(); ?>public/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo base_url(); ?>public/dist/js/demo.js"></script>
+
 </body>
 </html>
 
