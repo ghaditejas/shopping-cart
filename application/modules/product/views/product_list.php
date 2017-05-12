@@ -23,8 +23,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Image</th>
                              <th>Price</th>
-                             <th>Category</th>
+                             <!--<th>Category</th>-->
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -32,10 +33,11 @@
                         <?php foreach ($result as $row) {
                             ?>
                             <tr>
-                                <td><?php echo $row['category_id']; ?></td>
+                                <td><?php echo $row['id']; ?></td>
                                 <td><?php echo $row['name']; ?></td>
+                                <td><img class="product-image" src="<?php echo base_url();?>upload/product/<?php echo $row['image_name']?>" style="height:120px;width:150px" /></td>
                                 <td><?php echo $row['price']; ?></td>
-                                <td><?php echo $row['category_id']; ?></td>
+                                <!--<td><?php // echo $row['category_id']; ?></td>-->
                                 <td><?php if ($row['status'] == 1) {
                                 ?>
                                         <span class="label label-success">Active</span>
@@ -45,7 +47,7 @@
                                 <td>
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="<?php echo base_url(); ?>product/product/add/<?php echo $row['category_id']; ?>" style="padding-top:0px">
+                                            <a href="<?php echo base_url(); ?>product/product/edit/<?php echo $row['id']; ?>" style="padding-top:0px">
                                                 <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
                                             </a>
                                         </li>
