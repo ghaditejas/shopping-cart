@@ -233,20 +233,10 @@
           </ul>
         </li>
         <li class="treeview">
-          <a href="#">
-            <i class="fa fa-shopping-cart"></i>
-            <span>Sales</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+          <a href="<?php echo base_url();?>coupon/coupon/view">
+            <i class="fa fa-gift"></i>
+            <span>Coupons</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="../UI/general.html"><i class="fa fa-angle-double-right "></i> General</a></li>
-            <li><a href="../UI/icons.html"><i class="fa fa-angle-double-right "></i> Icons</a></li>
-            <li><a href="../UI/buttons.html"><i class="fa fa-angle-double-right "></i> Buttons</a></li>
-            <li><a href="../UI/sliders.html"><i class="fa fa-angle-double-right "></i> Sliders</a></li>
-            <li><a href="../UI/timeline.html"><i class="fa fa-angle-double-right "></i> Timeline</a></li>
-          </ul>
         </li>
         <li class="treeview">
           <a href="#">

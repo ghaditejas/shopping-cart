@@ -25,7 +25,7 @@
                             <th>Name</th>
                             <th>Image</th>
                              <th>Price</th>
-                             <!--<th>Category</th>-->
+                             <th>Qunatity</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -37,7 +37,7 @@
                                 <td><?php echo $row['name']; ?></td>
                                 <td><img class="product-image" src="<?php echo base_url();?>upload/product/<?php echo $row['image_name']?>" style="height:120px;width:150px" /></td>
                                 <td><?php echo $row['price']; ?></td>
-                                <!--<td><?php // echo $row['category_id']; ?></td>-->
+                                <td><?php echo $row['quantity']; ?></td>
                                 <td><?php if ($row['status'] == 1) {
                                 ?>
                                         <span class="label label-success">Active</span>

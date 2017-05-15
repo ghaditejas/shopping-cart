@@ -26,6 +26,17 @@ class Product_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_product_attr_assoc($id) {
+        $this->db->select('product_attribute_value_id');
+        $this->db->where('product_id', $id);
+        $query = $this->db->get('product_attributes_assoc');
+        if ($this->db->affected_rows()) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
     public function insert_product($data) {
 //        $query="call insert_product('".$data['name']."','".$data['status']."','".$data['parent_id']."','".$data['created_on']."','".$data['created_by']."')";
 //        $this->db->query($query);
@@ -93,7 +104,29 @@ class Product_model extends CI_Model {
             return false;
         }
     }
-
+    
+    public function del_product_attr_assoc($id) {
+        $this->db->where('product_id',$id);
+        $query=$this->db->delete('product_attributes_assoc');
+        if($this->db->affected_rows()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function del_product_attr_value($attr_val_ids) {
+        $this->db->where_in('id',$attr_val_ids);
+        $query = $this->db->delete('product_attribute_values');
+//        pr($this->db->last_query());
+//        exit;
+        if($this->db->affected_rows()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     public function get_product($id) {
         $this->db->where('product_id', $id);
         $query = $this->db->get('product');
@@ -131,12 +164,10 @@ class Product_model extends CI_Model {
     }
 
     public function get_attributes_assoc($id = '') {
-        $this->db->select('pv.product_attribute_id,pv.attribute_value');
-        $this->db->from('product_attributes as pa');
-        $this->db->join('product_attribute_values as pv', 'pa.product_attribute_id=pv.product_attribute_id');
-        $this->db->join('product_attributes_assoc as pas', 'pa.product_attribute_id=pas.product_attribute_id');
+        $this->db->select('pv.product_attribute_id,pv.attribute_value,pv.id,pas.product_id');
+        $this->db->from('product_attributes_assoc as pas');
+        $this->db->join('product_attribute_values as pv', 'pas.product_attribute_value_id =  pv.id ');
         $this->db->where('pas.product_id', $id);
-        $this->db->group_by('pas.product_attribute_value_id');
         $query = $this->db->get();
 //        pr($this->db->last_query());
 //        exit;
@@ -159,6 +190,11 @@ class Product_model extends CI_Model {
                 'product_attribute_value_id' => $insert_id
             );
             $this->db->insert('product_attributes_assoc', $insert_assoc);
+        }
+        if($this->db->affected_rows()>0){
+            return true;
+        }else{
+            return false;
         }
     }
 

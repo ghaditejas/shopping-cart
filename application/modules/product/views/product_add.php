@@ -28,7 +28,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('product_name');?></label>
+                                    <label><?php echo form_error('product_name'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Product Image</label>
@@ -44,15 +44,18 @@
                                         echo "<option value=''>Select Parent Category </option>";
                                         foreach ($categories as $row) {
                                             ?>
-                                            <?php if($row['parent_id']!=0){?>
-                                            <option value="<?php echo $row['category_id']; ?>" <?php
+                                            <?php if ($row['parent_id'] != 0) { ?>
+                                                <option value="<?php echo $row['category_id']; ?>" <?php
 //                                            if (!empty($parent_id)) {
 //                                                if ($row['category_id'] == $parent_id) {
 //                                                    echo 'selected="selected"';
 //                                                }
 //                                            }
-                                            ?>><?php echo $row['name']; ?></option>
-                                        <?php }} ?>
+                                                ?>><?php echo $row['name']; ?></option>
+                                                    <?php
+                                                    }
+                                                }
+                                                ?>
                                     </select>
                                     <label><?php echo form_error('category'); ?></label>
                                 </div>
@@ -86,7 +89,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('price');?></label>
+                                    <label><?php echo form_error('price'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Special Price</label>
@@ -95,7 +98,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('special_price');?></label>
+                                    <label><?php echo form_error('special_price'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -107,7 +110,7 @@
                                         </div>
                                         <input class="form-control pull-right" name="special_price_from" id="special_price_from" type="text">
                                     </div>
-                                    <label><?php echo form_error('special_price_from');?></label>
+                                    <label><?php echo form_error('special_price_from'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Special Prize Date To</label>
@@ -117,7 +120,7 @@
                                         </div>
                                         <input class="form-control pull-right" name="special_price_to" id="special_price_to" type="text">
                                     </div>
-                                    <label><?php echo form_error('special_price_to');?></label>
+                                    <label><?php echo form_error('special_price_to'); ?></label>
                                 </div>
                             </div>
                             <div class="box-header with-border">
@@ -131,7 +134,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('quantity');?></label>
+                                    <label><?php echo form_error('quantity'); ?></label>
                                 </div>
                                 <div class="form-grou col-md-6">
                                     <label>SKU</label>
@@ -140,7 +143,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('sku');?></label>
+                                    <label><?php echo form_error('sku'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -151,7 +154,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('short_description');?></label>
+                                    <label><?php echo form_error('short_description'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Long Description</label>
@@ -160,7 +163,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-<!--                                    <label><?php // echo form_error('category_name');                         ?></label>-->
+<!--                                    <label><?php // echo form_error('category_name');                            ?></label>-->
                                 </div>
                             </div>
                             <div class="row">
@@ -171,7 +174,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('meta_title');?></label>
+                                    <label><?php echo form_error('meta_title'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Meta Description</label>
@@ -180,7 +183,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('meta_description');?></label>
+                                    <label><?php echo form_error('meta_description'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -191,7 +194,7 @@
 //                                    echo $name;
 //                                }
                                     ?>">
-                                    <label><?php echo form_error('meta_keywords');?></label>
+                                    <label><?php echo form_error('meta_keywords'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Featured</label>
@@ -213,41 +216,10 @@
                                             Inactive
                                         </label>
                                     </div>
-                            </div>
+                                </div>
                             </div>
                             <div class="box-header with-border">
                                 <h3 class="box-title">Product Attributes</h3>
-                            </div>
-                            <div id="attribute_container"> 
-                                <div class="row">
-                                    <div class="form-group col-md-5">
-                                        <label>Select Attribute</label>
-                                        <select class="form-control select_attrbute" name="attribute[]">
-                                            <?php
-                                            echo "<option value=''>Select attribute </option>";
-                                            foreach ($attributes as $row1) {
-                                                ?>
-                                                <?php if ($row1['status']!=0){?>
-                                                <option value="<?php echo $row1['product_attribute_id'] ?>" <?php
-//                                                if (!empty($parent_id)) {
-//                                                    if ($row['category_id'] == $parent_id) {
-//                                                        echo 'selected="selected"';
-//                                                    }
-//                                                }
-                                                ?>><?php echo $row1['name']; ?></option>
-                                            <?php }} ?>
-                                        </select>
-                                        <label><?php echo form_error('attribute[]'); ?></label>
-                                    </div>
-                                    <div class="form-group col-md-5">
-                                        <label>Value</label>
-                                        <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="">
-                                        <label><?php echo form_error('attr_value[]');?></label>
-                                    </div>
-                                    <div class=col-md-2>
-                                        <button type="button" class="btn_remove_parent"><i class="fa fa-remove"></i></button>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
@@ -263,21 +235,50 @@
         </div>
     </section>
 </div>
+<div id="get_div" style="display:none">
+    <div class="row">
+        <div class="form-group col-md-5">
+            <label>Select Attribute</label>
+            <select class="form-control select_attrbute" name="attribute[]">
+                <?php
+                echo "<option value=''>Select attribute </option>";
+                foreach ($attributes as $row1) {
+                    ?>
+                    <?php if ($row1['status'] != 0) { ?>
+                        <option value="<?php echo $row1['product_attribute_id'] ?>" ><?php echo $row1['name']; ?></option>
+                    <?php
+                    }
+                }
+                ?>
+            </select>
+            <label></label>
+        </div>
+        <div class="form-group col-md-5">
+            <label>Value</label>
+            <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="">
+            <label></label>
+        </div>
+        <div class=col-md-2>
+            <button type="button" class="btn btn-danger remove_attr"><i class="fa fa-remove"></i></button>
+        </div>
+    </div>
+</div>
 <script src="<?php echo base_url(); ?>public/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script>
-                            $(document).ready(function () {
-                                
-                                $('#btn_add_more').click(function () {
-                                    $('#attribute_container').append($('#attribute_container').first('.row').html());
+                                $(document).ready(function () {
+                                    $('#btn_add_more').click(function () {
+                                        $('#attribute_container').append($('#get_div').first('.row').html());
+                                    });
+                                    $(document).on('click','.remove_attr',function () {
+                                        $(this).closest('.row').remove();
+                                    });
+                                    $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
+                                    $('#special_price_to').datepicker({format: 'yyyy-mm-dd'});
+                                    $('#banner_img').change(function () {
+                                        var tmppath = URL.createObjectURL(event.target.files[0]);
+                                        $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
+                                    });
                                 });
-
-                                $('#special_price_from').datepicker();
-                                $('#special_price_to').datepicker();
-                                $('#banner_img').change(function () {
-                                    var tmppath = URL.createObjectURL(event.target.files[0]);
-                                    $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
-                                });
-                            });
 </script>
 
 

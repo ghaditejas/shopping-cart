@@ -54,6 +54,26 @@ class Product extends CI_Controller {
             return false;
         }
     }
+    
+    public function checkdate($string) {
+        if ($this->input->post('special_price_from')) {
+            pr($this->input->post('special_price_from'));
+            $strt_time = strtotime($this->input->post('special_price_from'));
+            pr($strt_time);
+            $end_time = strtotime($this->input->post('special_price_to'));
+            pr( $end_time);
+            if(($end_time-$strt_time)>=0){
+                return true;
+            }else{
+                pr('TEjas');
+                $this->form_validation->set_message('checkdate', 'Invalid Date');
+                return false;
+            }
+        } else {
+            $this->form_validation->set_message('checkdate', 'First Select Start Date');
+            return false;
+        }
+    }
 
     public function add() {
         $err = '';
@@ -67,7 +87,7 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
             $this->form_validation->set_rules('special_price', 'Special Price', 'required|callback_price');
             $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
-            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required');
+            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
             $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural');
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
@@ -106,8 +126,8 @@ class Product extends CI_Controller {
                             'long_description' => $this->input->post('long_description'),
                             'price' => $this->input->post('price'),
                             'special_price' => $this->input->post('special_price'),
-                            'special_price_from' => $this->input->post('special_price_from'),
-                            'special_price_to' => $this->input->post('special_price_to'),
+                            'special_price_from' =>$this->input->post('special_price_from'),
+                            'special_price_to' =>$this->input->post('special_price_to'),
                             'status' => $this->input->post('status'),
                             'quantity' => $this->input->post('quantity'),
                             'meta_title' => $this->input->post('meta_title'),
@@ -198,6 +218,8 @@ class Product extends CI_Controller {
     }
 
     public function edit($id) {
+        $err = '';
+        $file_name = '';
         $data['attribute'] = $this->product_model->get_attributes_assoc($id);
         $data['categories'] = $this->category_model->get_categories();
         $data['attributes'] = $this->product_model->get_attributes();
@@ -207,7 +229,7 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
             $this->form_validation->set_rules('special_price', 'Special Price', 'required|callback_price');
             $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
-            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required');
+            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
             $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural');
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
@@ -260,12 +282,12 @@ class Product extends CI_Controller {
                         $upload_product_images = array(
                             'status' => $this->input->post('status')
                         );
-                        $upload_attr_value = array(
-                            'product_attribute_id' => $this->input->post('attribute[]'),
-                            'attribute_value' => $this->input->post('attr_value'),
-                            'created_on' => date('Y-m-d'),
-                            'created_by' => $this->session->userdata('user_id')
-                        );
+//                        $upload_attr_value = array(
+//                            'product_attribute_id' => $this->input->post('attribute[]'),
+//                            'attribute_value' => $this->input->post('attr_value'),
+//                            'created_on' => date('Y-m-d'),
+//                            'created_by' => $this->session->userdata('user_id')
+//                        );
                         if ($file_name) {
                             $upload_product_images['banner_path'] = $file_name;
                         }
@@ -274,6 +296,27 @@ class Product extends CI_Controller {
                         $result1 = $this->product_model->update_product($id, $upload_product);
                         $result2 = $this->product_model->update_product_category($id, $upload_product_categories);
                         $result3 = $this->product_model->update_product_image($id, $upload_product_images);
+                        $del_attr_val_id = $this->product_model->get_product_attr_assoc($id);
+                        foreach($del_attr_val_id as $row){
+                            $attr_val_id[] = $row['product_attribute_value_id'];
+                        }
+//                        $attr_val_id_del=implode(',',$attr_val_id);
+                        if ($del_attr_val_id) {
+                            $del_attr_assoc = $this->product_model->del_product_attr_assoc($id);
+                            $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);    
+                        }
+                        $attributes = $this->input->post('attribute');
+                        $attribute_values = $this->input->post('attr_value');
+                        foreach ($attributes as $_k => $_v) {
+                            $insert_attr = array(
+                                'product_attribute_id' => $_v,
+                                'attribute_value' => $attribute_values[$_k],
+                                'created_on' => date('Y-m-d'),
+                                'created_by' => $this->session->userdata('user_id')
+                            );
+
+                            $result = $this->product_model->insert_attribute_data($insert_attr, $id);
+                        }
                         if ($result) {
                             $this->session->set_flashdata('success', 'Product modified Successfully');
                             redirect('product/product/view');
