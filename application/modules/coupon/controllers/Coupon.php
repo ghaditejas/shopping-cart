@@ -9,8 +9,8 @@ class Coupon extends CI_Controller {
     }
     
     public function view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'coupon');
-        if (true) {
+        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'coupon');
+        if ($result) {
             $data['result'] = $this->coupon_model->get_coupons();
             $data['page'] = "coupon/coupon_list";
         } else {

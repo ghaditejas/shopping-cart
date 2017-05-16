@@ -9,8 +9,8 @@ class Category extends CI_Controller {
     }
 
     public function view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
-        if (true) {
+        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'category');
+        if ($result) {
             $data['result'] = $this->category_model->get_categories();
             $data['page'] = "category/category_list";
         } else {

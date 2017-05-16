@@ -11,8 +11,8 @@ class Product extends CI_Controller {
     }
 
     public function view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
-        if (true) {
+        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
+        if ($result) {
             $data['result'] = $this->product_model->get_products_list();
             $data['page'] = "product/product_list";
         } else {
@@ -338,8 +338,8 @@ class Product extends CI_Controller {
     }
 
     public function attribute_view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
-        if (true) {
+        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'attribute');
+        if ($result) {
             $data['result'] = $this->product_model->get_attributes();
             $data['page'] = "product/attribute_list";
         } else {

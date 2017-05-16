@@ -8,7 +8,7 @@ class User_model extends CI_Model {
     }
 
     public function get_users() {
-        $this->db->select('roles.role_id,user.user_id,user.firstname,user.lastname,user.email,user.status,GROUP_CONCAT(roles.role_name) AS role');
+        $this->db->select('roles.role_id,user.firstname,user.lastname,user.email,GROUP_CONCAT(roles.role_name) AS role,user.status,user.user_id');
         $this->db->from('user');
         $this->db->join('user_role', 'user.user_id = user_role.user_id');
         $this->db->join('roles','roles.role_id=user_role.role_id');

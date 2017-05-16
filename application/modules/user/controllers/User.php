@@ -11,12 +11,19 @@ class User extends CI_Controller {
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'admin_user');
         if ($result) {
-            $data['result'] = $this->user_model->get_users();
+//            $data['result'] = $this->user_model->get_users();
             $data['page'] = "user/user_list";
         } else {
             $data['page'] = "no_permission";
         }
         $this->load->view('main_template', $data);
+    }
+
+    public function get_data() {
+        $data = $this->user_model->get_users();
+        
+        echo json_encode($data);
+        exit;
     }
 
     public function user_add($id = "") {
@@ -80,7 +87,8 @@ class User extends CI_Controller {
             $data['page'] = "user/add_user";
             $this->load->view('main_template', $data);
         }
-    }    
+    }
+
 }
 ?>
 
