@@ -20,10 +20,47 @@ class User extends CI_Controller {
     }
 
     public function get_data() {
-        $data = $this->user_model->get_users();
-        
-        echo json_encode($data);
-        exit;
+        if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        $recordsFiltered = $recordsTotal = $this->user_model->get_record_count($search);
+        $records = $this->user_model->get_users($offset, $limit, $search);
+        $data = [];
+        foreach ($records as $row) {
+            if ($row['status'] == 1) {
+                $stat = '<span class="label label-success">Active</span>';
+            } else {
+                $stat = '<span class="label label-danger">Inactive</span>';
+            }
+            $action = '<a href="' . base_url() . 'user/user/user_add/' . $row['user_id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $data[] = array($row['user_id'], $row['firstname'], $row['lastname'], $row['email'], $row['role'], $stat, $action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
     }
 
     public function user_add($id = "") {

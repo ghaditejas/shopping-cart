@@ -7,15 +7,31 @@ class User_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_users() {
+    public function get_users($offset,$limit,$search) {
         $this->db->select('roles.role_id,user.firstname,user.lastname,user.email,GROUP_CONCAT(roles.role_name) AS role,user.status,user.user_id');
         $this->db->from('user');
         $this->db->join('user_role', 'user.user_id = user_role.user_id');
         $this->db->join('roles','roles.role_id=user_role.role_id');
         $this->db->where('user_role.role_id!=', 5);
+        if(!empty($search)){
+            $this->db->like('firstname',$search);
+            $this->db->or_like('lastname',$search);
+            $this->db->or_like('email',$search);
+        }
         $this->db->group_by('user.user_id');
-        $query = $this->db->get();
+        $this->db->limit($limit,$offset);
+        $query = $this->db->get();        
         return $query->result_array();
+    }
+    public function get_record_count($search) {
+        if(!empty($search)){
+            $this->db->like('firstname', $search);
+            $this->db->or_like('lastname',$search);
+            $this->db->or_like('email',$search);
+        }
+        $this->db->select('COUNT(user_id) AS cnt');
+        $query=$this->db->get('user')->row();
+        return $query->cnt;
     }
 
     public function insert_user($data) {

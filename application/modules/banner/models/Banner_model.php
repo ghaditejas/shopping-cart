@@ -30,10 +30,16 @@ class Banner_model extends CI_Model{
         return $query->row_array();
     }
     
-    public function get_banners() {
-//        $this->db->where('status',1);
+    public function get_banners($offset=0,$limit=LIST_LIMIT) {
+        $this->db->limit($limit,$offset);
         $query=$this->db->get('banners');
         return $query->result_array();
+    }
+    
+    public function get_record_count() {
+        $this->db->select('COUNT(banner_id) AS cnt');
+        $query=$this->db->get('banners')->row();
+        return $query->cnt;
     }
     
     public function delete_banner($data) {
