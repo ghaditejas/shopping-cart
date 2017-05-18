@@ -52,5 +52,3 @@ $(document).ready(function () {
         });
     });
 </script>
-<?php
-// echo base_url(); user/user/user_add/' style='padding:0px?>

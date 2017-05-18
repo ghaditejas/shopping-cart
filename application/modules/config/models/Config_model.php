@@ -7,12 +7,25 @@ class Config_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_configs(){
-        $this->db->select('ct.config_type,cv.*');
+    public function get_configs($offset, $limit, $search){
+        $this->db->select('ct.config_type,cv.config_value_id,cv.config_value,cv.status');
         $this->db->from('configuration_type  AS ct');
         $this->db->join('configuration_value As cv','ct.config_type_id=cv.config_type_id');
+        if(!empty($search)){
+            $this->db->like('ct.config_type',$search);
+        }
+        $this->db->limit($limit,$offset);
         $query=$this->db->get();
         return $query->result_array();
+    }
+    
+    public function get_record_count($search){
+        if(!empty($search)){
+            $this->db->like('config_type', $search);
+        }
+        $this->db->select('COUNT(config_type_id) AS cnt');
+        $query=$this->db->get('configuration_type')->row();
+        return $query->cnt;
     }
     
     public function get_config($id) {

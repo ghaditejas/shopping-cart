@@ -11,12 +11,55 @@ class Category extends CI_Controller {
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'category');
         if ($result) {
-            $data['result'] = $this->category_model->get_categories();
             $data['page'] = "category/category_list";
         } else {
             $data['page'] = "no_permission";
         }
         $this->load->view('main_template', $data);
+    }
+
+    public function get_data() {
+        if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        $recordsFiltered = $recordsTotal = $this->category_model->get_record_count($search);
+        $records = $this->category_model->get_categories($offset, $limit, $search);
+        $data = [];
+        foreach ($records as $row) {
+            if ($row['status'] == 1) {
+                $stat = '<span class="label label-success">Active</span>';
+            } else {
+                $stat = '<span class="label label-danger">Inactive</span>';
+            }
+            $action = '<a href="' . base_url() . 'category/category/add/' . $row['category_id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $data[] = array($row['category_id'], $row['name'],$stat,$row['parent_name'],$action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
     }
 
     public function add($id = '') {
@@ -32,15 +75,15 @@ class Category extends CI_Controller {
                     'name' => $this->input->post('category_name'),
                     'status' => $this->input->post('status'),
                 );
-                 if($this->input->post('parent_category')){
-                    $data['parent_id']=$this->input->post('parent_category');
-                }else{
-                    $data['parent_id']=0;
+                if ($this->input->post('parent_category')) {
+                    $data['parent_id'] = $this->input->post('parent_category');
+                } else {
+                    $data['parent_id'] = 0;
                 }
                 if (empty($id)) {
                     $data['created_by'] = $this->session->userdata('user_id');
                     $data['created_on'] = date('Y-m-d');
-                    $result = $this->category_model->insert_category($data); 
+                    $result = $this->category_model->insert_category($data);
                     if ($result) {
                         $this->session->set_flashdata('success', 'Configuration added Successfully');
                         redirect('category/category/view');
@@ -56,25 +99,21 @@ class Category extends CI_Controller {
                         redirect('category/category/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('category/category/add');
+                        redirect('category/category/add/'.$id);
                     }
                 }
             }
         } else {
-        if (!empty($id)) {
-            $data = $this->category_model->get_category($id);
-            $data['error_img'] = "";
-            $data['stat'] = $data['status'];
-            $data['edit_id'] = $id;
+            if (!empty($id)) {
+                $data = $this->category_model->get_category($id);
+                $data['error_img'] = "";
+                $data['stat'] = $data['status'];
+                $data['edit_id'] = $id;
+            }
+            $data['parent_category'] = $this->category_model->parent_category();
+            $data['page'] = "category/category_add";
+            $this->load->view('main_template', $data);
         }
-        $data['parent_category'] = $this->category_model->parent_category();
-        $data['page'] = "category/category_add";
-        $this->load->view('main_template', $data);
-    }
-}
-
-    public function delete() {
-        
     }
 
 }

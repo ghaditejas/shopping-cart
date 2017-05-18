@@ -18,72 +18,34 @@
         <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>product/product/attribute_add')" class="btn btn-primary btn-lg" style="">Add</button>
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tbody>
+                <table class="table table-hover" id="attribute_table">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
-                        <?php if(!empty($result)) { ?>
-                        <?php foreach ($result as $row) {
-                            ?>
-                            <tr>
-                                <td><?php echo $row['product_attribute_id']; ?></td>
-                                <td><?php echo $row['name']; ?></td>
-                                <td><?php if ($row['status'] == 1) {
-                                ?>
-                                        <span class="label label-success">Active</span>
-                                    <?php } else { ?>
-                                        <span class="label label-danger">Inactive</span>
-                                    <?php } ?></td>
-                                <td>
-                                    <ul class="nav navbar-nav">
-                                        <li>
-                                            <a href="<?php echo base_url(); ?>product/product/attribute_add/<?php echo $row['product_attribute_id']; ?>" style="padding-top:0px">
-                                                <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
-                                            </a>
-                                        </li>
-                                    </ul>  
-                                </td>
-                            </tr>
-                            <?php
-                        }}else{?>
-                            <tr> <td colspan="5"><center>No data found</center></td></tr>
-                        <?php }?>
+                    </thead>
+                    <tbody>
                     </tbody>
                 </table>
             </div>
         </div>
     </section>
 </div>
-<script src="http://localhost/shopping-cart/public/dist/js/checkall.js"></script>
 <script type="text/javascript">
-    function del() {
-        var arr = [];
-        $('input.checkbox_check:checkbox:checked').each(function () {
-            arr.push($(this).val());
+    $(document).ready(function () {
+        $("#attribute_table").DataTable({
+            "paging": true,
+            "processing": true,
+            "serverSide": true,
+            "autoWidth": true,
+            "searching": true,
+            "ordering": false,
+            "lengthMenu": [2, 5, 10, 25, 50, 75, 100],
+            "lengthChange": true,
+            "ajax": "<?php echo base_url(); ?>product/product/get_attribute_data",
         });
-        if (arr.length == 0) {
-            alert("Please check the category u want to delete");
-        } else {
-            var r = confirm("Are you sure you want to delete");
-            console.log(arr);
-            if (r)
-                $.ajax({
-                    url: 'http://localhost/shopping-cart/product/product/delete',
-                    data: {banner_id: arr},
-                    type: 'post',
-                    success: function (output) {
-                        if (output == 1) {
-                            alert("Selected category deleted successfully");
-                            location.reload();
-                        }
-
-                    }
-                });
-        }
-    }
-</script>
+    });
 </script>

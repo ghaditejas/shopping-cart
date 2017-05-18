@@ -11,7 +11,6 @@ class Coupon extends CI_Controller {
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'coupon');
         if ($result) {
-            $data['result'] = $this->coupon_model->get_coupons();
             $data['page'] = "coupon/coupon_list";
         } else {
             $data['page'] = "no_permission";
@@ -19,6 +18,45 @@ class Coupon extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    public function get_data(){
+         if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        $recordsFiltered = $recordsTotal = $this->coupon_model->get_record_count($search);
+        $records = $this->coupon_model->get_coupons($offset, $limit, $search);
+        $data = [];
+        foreach ($records as $row) {
+            $action = '<a href="' . base_url() . 'coupon/coupon/add/' . $row['id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $data[] = array($row['id'],$row['code'], $row['percent_off'], $row['no_of_uses'],$action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+    }
+    
     public function add($id = '') {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('coupon_code', 'Coupon Code', 'required|alpha_numeric');

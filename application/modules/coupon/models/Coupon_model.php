@@ -7,11 +7,24 @@ class Coupon_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_coupons() {
+    public function get_coupons($offset, $limit, $search) {
+        if(!empty($search)){
+            $this->db->like('code',$search);
+        }
+        $this->db->limit($limit,$offset);
         $query = $this->db->get('coupon');
         return $query->result_array();
     }
 
+    public function get_record_count($search){
+        if(!empty($search)){
+            $this->db->like('code',$search);
+        }
+        $this->db->select('COUNT(id) AS cnt');
+        $query=$this->db->get('coupon')->row();
+        return $query->cnt;
+    }
+    
     public function insert_coupon($data) {
         $this->db->insert('coupon', $data);
         if ($this->db->affected_rows()) {

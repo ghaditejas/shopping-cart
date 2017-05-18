@@ -10,7 +10,6 @@ class Config extends CI_Controller {
     public function config_view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'configuration');
         if ($result) {
-            $data['result'] = $this->config_model->get_configs();
             $data['page'] = "config/config_list";
         } else {
             $data['page'] = "no_permission";
@@ -18,6 +17,50 @@ class Config extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    public function get_data(){
+         if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        $recordsFiltered = $recordsTotal = $this->config_model->get_record_count($search);
+        $records = $this->config_model->get_configs($offset, $limit, $search);
+        $data = [];
+        foreach ($records as $row) {
+            if ($row['status'] == 1) {
+                $stat = '<span class="label label-success">Active</span>';
+            } else {
+                $stat = '<span class="label label-danger">Inactive</span>';
+            }
+            $action = '<a href="' . base_url() . 'config/config/config_update/' . $row['config_value_id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $data[] = array($row['config_value_id'], $row['config_type'], $row['config_value'],$stat, $action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+    }
+    
     public function config_update($id = "") {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -50,7 +93,7 @@ class Config extends CI_Controller {
                         redirect('config/config/config_view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('config/config/config_update');
+                        redirect('config/config/config_update/'.$id);
                     }
                 }
             }

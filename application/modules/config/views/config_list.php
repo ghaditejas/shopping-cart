@@ -18,8 +18,8 @@
         <!--<p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>config/config/config_add')" class="btn btn-primary btn-lg" style="">Add</button></p>-->
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tbody>
+                <table class="table table-hover" id="config_table">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Configuration key</th>
@@ -27,36 +27,26 @@
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
-                        <?php if(!empty($result)) { ?>
-                        <?php foreach ($result as $row) {
-                            ?>
-                            <tr>
-                                <td><?php echo $row['config_value_id']; ?></td>
-                                <td><?php echo $row['config_type']; ?></td>
-                                <td><?php echo $row['config_value']; ?></td>
-                                <td><?php if ($row['status'] == 1) {
-                                ?>
-                                        <span class="label label-success">Active</span>
-                                    <?php } else { ?>
-                                        <span class="label label-danger">Inactive</span>
-                                    <?php } ?></td>
-                                <td>
-                                    <ul class="nav navbar-nav">
-                                        <li>
-                                            <a href="<?php echo base_url(); ?>config/config/config_update/<?php echo $row['config_value_id']; ?>" style="padding:0px">
-                                                <span  class="btn btn-success"><i class="fa fa-edit"></i></span>
-                                            </a>
-                                        </li>
-                                    </ul>  
-                                </td>
-                            </tr>
-                            <?php
-                        }}else{?>
-                            <tr> <td colspan="5"><center>No data found</center></td></tr>
-                        <?php }?>
+                    </thead>
+                    <tbody>
                     </tbody>
                 </table>
             </div>
         </div>
     </section>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#config_table").DataTable({
+            "paging": true,
+            "processing": true,
+            "serverSide": true,
+            "autoWidth": true,
+            "searching": true,
+            "ordering": false,
+            "lengthMenu": [2, 5, 10, 25, 50, 75, 100],
+            "lengthChange": true,
+            "ajax": "<?php echo base_url(); ?>config/config/get_data",
+        });
+    });
+</script>

@@ -13,14 +13,62 @@ class Product extends CI_Controller {
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
         if ($result) {
-            $data['result'] = $this->product_model->get_products_list();
             $data['page'] = "product/product_list";
         } else {
             $data['page'] = "no_permission";
         }
         $this->load->view('main_template', $data);
     }
-
+     
+    public function get_data(){
+         if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        if (isset($_GET['order']['0']['dir'])) {
+            $sort = $_GET['order']['0']['dir'];
+        } else {
+            $sort = "asc";
+        }
+        $recordsFiltered = $recordsTotal = $this->product_model->get_record_count($search);
+        $records =$this->product_model->get_products_list($offset, $limit, $search,$sort);
+        $data = [];
+        foreach ($records as $row) {
+            if ($row['status'] == 1) {
+                $stat = '<span class="label label-success">Active</span>';
+            } else {
+                $stat = '<span class="label label-danger">Inactive</span>';
+            }
+            $action = '<a href="' . base_url() . 'product/product/edit/' . $row['id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $image='<img class="product-image" src="'.base_url().'upload/product/'.$row['image_name'].'" style="height:120px;width:150px" /></td>';
+            $data[] = array($row['id'], $row['name'],$image, $row['price'], $row['quantity'],$stat, $action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+    } 
+    
     public function do_upload() {
         $file_name = false;
         $error = false;
@@ -340,7 +388,6 @@ class Product extends CI_Controller {
     public function attribute_view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'attribute');
         if ($result) {
-            $data['result'] = $this->product_model->get_attributes();
             $data['page'] = "product/attribute_list";
         } else {
             $data['page'] = "no_permission";
@@ -348,6 +395,50 @@ class Product extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    public function get_attribute_data() {
+         if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['start'])) {
+            $offset = $_GET['start'];
+        } else {
+            $offset = 0;
+        }
+        if (isset($_GET['length'])) {
+            $limit = $_GET['length'];
+        } else {
+            $limit = LIST_LIMIT;
+        }
+
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        $recordsFiltered = $recordsTotal = $this->product_model->get_attribute_count($search);
+        $records = $this->product_model->get_attributes($offset, $limit, $search);
+        $data = [];
+        foreach ($records as $row) {
+            if ($row['status'] == 1) {
+                $stat = '<span class="label label-success">Active</span>';
+            } else {
+                $stat = '<span class="label label-danger">Inactive</span>';
+            }
+            $action = '<a href="' . base_url() . 'product/product/attribute_add/' . $row['product_attribute_id'] .
+                    '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
+            $data[] = array($row['product_attribute_id'], $row['name'], $stat, $action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+    }
+    
     public function attribute_add($id = '') {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {

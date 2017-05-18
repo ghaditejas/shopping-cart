@@ -6,10 +6,25 @@ class Category_model extends CI_Model{
         
     }
     
-    public function get_categories(){
-        $this->db->order_by('parent_id');
-        $query = $this->db->get('category');
+    public function get_categories($offset, $limit, $search){
+        $this->db->select('IFNULL(C1.name ,  "-" ) AS  parent_name,C2.category_id,C2.name ,C2.status ');
+        $this->db->from('category AS C1');
+        $this->db->join('category AS C2','C1.category_id = C2.parent_id','right');
+        if(!empty($search)){
+            $this->db->like('C2.name',$search);
+        }
+        $this->db->limit($limit,$offset);
+        $query = $this->db->get();
         return $query->result_array();
+    }
+    
+    public function get_record_count($search){
+        if(!empty($search)){
+            $this->db->like('name', $search);
+        }
+        $this->db->select('COUNT(category_id) AS cnt');
+        $query=$this->db->get('category')->row();
+        return $query->cnt;
     }
     
     public function insert_category($data) {
