@@ -1,5 +1,5 @@
 <?php
-$this->load->view('templates/header');
+$this->load->view('admin_templates/header');
 $this->load->view($page);
-$this->load->view('templates/footer');
+$this->load->view('admin_templates/footer');
 ?>
