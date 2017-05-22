@@ -68,6 +68,7 @@ class Category extends CI_Controller {
             $this->form_validation->set_rules('category_name', 'Category Name', 'required|alpha');
 //            $this->form_validation->set_rules('conf_val', 'Configuration value', 'required');
             if ($this->form_validation->run() == False) {
+                $data['parent_category'] = $this->category_model->parent_category();
                 $data['page'] = "category/category_add";
                 $this->load->view('main_template', $data);
             } else {

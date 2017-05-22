@@ -73,6 +73,8 @@ class User extends CI_Controller {
             $this->form_validation->set_rules('confirm_password', 'Password', 'required|alpha_numeric_spaces|min_length[8]|max_length[12]|matches[password]');
             $this->form_validation->set_rules('select_role[]', 'Role', 'required');
             if ($this->form_validation->run() == False) {
+                $data['role_ids']= $this->input->post('select_role[]');
+                $data['role'] = $this->user_model->get_roles();
                 $data['page'] = "user/add_user";
                 $this->load->view('main_template', $data);
             } else {
@@ -93,10 +95,10 @@ class User extends CI_Controller {
                     $result_ins = $this->user_model->insert_roles($role_array);
                     if ($result && $result_ins) {
                         $this->session->set_flashdata('success', 'User added Successfully');
-                        redirect('/user/user/view');
+                        redirect('user/user/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while adding user');
-                        redirect('/user/user/user_add');
+                        redirect('user/user/user_add');
                     }
                 } else {
                     $result_del = $this->user_model->delete($id);
@@ -107,10 +109,10 @@ class User extends CI_Controller {
                     $result = $this->user_model->update_user($id, $data);
                     if ($result && $result_ins) {
                         $this->session->set_flashdata('success', 'User modified Successfully');
-                        redirect('/user/user/view');
+                        redirect('user/user/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('/user/user/user_add');
+                        redirect('user/user/user_add/'.$id);
                     }
                 }
             }

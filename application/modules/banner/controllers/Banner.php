@@ -148,9 +148,9 @@ class Banner extends CI_Controller {
                 } else {
                     if (!empty($id)) {
                         $data['stat'] = $this->input->post('status');
-                        $data['error_img'] = $err;
                         $data['edit_id'] = $id;
                     }
+                    $data['error_img'] = $err;
                     $data['page'] = "banner/banner_add";
                     $this->load->view('main_template', $data);
                 }

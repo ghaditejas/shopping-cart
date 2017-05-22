@@ -2,10 +2,7 @@
 
 if(isset($roless)){
     $role_ids = explode(',',$roless);
-}else{
-    $role_ids =[];
 }
-
 ?> 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -27,35 +24,35 @@ if(isset($roless)){
                         <!-- text input -->
                         <div class="box-body">
                             <div class="form-group">
-                                <label>First Name</label>
-                                <input class="form-control" name="firstname" id="fname" placeholder="First Name" type="text" value="<?php if (isset($firstname)) {
+                                <label>First Name*</label>
+                                <input class="form-control" name="firstname" id="fname" placeholder="First Name" type="text" value="<?php if(set_value('firstname')!=""){ echo set_value('firstname'); } else if (isset($firstname)) {
     echo $firstname;
 } ?>">
-                                <label><?php echo form_error('firstname'); ?></label>
+                                <label class="error"><?php echo form_error('firstname'); ?></label>
                             </div>
                             <div class="form-group">
-                                <label>Last Name</label>
-                                <input class="form-control" name="lastname" id="lname" placeholder="Last Name" type="text" value="<?php if (isset($lastname)) {
+                                <label>Last Name*</label>
+                                <input class="form-control" name="lastname" id="lname" placeholder="Last Name" type="text" value="<?php if(set_value('lastname')!=""){ echo set_value('lastname'); } elseif (isset($lastname)) {
     echo $lastname;
 } ?>">
-                                <label><?php echo form_error('lastname'); ?></label>
+                                <label class="error"><?php echo form_error('lastname'); ?></label>
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
-                                <input class="form-control" name="email" id="email" placeholder="Email" type="text" value="<?php if (isset($email)) {
+                                <label>Email*</label>
+                                <input class="form-control" name="email" id="email" placeholder="Email" type="text" value="<?php if(set_value('email')!=""){ echo set_value('email'); } else if (isset($email)) {
     echo $email;
 } ?>">
-                                <label><?php echo form_error('email'); ?></label>
+                                <label class="error"><?php echo form_error('email'); ?></label>
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>Password*</label>
                                 <input class="form-control" type="password" name="password" id="pass" placeholder="Password" type="text">
-                                <label><?php echo form_error('password'); ?></label>
+                                <label class="error"><?php echo form_error('password'); ?></label>
                             </div>
                             <div class="form-group">
-                                <label>Confirm Password</label>
+                                <label>Confirm Password*</label>
                                 <input class="form-control" type="password" name="confirm_password" id="cnf_pass" placeholder="Confirm Password" type="text">
-                                <label><?php echo form_error('confirm_password'); ?></label>
+                                <label class="error"><?php echo form_error('confirm_password'); ?></label>
                             </div>
 
                             <!-- radio -->
@@ -79,7 +76,7 @@ if(isset($roless)){
 
                             <!-- select -->
                             <div class="form-group">
-                                <label>Role</label>
+                                <label>Role*</label>
                                 <select class="form-control" name="select_role[]" id="select role" multiple="">
     <?php
     foreach ($role as $row) { ?>
@@ -93,7 +90,7 @@ if(isset($roless)){
         ?>><?php echo $row['role_name']; ?></option>
     <?php } ?>
                                     </select>
-                                    <label><?php echo form_error('select_role'); ?></label>
+                                    <label class="error"><?php echo form_error('select_role[]'); ?></label>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>user/user/view')" class="btn btn-danger">Cancel</button>

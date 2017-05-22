@@ -55,6 +55,7 @@ class Category_model extends CI_Model{
     
     public function parent_category(){
     $this->db->where('parent_id',0);
+    $this->db->where('status',1);
     $query = $this->db->get('category');
     return $query->result_array();
     } 
