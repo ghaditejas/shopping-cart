@@ -17,6 +17,9 @@
         <!-- iCheck -->
         <link rel="stylesheet" href="<?php echo base_url();?>public/plugins/iCheck/square/blue.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/custom.css">
+        <script src="<?php echo base_url();?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/jquery.validate.min.js"></script>
+         <script src="<?php echo base_url(); ?>public/bootstrap/js/additional-methods.min.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -33,7 +36,7 @@
             <div class="login-box-body">
                 <p class="login-box-msg">Sign in to start your account</p>
                 <label><?php if($error!="")echo $error ;?></label>
-                <form action="<?php echo base_url()?>admin/index/verification" method="post">
+                <form  id="login" action="<?php echo base_url()?>admin/index/verification" method="post">
                     <div class="form-group has-feedback">
                         <input type="email" name="email" id="email" class="form-control" placeholder="Email*">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -65,19 +68,21 @@
         <!-- /.login-box -->
 
         <!-- jQuery 2.2.3 -->
-        <script src="<?php echo base_url();?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        
         <!-- Bootstrap 3.3.6 -->
         <script src="<?php echo base_url();?>public/bootstrap/js/bootstrap.min.js"></script>
         <!-- iCheck -->
         <script src="<?php echo base_url();?>public/plugins/iCheck/icheck.min.js"></script>
         <script>
-            $(function () {
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
-            });
+//            $(function () {
+//                $('input').iCheck({
+//                    checkboxClass: 'icheckbox_square-blue',
+//                    radioClass: 'iradio_square-blue',
+//                    increaseArea: '20%' // optional
+//                });
+//            });
         </script>
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
     </body>
 </html>

@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>category/category/add<?php
+                    <form id="add_category" class="add_user" action="<?php echo base_url(); ?>category/category/add<?php
                     if (isset($edit_id)) {
                         echo "/" . $edit_id;
                     }
@@ -23,8 +23,8 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Category Name</label>
-                                <input class="form-control" name="category_name" id="category_name" type="text" value="<?php
- if (isset($name)) {
+                                <input class="form-control" name="category_name" id="category_name" type="text" value="<?php if(set_value('category_name')!=""){ echo set_value('category_name'); } 
+                                else if (isset($name)) {
                                echo $name;
                                    }
                                 ?>">
@@ -38,7 +38,7 @@
     foreach ($parent_category as $row) { ?>
                                     
                                             <option value="<?php echo $row['category_id'] ?>" <?php
-         
+         if(set_value('parent_category')!=""){ $parent_id=set_value('parent_category'); }
          if (!empty($parent_id)) {
             if ($row['category_id']== $parent_id) {
                 echo 'selected="selected"';
@@ -90,5 +90,7 @@
         });
     });
 </script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 
 

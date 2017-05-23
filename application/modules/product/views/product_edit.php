@@ -19,7 +19,7 @@
                         $urlstring = '';
                     }
                     ?>
-                    <form id="add_user" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>product/product/edit<?php echo $urlstring; ?>" method="post">
+                    <form id="add_product" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>product/product/edit<?php echo $urlstring; ?>" method="post">
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -42,7 +42,7 @@
                                         echo "<option value=''>Select Parent Category </option>";
                                         foreach ($categories as $row) {
                                             ?>
-                                            <?php if ($row['parent_id'] != 0) { ?>
+                                            <?php if ($row['parent_name'] != "-") { ?>
                                                 <option value="<?php echo $row['category_id']; ?>" <?php
                                                 if ($row['category_id'] == $result['category_id']) {
                                                     echo 'selected="selected"';
@@ -249,7 +249,7 @@
             <label></label>
         </div>
         <div class=col-md-2>
-            <button type="button" class="btn btn-danger remove_attr"><i class="fa fa-remove"></i></button>
+            <button type="button" class="btn btn-danger remove_attr" style="margin-top:24px"><i class="fa fa-remove"></i></button>
         </div>
     </div>
 </div>
@@ -271,3 +271,5 @@
                                 });
 
 </script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>

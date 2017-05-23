@@ -22,7 +22,8 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">
   <script src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
   <script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-  
+  <script src="<?php echo base_url(); ?>public/bootstrap/js/jquery.validate.min.js"></script>
+  <script src="<?php echo base_url(); ?>public/bootstrap/js/additional-methods.min.js"></script>
   <link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/custom.css">
 </head>
 

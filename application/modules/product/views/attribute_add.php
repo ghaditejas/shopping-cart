@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>product/product/attribute_add<?php
+                    <form id="add_attribute" class="add_user" action="<?php echo base_url(); ?>product/product/attribute_add<?php
                     if (isset($edit_id)) {
                         echo "/" . $edit_id;
                     }
@@ -23,8 +23,8 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Attribute Name</label>
-                                <input class="form-control" name="product_attribute" id="product_attribute" type="text" value="<?php
-                                if (isset($name)) {
+                                <input class="form-control" name="product_attribute" id="product_attribute" type="text" value="<?php if(set_value('product_attribute')!=""){ echo set_value('product_attribute'); } 
+                                else if (isset($name)) {
                                     echo $name;
                                 }
                                 ?>">
@@ -59,16 +59,7 @@
         </div>
     </section>
 </div>
-
-<script type='text/javascript'>
-    $(document).ready(function () {
-        $('#banner_img').change(function () {
-//                var img_link= $('#banner_img').val();
-//                alert(img_link);
-            var tmppath = URL.createObjectURL(event.target.files[0]);
-            $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
-        });
-    });
-</script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 
 

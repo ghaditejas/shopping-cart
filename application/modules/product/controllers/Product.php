@@ -140,8 +140,8 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
             $this->form_validation->set_rules('meta_title', 'Meta Title', 'required');
-            $this->form_validation->set_rules('attribute[]', 'Attribute', 'required');
-            $this->form_validation->set_rules('attr_value[]', 'Attribute Value', 'required');
+//            $this->form_validation->set_rules('attribute[]', 'Attribute', 'required');
+//            $this->form_validation->set_rules('attr_value[]', 'Attribute Value', 'required');
             // optional        
 //            $this->form_validation->set_rules('meta_description', 'Meta Description', 'required');
 //            $this->form_validation->set_rules('meta_keywords', 'Meta Keywords', 'required');
@@ -149,6 +149,9 @@ class Product extends CI_Controller {
             if ($this->form_validation->run() == False) {
                 $data['categories'] = $this->category_model->get_categories();
                 $data['attributes'] = $this->product_model->get_attributes();
+                if (empty($_FILES['product_img']['name'])) {
+                    $data['error_img'] = "Product Image File required";
+                } 
                 $data['page'] = "product/product_add";
                 $this->load->view('main_template', $data);
             } else {
@@ -260,6 +263,9 @@ class Product extends CI_Controller {
 //            }
             $data['categories'] = $this->category_model->get_categories();
             $data['attributes'] = $this->product_model->get_attributes();
+//            pr($data['categories']);
+//            pr($data['attributes']);
+//            exit;
             $data['page'] = "product/product_add";
             $this->load->view('main_template', $data);
         }

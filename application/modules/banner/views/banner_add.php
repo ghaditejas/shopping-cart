@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>banner/banner/add<?php if (isset($edit_id)) {
+                    <form id="add_banner" class="add_user" action="<?php echo base_url(); ?>banner/banner/add<?php if (isset($edit_id)) {
     echo "/" . $edit_id;
 } ?>" method="post" enctype="multipart/form-data">
                         <!-- text input -->
@@ -74,5 +74,7 @@
         });
     });
 </script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 
 

@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>coupon/coupon/add<?php
+                    <form id="add_coupon" class="add_user" action="<?php echo base_url(); ?>coupon/coupon/add<?php
                     if (isset($edit_id)) {
                         echo "/" . $edit_id;
                     }
@@ -23,8 +23,8 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Coupon Code</label>
-                                <input class="form-control" name="coupon_code" id="product_attribute" type="text" value="<?php
-                                if (isset($code)) {
+                                <input class="form-control" name="coupon_code" id="coupon_code" type="text" value="<?php if(set_value('coupon_code')!=""){ echo set_value('coupon_code'); } 
+                                else if (isset($code)) {
                                     echo $code;
                                 }
                                 ?>">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Percentage Off</label>
-                                <input class="form-control" name="percent" id="product_attribute" type="text" value="<?php
+                                <input class="form-control" name="percent" id="percent" type="text" value="<?php if(set_value('percent')!=""){ echo set_value('percent'); } else
                                 if (isset($percent_off)) {
                                     echo $percent_off;
                                 }
@@ -41,8 +41,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Number of uses</label>
-                                <input class="form-control" name="uses" id="product_attribute" type="text" value="<?php
-                                if (isset($no_of_uses)) {
+                                <input class="form-control" name="uses" id="uses" type="text" value="<?php if(set_value('uses')!=""){ echo set_value('uses'); } 
+                                else if (isset($no_of_uses)) {
                                     echo $no_of_uses;
                                 }
                                 ?>">
@@ -57,5 +57,7 @@
         </div>
     </section>
 </div>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 
 

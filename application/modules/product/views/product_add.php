@@ -18,51 +18,59 @@
                         $urlstring = '';
                     }
                     ?>
-                    <form id="add_user" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>product/product/add<?php echo $urlstring; ?>" method="post">
+                    <form id="add_product" class="add_user" enctype="multipart/form-data" action="<?php echo base_url(); ?>product/product/add<?php echo $urlstring; ?>" method="post">
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Product Name</label>
+                                    <label>Product Name*</label>
                                     <input class="form-control" name="product_name" id="category_name" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('product_name') != "") {
+                                        echo set_value('product_name');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('product_name'); ?></label>
+                                    <label class="error"><?php echo form_error('product_name'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Product Image</label>
+                                    <label>Product Image*</label>
                                     <input class="form-control" name="product_img" id="product_img" type="file">
-                                    <label><?php echo $error_img; ?></label>
+                                    <label class="error"><?php echo $error_img; ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Select Category</label>
+                                    <label>Select Category*</label>
                                     <select class="form-control" name="category" id="category">
                                         <?php
                                         echo "<option value=''>Select Parent Category </option>";
                                         foreach ($categories as $row) {
                                             ?>
-                                            <?php if ($row['parent_id'] != 0) { ?>
+                                            <?php if ($row['parent_name'] != "-") { ?>
                                                 <option value="<?php echo $row['category_id']; ?>" <?php
-//                                            if (!empty($parent_id)) {
-//                                                if ($row['category_id'] == $parent_id) {
-//                                                    echo 'selected="selected"';
-//                                                }
-//                                            }
+                                                if (set_value('category') != "") {
+                                                    $parent_id = set_value('firstname');
+                                                }
+                                                if (!empty($parent_id)) {
+                                                    if ($row['category_id'] == $parent_id) {
+                                                        echo 'selected="selected"';
+                                                    }
+                                                }
                                                 ?>><?php echo $row['name']; ?></option>
-                                                    <?php
+                                                        <?php
                                                     }
                                                 }
                                                 ?>
                                     </select>
-                                    <label><?php echo form_error('category'); ?></label>
+                                    <label class="error"><?php echo form_error('category'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Status</label>
                                     <div class="radio">
                                         <label>
+                                            <?php
+                                            if (set_value('status') != "") {
+                                                $stat = set_value('status');
+                                            }
+                                            ?>
                                             <input name="status" id="optionsRadios1" value="1" <?php
                                             if ($stat == 1) {
                                                 echo'checked=""';
@@ -83,44 +91,52 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Price</label>
+                                    <label>Price*</label>
                                     <input class="form-control" name="price" id="price" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('price') != "") {
+                                        echo set_value('price');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('price'); ?></label>
+                                    <label class="error"><?php echo form_error('price'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Special Price</label>
+                                    <label>Special Price*</label>
                                     <input class="form-control" name="special_price" id="special_price" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('special_price') != "") {
+                                        echo set_value('special_price');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('special_price'); ?></label>
+                                    <label class="error"><?php echo form_error('special_price'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Special Prize Date From</label>
+                                    <label>Special Prize Date From*</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input class="form-control pull-right" name="special_price_from" id="special_price_from" type="text">
+                                        <input class="form-control pull-right" name="special_price_from" id="special_price_from" type="text" value="<?php
+                                        if (set_value('special_price_from') != "") {
+                                            echo set_value('special_price_from');
+                                        }
+                                        ?>">
                                     </div>
-                                    <label><?php echo form_error('special_price_from'); ?></label>
+                                    <label class="error"><?php echo form_error('special_price_from'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Special Prize Date To</label>
+                                    <label>Special Prize Date To*</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input class="form-control pull-right" name="special_price_to" id="special_price_to" type="text">
+                                        <input class="form-control pull-right" name="special_price_to" id="special_price_to" type="text" value="<?php
+                                        if (set_value('special_price_to') != "") {
+                                            echo set_value('special_price_to');
+                                        }
+                                        ?>">
                                     </div>
-                                    <label><?php echo form_error('special_price_to'); ?></label>
+                                    <label class="error"><?php echo form_error('special_price_to'); ?></label>
                                 </div>
                             </div>
                             <div class="box-header with-border">
@@ -128,78 +144,82 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Quantity</label>
+                                    <label>Quantity*</label>
                                     <input class="form-control" name="quantity" id="quantity" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('quantity') != "") {
+                                        echo set_value('quantity');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('quantity'); ?></label>
+                                    <label class="error"><?php echo form_error('quantity'); ?></label>
                                 </div>
                                 <div class="form-grou col-md-6">
-                                    <label>SKU</label>
+                                    <label>SKU*</label>
                                     <input class="form-control" name="sku" id="sku" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('sku') != "") {
+                                        echo set_value('sku');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('sku'); ?></label>
+                                    <label class="error"><?php echo form_error('sku'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Short Description</label>
+                                    <label>Short Description*</label>
                                     <input class="form-control" name="short_description" id="short_description" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('short_description') != "") {
+                                        echo set_value('short_description');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('short_description'); ?></label>
+                                    <label class="error"><?php echo form_error('short_description'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Long Description</label>
                                     <input class="form-control" name="long_description" id="long_description" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('long_description') != "") {
+                                        echo set_value('long_description');
+                                    }
                                     ?>">
-<!--                                    <label><?php // echo form_error('category_name');                            ?></label>-->
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Meta Tittle</label>
+                                    <label>Meta Tittle*</label>
                                     <input class="form-control" name="meta_title" id="meta_title" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('meta_title') != "") {
+                                        echo set_value('meta_title');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('meta_title'); ?></label>
+                                    <label class="error"><?php echo form_error('meta_title'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Meta Description</label>
                                     <input class="form-control" name="meta_description" id="meta_description" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('meta_description') != "") {
+                                        echo set_value('meta_description');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('meta_description'); ?></label>
+                                    <label class="error"><?php echo form_error('meta_description'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Meta Keywords</label>
                                     <input class="form-control" name="meta_keywords" id="meta_keywords" type="text" value="<?php
-//                                if (isset($name)) {
-//                                    echo $name;
-//                                }
+                                    if (set_value('meta_keywords') != "") {
+                                        echo set_value('meta_keywords');
+                                    }
                                     ?>">
-                                    <label><?php echo form_error('meta_keywords'); ?></label>
+                                    <label class="error"><?php echo form_error('meta_keywords'); ?></label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Featured</label>
                                     <div class="radio">
                                         <label>
+                                            <?php
+                                            if (set_value('feature') != "") {
+                                                $feature = set_value('feature');
+                                            }
+                                            ?>
                                             <input name="feature" id="optionsRadios1" value="1" <?php
                                             if ($feature == 1) {
                                                 echo'checked=""';
@@ -220,6 +240,8 @@
                             </div>
                             <div class="box-header with-border">
                                 <h3 class="box-title">Product Attributes</h3>
+                            </div>
+                            <div id="attribute_container">
                             </div>
                             <div>
                                 <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
@@ -246,7 +268,7 @@
                     ?>
                     <?php if ($row1['status'] != 0) { ?>
                         <option value="<?php echo $row1['product_attribute_id'] ?>" ><?php echo $row1['name']; ?></option>
-                    <?php
+                        <?php
                     }
                 }
                 ?>
@@ -259,7 +281,7 @@
             <label></label>
         </div>
         <div class=col-md-2>
-            <button type="button" class="btn btn-danger remove_attr"><i class="fa fa-remove"></i></button>
+            <button type="button" class="btn btn-danger remove_attr" style="margin-top:24px"><i class="fa fa-remove"></i></button>
         </div>
     </div>
 </div>
@@ -269,7 +291,7 @@
                                     $('#btn_add_more').click(function () {
                                         $('#attribute_container').append($('#get_div').first('.row').html());
                                     });
-                                    $(document).on('click','.remove_attr',function () {
+                                    $(document).on('click', '.remove_attr', function () {
                                         $(this).closest('.row').remove();
                                     });
                                     $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
@@ -280,5 +302,6 @@
                                     });
                                 });
 </script>
-
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 

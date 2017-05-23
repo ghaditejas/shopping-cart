@@ -101,4 +101,5 @@ if(isset($roless)){
         </div>
     </section>
 </div>
-
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>

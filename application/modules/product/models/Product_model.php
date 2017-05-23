@@ -147,11 +147,13 @@ class Product_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_attributes($offset, $limit, $search) {
+    public function get_attributes($offset="", $limit="", $search="") {
         if (!empty($search)) {
             $this->db->like('name', $search);
         }
+        if($offset!="" || $limit!=""){
         $this->db->limit($limit, $offset);
+        }
         $query = $this->db->get('product_attributes');
         return $query->result_array();
     }
