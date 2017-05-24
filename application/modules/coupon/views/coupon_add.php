@@ -28,7 +28,7 @@
                                     echo $code;
                                 }
                                 ?>">
-                                <label><?php echo form_error('coupon_code'); ?></label>
+                                <label class="error"><?php echo form_error('coupon_code'); ?></label>
                             </div>
                             <div class="form-group">
                                 <label>Percentage Off</label>
@@ -37,7 +37,7 @@
                                     echo $percent_off;
                                 }
                                 ?>">
-                                <label><?php echo form_error('percent'); ?></label>
+                                <label class="error"><?php echo form_error('percent'); ?></label>
                             </div>
                             <div class="form-group">
                                 <label>Number of uses</label>
@@ -46,7 +46,7 @@
                                     echo $no_of_uses;
                                 }
                                 ?>">
-                                <label><?php echo form_error('uses'); ?></label>
+                                <label class="error"><?php echo form_error('uses'); ?></label>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>coupon/coupon/view')" class="btn btn-danger">Cancel</button>

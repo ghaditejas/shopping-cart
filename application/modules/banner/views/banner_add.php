@@ -65,6 +65,7 @@
 <script type='text/javascript'>
     $(document).ready(function () {
         $('#banner_img').change(function () {
+            $('#image_preview').attr('src','').hide();
             var file = $('#banner_img').val();
             var extension = file.substr((file.lastIndexOf('.') + 1));
             if(extension=='jpg'||extension=='png'){

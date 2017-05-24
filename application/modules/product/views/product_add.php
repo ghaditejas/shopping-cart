@@ -1,3 +1,32 @@
+<div id="get_div" style="display:none">
+    <div class="row">
+        <div class="form-group col-md-5">
+            <label>Select Attribute</label>
+            <select class="form-control select_attrbute" name="attribute[]">
+                <?php
+                echo "<option value=''>Select attribute </option>";
+                foreach ($attributes as $row1) {
+                    ?>
+                    <?php if ($row1['status'] != 0) { ?>
+                        <option value="<?php echo $row1['product_attribute_id'] ?>" ><?php echo $row1['name']; ?></option>
+                        <?php
+                    }
+                }
+                ?>
+            </select>
+            <label></label>
+        </div>
+        <div class="form-group col-md-5">
+            <label>Value</label>
+            <input class="form-control attribute_val" name="attr_value[]" id="attr_value" type="text" value="">
+            <label></label>
+        </div>
+        <div class=col-md-2>
+            <button type="button" class="btn btn-danger remove_attr" style="margin-top:24px"><i class="fa fa-remove"></i></button>
+        </div>
+    </div>
+</div>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -33,6 +62,7 @@
                                 <div class="form-group col-md-6">
                                     <label>Product Image*</label>
                                     <input class="form-control" name="product_img" id="product_img" type="file">
+                                    <label><img class="product-image" id="image_preview" src="" /></label>
                                     <label class="error"><?php echo $error_img; ?></label>
                                 </div>
                             </div>
@@ -242,66 +272,85 @@
                                 <h3 class="box-title">Product Attributes</h3>
                             </div>
                             <div id="attribute_container">
+                                <?php
+                                if (!empty($selected_attr)) {
+                                    foreach ($selected_attr as $_k => $row2) {
+                                        if ($row2 != "") {
+                                            ?>
+                                            <div class="row">
+                                                <div class="form-group col-md-5">
+                                                    <label>Select Attribute</label>
+                                                    <select class="form-control select_attrbute" name="attribute[]">
+                                                        <?php
+                                                        echo "<option value=''>Select attribute </option>";
+                                                        foreach ($attributes as $row1) {
+                                                            ?>
+                                                            <?php if ($row1['status'] != 0) { ?>
+                                                                <option value="<?php echo $row1['product_attribute_id'] ?>" <?php
+                                                                if ($row1['product_attribute_id'] == $row2) {
+                                                                    echo 'selected="selected"';
+                                                                }
+                                                            }
+                                                            ?>><?php echo $row1['name']; ?></option>
+                                                                <?php } ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <label>Value</label>
+                                                    <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="<?php echo $selected_val[$_k]; ?>">
+                                                    <label class="error"><?php if (isset($attr_errors[$_k])) {
+                                                        echo $attr_errors[$_k];
+                                                    } ?></label>
+                                                </div>
+                                                <div class=col-md-2>
+                                                    <button type="button" id='<?php echo $row2; ?>' class="btn btn-danger remove_attr"><i class="fa fa-remove"></i></button>
+                                                </div>
+                                            </div>
+                                            <?php
+                                            }
+                                            }
+                                            }
+                                            ?>
+
+                                        </div>
+                                        <div>
+                                            <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>category/category/view')" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div>
-                                <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>category/category/view')" class="btn btn-danger">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>  
-        </div>
-    </section>
-</div>
-<div id="get_div" style="display:none">
-    <div class="row">
-        <div class="form-group col-md-5">
-            <label>Select Attribute</label>
-            <select class="form-control select_attrbute" name="attribute[]">
-                <?php
-                echo "<option value=''>Select attribute </option>";
-                foreach ($attributes as $row1) {
-                    ?>
-                    <?php if ($row1['status'] != 0) { ?>
-                        <option value="<?php echo $row1['product_attribute_id'] ?>" ><?php echo $row1['name']; ?></option>
-                        <?php
-                    }
-                }
-                ?>
-            </select>
-            <label></label>
-        </div>
-        <div class="form-group col-md-5">
-            <label>Value</label>
-            <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="">
-            <label></label>
-        </div>
-        <div class=col-md-2>
-            <button type="button" class="btn btn-danger remove_attr" style="margin-top:24px"><i class="fa fa-remove"></i></button>
-        </div>
-    </div>
-</div>
-<script src="<?php echo base_url(); ?>public/plugins/datepicker/bootstrap-datepicker.js"></script>
-<script>
-                                $(document).ready(function () {
-                                    $('#btn_add_more').click(function () {
-                                        $('#attribute_container').append($('#get_div').first('.row').html());
-                                    });
-                                    $(document).on('click', '.remove_attr', function () {
-                                        $(this).closest('.row').remove();
-                                    });
-                                    $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
-                                    $('#special_price_to').datepicker({format: 'yyyy-mm-dd'});
-                                    $('#banner_img').change(function () {
-                                        var tmppath = URL.createObjectURL(event.target.files[0]);
-                                        $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
-                                    });
-                                });
-</script>
-<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
-<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
+                        </div>  
+                    </div>
+                </section>
+            </div>
+
+            <script src="<?php echo base_url(); ?>public/plugins/datepicker/bootstrap-datepicker.js"></script>
+            <script>
+                                            $(document).ready(function () {
+                                                $('#btn_add_more').click(function () {
+                                                    $('#attribute_container').append($('#get_div').first('.row').html());
+
+                                                });
+                                                $(document).on('click', '.remove_attr', function () {
+                                                    $(this).closest('.row').remove();
+                                                });
+                                                $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
+                                                $('#special_price_to').datepicker({format: 'yyyy-mm-dd'});
+                                                $('#product_img').change(function () {
+                                                    $('#image_preview').attr('src', '').hide();
+                                                    var file = $('#product_img').val();
+                                                    var extension = file.substr((file.lastIndexOf('.') + 1));
+                                                    if (extension == 'jpg' || extension == 'png') {
+                                                        var tmppath = URL.createObjectURL(event.target.files[0]);
+                                                        $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
+                                                    }
+                                                });
+                                            });
+            </script>
+            <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+            <script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 

@@ -28,7 +28,7 @@
                                echo $name;
                                    }
                                 ?>">
-                                <label><?php echo form_error('category_name'); ?></label>
+                                <label class="error"><?php echo form_error('category_name'); ?></label>
                             </div>
                             <div class="form-group">
                                <label>Select Parent Category</label>
@@ -47,10 +47,11 @@
         ?>><?php echo $row['name']; ?></option>
     <?php } ?>
                                     </select>
-                                    <label><?php echo form_error('select_role'); ?></label>
+                                    <label class="error"><?php echo form_error('select_role'); ?></label>
                             </div>
                             <div class="form-group">
                                 <div class="radio">
+                                    <?php if(set_value('status')!=""){ $stat = set_value('status'); }?>
                                     <label>
                                         <input name="status" id="optionsRadios1" value="1" <?php
                                         if ($stat == 1) {

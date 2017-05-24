@@ -25,17 +25,12 @@ $.validator.addMethod("money",function(value, element) {
     
 $.validator.addMethod("checkdate",function(value, element) {
     var start_date=new Date($('#special_price_from').val());
-    console.log(start_date);
     var start_time = start_date.getTime();
-    console.log(start_time);
     var end_date = new Date(value);
     var end_time = end_date.getTime();
-    console.log(end_time);
     if((end_time - start_time)>0){
-        console.log("true");
         return true; 
     }else {
-        console.log("false");
         return false;
     }
     },

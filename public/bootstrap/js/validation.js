@@ -4,7 +4,7 @@ $(document).ready(function () {
             email: {
                 required: true,
                 email: true,
-                email_val:true
+                email_val: true
             },
             password: {
                 required: true,
@@ -20,10 +20,10 @@ $(document).ready(function () {
             },
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_user").validate({
         rules: {
             firstname: {
@@ -35,7 +35,7 @@ $(document).ready(function () {
             email: {
                 required: true,
                 email: true,
-                email_val:true
+                email_val: true
             },
             password: {
                 required: true,
@@ -66,15 +66,15 @@ $(document).ready(function () {
                 required: "This field is Required",
                 equalTo: "Password don't match"
             },
-            select_role:{
-              required:"Please Select Your role"  
+            select_role: {
+                required: "Please Select Your role"
             }
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_banner").validate({
         rules: {
             banner_img: {
@@ -88,10 +88,10 @@ $(document).ready(function () {
             },
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_coupon").validate({
         rules: {
             coupon_code: {
@@ -105,7 +105,6 @@ $(document).ready(function () {
                 required: true,
                 number: true
             },
-            
         },
         messages: {
             coupon_code: {
@@ -119,13 +118,13 @@ $(document).ready(function () {
                 required: "This field is Required",
                 number: "This field must contain only numbers."
             }
-            
+
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_category").validate({
         rules: {
             category_name: {
@@ -139,15 +138,15 @@ $(document).ready(function () {
             },
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_attribute").validate({
         rules: {
             product_attribute: {
                 required: true,
-                specialChar:true
+                specialChar: true
             },
         },
         messages: {
@@ -156,10 +155,10 @@ $(document).ready(function () {
             },
         },
         submitHandler: function (form) {
-                form.submit();
-            }
+            form.submit();
+        }
     });
-    
+
     $("#add_product").validate({
         rules: {
             product_name: {
@@ -174,11 +173,11 @@ $(document).ready(function () {
             },
             price: {
                 required: true,
-                money:true
+                money: true
             },
             special_price: {
                 required: true,
-                money:true
+                money: true
             },
             special_price_from: {
                 required: true
@@ -189,11 +188,11 @@ $(document).ready(function () {
             },
             quantity: {
                 required: true,
-                digits:true
+                digits: true
             },
             sku: {
                 required: true,
-                specialChar:true
+                specialChar: true
             },
             short_description: {
                 required: true
@@ -238,9 +237,43 @@ $(document).ready(function () {
                 required: "This field is Required"
             }
         },
-        submitHandler: function (form) {
+        submitHandler: function (form, event) {
+            var valid = true;
+            var err = '<label class="error">This field is Required</label>';
+            $('.select_attrbute').each(function (i, t) {
+                if ($(this).val() != "") {
+                    if ($('.attribute_val').eq(i).val() == "") {
+                        valid = false;
+                        $('.attribute_val').eq(i).closest('div').append(err);
+                    } else {
+                        $('.attribute_val').eq(i).closest('div').find('.error').remove();
+                    }
+                }
+            });
+            if (!valid) {
+                event.preventDefault();
+            } else {
                 form.submit();
             }
+
+        }
+
+    });
+    
+    $("#edit_config").validate({
+        rules: {
+            conf_val: {
+                required: true
+            },
+        },
+        messages: {
+            conf_val: {
+                required: "This field is Required",
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
     });
 });
 

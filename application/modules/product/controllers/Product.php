@@ -8,6 +8,8 @@ class Product extends CI_Controller {
         $this->load->model('category/category_model');
         $this->load->model('permission_model');
         $this->load->library('upload');
+        error_reporting(E_ALL);
+        ini_set("display_errors", "1");
     }
 
     public function view() {
@@ -19,9 +21,9 @@ class Product extends CI_Controller {
         }
         $this->load->view('main_template', $data);
     }
-     
-    public function get_data(){
-         if (isset($_GET['draw'])) {
+
+    public function get_data() {
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
         } else {
             $draw = 1;
@@ -47,7 +49,7 @@ class Product extends CI_Controller {
             $sort = "asc";
         }
         $recordsFiltered = $recordsTotal = $this->product_model->get_record_count($search);
-        $records =$this->product_model->get_products_list($offset, $limit, $search,$sort);
+        $records = $this->product_model->get_products_list($offset, $limit, $search, $sort);
         $data = [];
         foreach ($records as $row) {
             if ($row['status'] == 1) {
@@ -57,8 +59,8 @@ class Product extends CI_Controller {
             }
             $action = '<a href="' . base_url() . 'product/product/edit/' . $row['id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
-            $image='<img class="product-image" src="'.base_url().'upload/product/'.$row['image_name'].'" style="height:120px;width:150px" /></td>';
-            $data[] = array($row['id'], $row['name'],$image, $row['price'], $row['quantity'],$stat, $action,);
+            $image = '<img class="product-image" src="' . base_url() . 'upload/product/' . $row['image_name'] . '" style="height:120px;width:150px" /></td>';
+            $data[] = array($row['id'], $row['name'], $image, $row['price'], $row['quantity'], $stat, $action,);
         }
         $return = array(
             'draw' => $draw,
@@ -67,8 +69,8 @@ class Product extends CI_Controller {
             'data' => $data
         );
         echo json_encode($return);
-    } 
-    
+    }
+
     public function do_upload() {
         $file_name = false;
         $error = false;
@@ -95,25 +97,21 @@ class Product extends CI_Controller {
     }
 
     public function price($number) {
-        if (preg_match('^[0-9]+\.[0-9]{2}$^', $number)) {
+        if (preg_match('/^\d{0,9}(\.\d{0,2})?$/', $number)) {
             return true;
         } else {
             $this->form_validation->set_message('price', 'Invalid Price');
             return false;
         }
     }
-    
+
     public function checkdate($string) {
         if ($this->input->post('special_price_from')) {
-            pr($this->input->post('special_price_from'));
             $strt_time = strtotime($this->input->post('special_price_from'));
-            pr($strt_time);
             $end_time = strtotime($this->input->post('special_price_to'));
-            pr( $end_time);
-            if(($end_time-$strt_time)>=0){
+            if (($end_time - $strt_time) >= 0) {
                 return true;
-            }else{
-                pr('TEjas');
+            } else {
                 $this->form_validation->set_message('checkdate', 'Invalid Date');
                 return false;
             }
@@ -121,6 +119,20 @@ class Product extends CI_Controller {
             $this->form_validation->set_message('checkdate', 'First Select Start Date');
             return false;
         }
+    }
+
+    public function validate_attribute() {
+        $err = [];
+        $attribute = $this->input->post('attribute[]');
+        $value = $this->input->post('attr_value[]');
+        if (!empty($attribute)) {
+            foreach ($attribute as $_k => $_val) {
+                if ($value[$_k] == "" && $_val != "") {
+                    $err[$_k] = "Please enter a value";
+                }
+            }
+        }
+        return $err;
     }
 
     public function add() {
@@ -140,18 +152,19 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
             $this->form_validation->set_rules('meta_title', 'Meta Title', 'required');
-//            $this->form_validation->set_rules('attribute[]', 'Attribute', 'required');
-//            $this->form_validation->set_rules('attr_value[]', 'Attribute Value', 'required');
             // optional        
 //            $this->form_validation->set_rules('meta_description', 'Meta Description', 'required');
 //            $this->form_validation->set_rules('meta_keywords', 'Meta Keywords', 'required');
-//            
-            if ($this->form_validation->run() == False) {
+            $attr_errors = $this->validate_attribute();
+            if ($this->form_validation->run() == False || !empty($attr_errors)) {
+                $data['selected_attr'] = $this->input->post('attribute[]');
+                $data['selected_val'] = $this->input->post('attr_value[]');
+                $data['attr_errors'] = $attr_errors;
                 $data['categories'] = $this->category_model->get_categories();
                 $data['attributes'] = $this->product_model->get_attributes();
                 if (empty($_FILES['product_img']['name'])) {
                     $data['error_img'] = "Product Image File required";
-                } 
+                }
                 $data['page'] = "product/product_add";
                 $this->load->view('main_template', $data);
             } else {
@@ -177,8 +190,8 @@ class Product extends CI_Controller {
                             'long_description' => $this->input->post('long_description'),
                             'price' => $this->input->post('price'),
                             'special_price' => $this->input->post('special_price'),
-                            'special_price_from' =>$this->input->post('special_price_from'),
-                            'special_price_to' =>$this->input->post('special_price_to'),
+                            'special_price_from' => $this->input->post('special_price_from'),
+                            'special_price_to' => $this->input->post('special_price_to'),
                             'status' => $this->input->post('status'),
                             'quantity' => $this->input->post('quantity'),
                             'meta_title' => $this->input->post('meta_title'),
@@ -211,14 +224,16 @@ class Product extends CI_Controller {
                         $attribute_values = $this->input->post('attr_value');
 
                         foreach ($attributes as $_k => $_v) {
-                            $insert_attr = array(
-                                'product_attribute_id' => $_v,
-                                'attribute_value' => $attribute_values[$_k],
-                                'created_on' => date('Y-m-d'),
-                                'created_by' => $this->session->userdata('user_id')
-                            );
+                            if ($_v!="") {
+                                $insert_attr = array(
+                                    'product_attribute_id' => $_v,
+                                    'attribute_value' => $attribute_values[$_k],
+                                    'created_on' => date('Y-m-d'),
+                                    'created_by' => $this->session->userdata('user_id')
+                                );
 
-                            $result = $this->product_model->insert_attribute_data($insert_attr, $product_id);
+                                $result = $this->product_model->insert_attribute_data($insert_attr, $product_id);
+                            }
                         }
 
 
@@ -290,9 +305,11 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('meta_title', 'Meta Title', 'required');
 //            $this->form_validation->set_rules('meta_description', 'Meta Description', 'required');
 //            $this->form_validation->set_rules('meta_keywords', 'Meta Keywords', 'required');
-            $this->form_validation->set_rules('attribute[]', 'Attribute', 'required');
-            $this->form_validation->set_rules('attr_value[]', 'Attribute Value', 'required');
-            if ($this->form_validation->run() == False) {
+            $attr_errors = $this->validate_attribute();
+            if ($this->form_validation->run() == False || !empty($attr_errors)) {
+                $data['selected_attr'] = $this->input->post('attribute[]');
+                $data['selected_val'] = $this->input->post('attr_value[]');
+                $data['attr_errors'] = $attr_errors;
                 $data['result'] = $this->product_model->get_products($id);
                 $data['edit_id'] = $id;
                 $data['error_img'] = '';
@@ -351,25 +368,27 @@ class Product extends CI_Controller {
                         $result2 = $this->product_model->update_product_category($id, $upload_product_categories);
                         $result3 = $this->product_model->update_product_image($id, $upload_product_images);
                         $del_attr_val_id = $this->product_model->get_product_attr_assoc($id);
-                        foreach($del_attr_val_id as $row){
+                        foreach ($del_attr_val_id as $row) {
                             $attr_val_id[] = $row['product_attribute_value_id'];
                         }
 //                        $attr_val_id_del=implode(',',$attr_val_id);
                         if ($del_attr_val_id) {
                             $del_attr_assoc = $this->product_model->del_product_attr_assoc($id);
-                            $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);    
+                            $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);
                         }
                         $attributes = $this->input->post('attribute');
                         $attribute_values = $this->input->post('attr_value');
                         foreach ($attributes as $_k => $_v) {
-                            $insert_attr = array(
-                                'product_attribute_id' => $_v,
-                                'attribute_value' => $attribute_values[$_k],
-                                'created_on' => date('Y-m-d'),
-                                'created_by' => $this->session->userdata('user_id')
-                            );
+                            if ($_v != "") {
+                                $insert_attr = array(
+                                    'product_attribute_id' => $_v,
+                                    'attribute_value' => $attribute_values[$_k],
+                                    'created_on' => date('Y-m-d'),
+                                    'created_by' => $this->session->userdata('user_id')
+                                );
 
-                            $result = $this->product_model->insert_attribute_data($insert_attr, $id);
+                                $result = $this->product_model->insert_attribute_data($insert_attr, $id);
+                            }
                         }
                         if ($result) {
                             $this->session->set_flashdata('success', 'Product modified Successfully');
@@ -384,6 +403,8 @@ class Product extends CI_Controller {
         } else {
             $data['result'] = $this->product_model->get_products($id);
             $data['attribute'] = $this->product_model->get_attributes_assoc($id);
+//            pr($data['attribute']);
+//            exit;
             $data['edit_id'] = $id;
             $data['error_img'] = '';
             $data['page'] = "product/product_edit";
@@ -402,7 +423,7 @@ class Product extends CI_Controller {
     }
 
     public function get_attribute_data() {
-         if (isset($_GET['draw'])) {
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
         } else {
             $draw = 1;
@@ -444,7 +465,7 @@ class Product extends CI_Controller {
         );
         echo json_encode($return);
     }
-    
+
     public function attribute_add($id = '') {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
