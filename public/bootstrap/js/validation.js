@@ -99,11 +99,11 @@ $(document).ready(function () {
             },
             percent: {
                 required: true,
-                number: true
+                digits: true
             },
             uses: {
                 required: true,
-                number: true
+                digits: true
             },
         },
         messages: {
@@ -112,12 +112,12 @@ $(document).ready(function () {
             },
             percent: {
                 required: "This field is Required",
-                number: "This field must contain only numbers."
+                digits: "This field must contain only digits."
             },
             uses: {
                 required: "This field is Required",
-                number: "This field must contain only numbers."
-            }
+                digits: "This field must contain only digits."
+            },
 
         },
         submitHandler: function (form) {
@@ -176,14 +176,9 @@ $(document).ready(function () {
                 money: true
             },
             special_price: {
-                required: true,
                 money: true
             },
-            special_price_from: {
-                required: true
-            },
             special_price_to: {
-                required: true,
                 checkdate: true
             },
             quantity: {
@@ -209,15 +204,6 @@ $(document).ready(function () {
                 required: "This field is Required"
             },
             category: {
-                required: "This field is Required"
-            },
-            price: {
-                required: "This field is Required"
-            },
-            special_price: {
-                required: "This field is Required"
-            },
-            special_price_from: {
                 required: "This field is Required"
             },
             special_price_to: {
@@ -250,6 +236,7 @@ $(document).ready(function () {
                     }
                 }
             });
+            console.log(valid);
             if (!valid) {
                 event.preventDefault();
             } else {

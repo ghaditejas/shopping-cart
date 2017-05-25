@@ -145,9 +145,14 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('product_name', 'Product Name', 'required');
             $this->form_validation->set_rules('category', 'Category', 'required');
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
-            $this->form_validation->set_rules('special_price', 'Special Price', 'required|callback_price');
-            $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
-            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
+            $this->form_validation->set_rules('special_price', 'Special Price', 'callback_price');
+
+            $sp_price = $this->input->post('special_price');
+            if ($sp_price) {
+                $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
+                $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
+            }
+
             $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural');
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
@@ -156,6 +161,7 @@ class Product extends CI_Controller {
 //            $this->form_validation->set_rules('meta_description', 'Meta Description', 'required');
 //            $this->form_validation->set_rules('meta_keywords', 'Meta Keywords', 'required');
             $attr_errors = $this->validate_attribute();
+
             if ($this->form_validation->run() == False || !empty($attr_errors)) {
                 $data['selected_attr'] = $this->input->post('attribute[]');
                 $data['selected_val'] = $this->input->post('attr_value[]');
@@ -168,6 +174,7 @@ class Product extends CI_Controller {
                 $data['page'] = "product/product_add";
                 $this->load->view('main_template', $data);
             } else {
+
                 if (empty($id) && empty($_FILES['product_img']['name'])) {
                     $data['error_img'] = "Product Image File required";
                     $data['page'] = "product/product_add";
@@ -181,7 +188,6 @@ class Product extends CI_Controller {
                             $file_name = $file_data['file_name'];
                         }
                     }
-
                     if ($err == "") {
                         $upload_product = array(
                             'name' => $this->input->post('product_name'),
@@ -189,98 +195,77 @@ class Product extends CI_Controller {
                             'short_description' => $this->input->post('short_description'),
                             'long_description' => $this->input->post('long_description'),
                             'price' => $this->input->post('price'),
-                            'special_price' => $this->input->post('special_price'),
-                            'special_price_from' => $this->input->post('special_price_from'),
-                            'special_price_to' => $this->input->post('special_price_to'),
                             'status' => $this->input->post('status'),
                             'quantity' => $this->input->post('quantity'),
                             'meta_title' => $this->input->post('meta_title'),
                             'meta_description' => $this->input->post('meta_description'),
                             'meta_keywords' => $this->input->post('meta_keywords'),
-                            'is_featured' => $this->input->post('feature')
+                            'is_featured' => $this->input->post('feature'),
+                            'created_on' => date('Y-m-d'),
+                            'created_by' => $this->session->userdata('user_id')
                         );
-                        $upload_product_categories = array(
-                            'category_id' => $this->input->post('category'),
-                        );
-                        $upload_product_images = array(
-                            'image_name' => $file_name,
-                            'status' => $this->input->post('status')
-                        );
-
-
-
-//                        if (empty($id)) {
-                        $upload_product['created_on'] = date('Y-m-d');
-                        $upload_product['created_by'] = $this->session->userdata('user_id');
-                        $upload_product_images['created_on'] = date('Y-m-d');
-                        $upload_product_images['created_by'] = $this->session->userdata('user_id');
-                        $product_id = $this->product_model->insert_product($upload_product);
-                        $upload_product_categories['product_id'] = $product_id;
-                        $result1 = $this->product_model->insert_product_category($upload_product_categories);
-                        $upload_product_images['product_id'] = $product_id;
-                        $result1 = $this->product_model->insert_product_images($upload_product_images);
-
-                        $attributes = $this->input->post('attribute');
-                        $attribute_values = $this->input->post('attr_value');
-
-                        foreach ($attributes as $_k => $_v) {
-                            if ($_v!="") {
-                                $insert_attr = array(
-                                    'product_attribute_id' => $_v,
-                                    'attribute_value' => $attribute_values[$_k],
-                                    'created_on' => date('Y-m-d'),
-                                    'created_by' => $this->session->userdata('user_id')
-                                );
-
-                                $result = $this->product_model->insert_attribute_data($insert_attr, $product_id);
-                            }
+                        if ($sp_price) {
+                            $upload_product['special_price'] = $this->input->post('special_price');
+                            $upload_product['special_price_from'] = $this->input->post('special_price_from');
+                            $upload_product['special_price_to'] = $this->input->post('special_price_to');
                         }
+                        $product_id = $this->product_model->insert_product($upload_product);
 
+                        if (!empty($product_id)) {
+                            $upload_product_images = array(
+                                'image_name' => $file_name,
+                                'status' => $this->input->post('status'),
+                                'created_on' => date('Y-m-d'),
+                                'created_by' => $this->session->userdata('user_id'),
+                                'product_id' => $product_id
+                            );
+                            $this->product_model->insert_product_images($upload_product_images);
+                            $upload_product_categories = array(
+                                'category_id' => $this->input->post('category'),
+                                'product_id' => $product_id
+                            );
+                            $this->product_model->insert_product_category($upload_product_categories);
 
-                        if ($result) {
+                            $attributes = $this->input->post('attribute');
+                            $attribute_values = $this->input->post('attr_value');
+
+                            foreach ($attributes as $_k => $_v) {
+                                if ($_v != "") {
+                                    $insert_attr = array(
+                                        'product_attribute_id' => $_v,
+                                        'attribute_value' => $attribute_values[$_k],
+                                        'created_on' => date('Y-m-d'),
+                                        'created_by' => $this->session->userdata('user_id')
+                                    );
+                                    $result = $this->product_model->insert_attribute_data($insert_attr, $product_id);
+                                }
+                            }
+
                             $this->session->set_flashdata('success', 'Product added Successfully');
                             redirect('product/product/view');
                         } else {
                             $this->session->set_flashdata('error', 'Error occurred while adding user');
-                            redirect('product/product/add');
+                            $data['selected_attr'] = $this->input->post('attribute[]');
+                            $data['selected_val'] = $this->input->post('attr_value[]');
+                            $data['attr_errors'] = $attr_errors;
+                            $data['categories'] = $this->category_model->get_categories();
+                            $data['attributes'] = $this->product_model->get_attributes();
+                            if (empty($_FILES['product_img']['name'])) {
+                                $data['error_img'] = "Product Image File required";
+                            }
+                            $data['page'] = "product/product_add";
+                            $this->load->view('main_template', $data);
                         }
-//                        } else {
-//                            $upload_product['modifed_by']=$this->session->userdata('user_id');
-//                            $upload_product_images['modified_by']=$this->session->userdata('user_id');
-//                            $result = $this->product_model->update_product($id, $upload_data);
-//                            if ($result) {
-//                                $this->session->set_flashdata('success', 'Configuration modified Successfully');
-//                                redirect('product/product/view');
-//                            } else {
-//                                $this->session->set_flashdata('error', 'Error occurred while modifying user');
-//                                redirect('product/product/add/' . $id);
-//                            }
-//                        }
                     } else {
-//                        if (!empty($id)) {
-//                            $data['stat'] = $this->input->post('status');
                         $data['error_img'] = $err;
-//                            $data['edit_id'] = $id;
-//                        }
                         $data['page'] = "product/product_add";
                         $this->load->view('main_template', $data);
                     }
                 }
             }
         } else {
-//            if (!empty($id)) {
-//                $data = $this->product_model->get_product($id);
-//                $data['categories'] = $this->category_model->get_categories();
-//                $data['attributes'] = $this->product_model->get_attributes();
-//                $data['error_img'] = "";
-//                $data['stat'] = $data['status'];
-//                $data['edit_id'] = $id;
-//            }
             $data['categories'] = $this->category_model->get_categories();
             $data['attributes'] = $this->product_model->get_attributes();
-//            pr($data['categories']);
-//            pr($data['attributes']);
-//            exit;
             $data['page'] = "product/product_add";
             $this->load->view('main_template', $data);
         }
@@ -296,9 +281,14 @@ class Product extends CI_Controller {
             $this->form_validation->set_rules('product_name', 'Product Name', 'required');
             $this->form_validation->set_rules('category', 'Category', 'required');
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
-            $this->form_validation->set_rules('special_price', 'Special Price', 'required|callback_price');
-            $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
-            $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
+            $this->form_validation->set_rules('special_price', 'Special Price', 'callback_price');
+
+            $sp_price = $this->input->post('special_price');
+            if ($sp_price) {
+                $this->form_validation->set_rules('special_price_from', 'Special Price Start Date', 'required');
+                $this->form_validation->set_rules('special_price_to', 'Special Price End Date', 'required|callback_checkdate');
+            }
+
             $this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural');
             $this->form_validation->set_rules('sku', 'SKU', 'required|alpha_numeric');
             $this->form_validation->set_rules('short_description', 'Short Description', 'required');
@@ -337,45 +327,44 @@ class Product extends CI_Controller {
                             'short_description' => $this->input->post('short_description'),
                             'long_description' => $this->input->post('long_description'),
                             'price' => $this->input->post('price'),
-                            'special_price' => $this->input->post('special_price'),
-                            'special_price_from' => $this->input->post('special_price_from'),
-                            'special_price_to' => $this->input->post('special_price_to'),
                             'status' => $this->input->post('status'),
                             'quantity' => $this->input->post('quantity'),
                             'meta_title' => $this->input->post('meta_title'),
                             'meta_description' => $this->input->post('meta_description'),
                             'meta_keywords' => $this->input->post('meta_keywords'),
-                            'is_featured' => $this->input->post('feature')
+                            'is_featured' => $this->input->post('feature'),
+                            'modifed_by' => $this->session->userdata('user_id')
                         );
+                        if ($sp_price) {
+                            $upload_product['special_price'] = $this->input->post('special_price');
+                            $upload_product['special_price_from'] = $this->input->post('special_price_from');
+                            $upload_product['special_price_to'] = $this->input->post('special_price_to');
+                        }
+                        $result1 = $this->product_model->update_product($id, $upload_product);
+                        if($result1){
                         $upload_product_categories = array(
                             'category_id' => $this->input->post('category'),
                         );
-                        $upload_product_images = array(
-                            'status' => $this->input->post('status')
-                        );
-//                        $upload_attr_value = array(
-//                            'product_attribute_id' => $this->input->post('attribute[]'),
-//                            'attribute_value' => $this->input->post('attr_value'),
-//                            'created_on' => date('Y-m-d'),
-//                            'created_by' => $this->session->userdata('user_id')
-//                        );
-                        if ($file_name) {
-                            $upload_product_images['banner_path'] = $file_name;
-                        }
-                        $upload_product['modifed_by'] = $this->session->userdata('user_id');
-                        $upload_product_images['modified_by'] = $this->session->userdata('user_id');
-                        $result1 = $this->product_model->update_product($id, $upload_product);
                         $result2 = $this->product_model->update_product_category($id, $upload_product_categories);
+
+                        $upload_product_images = array(
+                            'status' => $this->input->post('status'),
+                            'modified_by' => $this->session->userdata('user_id')
+                        );
+                        if ($file_name) {
+                            $upload_product_images['image_name'] = $file_name;
+                        }
                         $result3 = $this->product_model->update_product_image($id, $upload_product_images);
+
                         $del_attr_val_id = $this->product_model->get_product_attr_assoc($id);
                         foreach ($del_attr_val_id as $row) {
                             $attr_val_id[] = $row['product_attribute_value_id'];
                         }
-//                        $attr_val_id_del=implode(',',$attr_val_id);
                         if ($del_attr_val_id) {
                             $del_attr_assoc = $this->product_model->del_product_attr_assoc($id);
                             $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);
                         }
+
                         $attributes = $this->input->post('attribute');
                         $attribute_values = $this->input->post('attr_value');
                         foreach ($attributes as $_k => $_v) {
@@ -387,15 +376,21 @@ class Product extends CI_Controller {
                                     'created_by' => $this->session->userdata('user_id')
                                 );
 
-                                $result = $this->product_model->insert_attribute_data($insert_attr, $id);
+                                $this->product_model->insert_attribute_data($insert_attr, $id);
                             }
                         }
-                        if ($result) {
                             $this->session->set_flashdata('success', 'Product modified Successfully');
                             redirect('product/product/view');
                         } else {
                             $this->session->set_flashdata('error', 'Error occurred while modifying product');
-                            redirect('product/product/edit/' . $id);
+                            $data['selected_attr'] = $this->input->post('attribute[]');
+                            $data['selected_val'] = $this->input->post('attr_value[]');
+                            $data['attr_errors'] = $attr_errors;
+                            $data['result'] = $this->product_model->get_products($id);
+                            $data['edit_id'] = $id;
+                            $data['error_img'] = '';
+                            $data['page'] = "product/product_edit";
+                            $this->load->view('main_template', $data);
                         }
                     }
                 }
@@ -403,8 +398,6 @@ class Product extends CI_Controller {
         } else {
             $data['result'] = $this->product_model->get_products($id);
             $data['attribute'] = $this->product_model->get_attributes_assoc($id);
-//            pr($data['attribute']);
-//            exit;
             $data['edit_id'] = $id;
             $data['error_img'] = '';
             $data['page'] = "product/product_edit";

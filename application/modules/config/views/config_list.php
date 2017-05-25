@@ -11,7 +11,7 @@
     <?php } ?>
     <section class="content-header">
         <h1>
-            Admin Users
+            Configuration
         </h1>
     </section>
     <section class="content">

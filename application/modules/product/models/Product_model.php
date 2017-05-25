@@ -88,11 +88,7 @@ class Product_model extends CI_Model {
 //        $this->db->query($query);
         $this->db->where('id', $id);
         $query = $this->db->update('product', $data);
-        if ($this->db->affected_rows()) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public function update_product_image($id, $data) {

@@ -61,7 +61,7 @@ class Coupon extends CI_Controller {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('coupon_code', 'Coupon Code', 'required|alpha_numeric|is_unique[coupon.code]');
             $this->form_validation->set_rules('percent', 'Percent', 'required|numeric|is_natural');
-            $this->form_validation->set_rules('uses', 'Number of uses', 'required|numeric');
+            $this->form_validation->set_rules('uses', 'Number of uses', 'required|numeric|is_natural');
             if ($this->form_validation->run() == False) {
                 $data['page'] = "coupon/coupon_add";
                 $this->load->view('main_template', $data);

@@ -10,6 +10,9 @@ class Category_model extends CI_Model{
         $this->db->select('IFNULL(C1.name ,  "-" ) AS  parent_name,C2.category_id,C2.name ,C2.status ');
         $this->db->from('category AS C1');
         $this->db->join('category AS C2','C1.category_id = C2.parent_id','right');
+        if(empty($offset) && empty($limit) && empty($search)){
+        $this->db->where('C2.status',1);
+        }
         if(!empty($search)){
             $this->db->like('C2.name',$search);
         }

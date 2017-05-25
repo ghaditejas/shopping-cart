@@ -14,9 +14,11 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_banner" class="add_user" action="<?php echo base_url(); ?>banner/banner/add<?php if (isset($edit_id)) {
-    echo "/" . $edit_id;
-} ?>" method="post" enctype="multipart/form-data">
+                    <form id="add_banner" class="add_user" action="<?php echo base_url(); ?>banner/banner/add<?php
+                    if (isset($edit_id)) {
+                        echo "/" . $edit_id;
+                    }
+                    ?>" method="post" enctype="multipart/form-data">
                         <!-- text input -->
                         <div class="box-body">
 
@@ -35,18 +37,18 @@
                                 <div class="radio">
                                     <label>
                                         <input name="status" id="optionsRadios1" value="1" <?php
-                                    if ($stat == 1) {
-                                        echo'checked=""';
-                                    }
-                                    ?> type="radio">
+                                        if ($stat == 1) {
+                                            echo'checked=""';
+                                        }
+                                        ?> type="radio">
                                         Active
                                     </label>
                                     <label>
                                         <input name="status" id="optionsRadios2" value="0" type="radio" <?php
-                                    if ($stat == 0) {
-                                        echo'checked=""';
-                                    }
-                                    ?> >
+                                        if ($stat == 0) {
+                                            echo'checked=""';
+                                        }
+                                        ?> >
                                         Inactive
                                     </label>
                                 </div>
@@ -65,17 +67,22 @@
 <script type='text/javascript'>
     $(document).ready(function () {
         $('#banner_img').change(function () {
-            $('#image_preview').attr('src','').hide();
+            $('#image_preview').attr('src', '').hide();
             var file = $('#banner_img').val();
             var extension = file.substr((file.lastIndexOf('.') + 1));
-            if(extension=='jpg'||extension=='png'){
-            var tmppath = URL.createObjectURL(event.target.files[0]);
-            $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
-        }
+            if (extension == 'jpg' || extension == 'png') {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
+            }
         });
     });
 </script>
 <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
 <script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
-
+<script>
+    if(<?php echo isset($edit_id);?>){
+    setTimeout(function () {
+        $("#banner_img").rules("remove", "required");
+    }, 400);}
+</script>
 

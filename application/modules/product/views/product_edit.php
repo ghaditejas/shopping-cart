@@ -390,4 +390,22 @@
                             setTimeout(function () {
                                 $("#product_img").rules("remove", "required");
                             }, 400);
+                                $("#special_price").change(function () {
+                                    if ($('#special_price').val()) {
+                                        $("#special_price_from").rules('add', {required: true,
+                                            messages: {
+                                                required: "This field is requiired"
+                                            }
+                                        });
+                                        $("#special_price_to").rules('add', {
+                                            required: true,
+                                            messages: {
+                                                required: "This field is requiired"
+                                            }
+                                        });
+                                    }else{
+                                        $("#special_price_from").rules('remove', 'required');
+                                         $("#special_price_to").rules('remove', 'required');
+                                    }
+                                });
 </script>

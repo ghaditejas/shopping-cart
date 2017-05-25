@@ -298,59 +298,82 @@
                                                 <div class="form-group col-md-5">
                                                     <label>Value</label>
                                                     <input class="form-control" name="attr_value[]" id="attr_value" type="text" value="<?php echo $selected_val[$_k]; ?>">
-                                                    <label class="error"><?php if (isset($attr_errors[$_k])) {
-                                                        echo $attr_errors[$_k];
-                                                    } ?></label>
+                                                    <label class="error"><?php
+                                                        if (isset($attr_errors[$_k])) {
+                                                            echo $attr_errors[$_k];
+                                                        }
+                                                        ?></label>
                                                 </div>
                                                 <div class=col-md-2>
                                                     <button type="button" id='<?php echo $row2; ?>' class="btn btn-danger remove_attr"><i class="fa fa-remove"></i></button>
                                                 </div>
                                             </div>
                                             <?php
-                                            }
-                                            }
-                                            }
-                                            ?>
+                                        }
+                                    }
+                                }
+                                ?>
 
-                                        </div>
-                                        <div>
-                                            <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                        <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>category/category/view')" class="btn btn-danger">Cancel</button>
-                                    </div>
-                                </form>
                             </div>
-                        </div>  
-                    </div>
-                </section>
-            </div>
+                            <div>
+                                <button type="button" id="btn_add_more" class="btn btn-primary"><i class="fa fa-plus-square"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>category/category/view')" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </section>
+</div>
 
-            <script src="<?php echo base_url(); ?>public/plugins/datepicker/bootstrap-datepicker.js"></script>
-            <script>
-                                            $(document).ready(function () {
-                                                $('#btn_add_more').click(function () {
-                                                    $('#attribute_container').append($('#get_div').first('.row').html());
+<script src="<?php echo base_url(); ?>public/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script>
+                                $(document).ready(function () {
+                                    $('#btn_add_more').click(function () {
+                                        $('#attribute_container').append($('#get_div').first('.row').html());
 
-                                                });
-                                                $(document).on('click', '.remove_attr', function () {
-                                                    $(this).closest('.row').remove();
-                                                });
-                                                $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
-                                                $('#special_price_to').datepicker({format: 'yyyy-mm-dd'});
-                                                $('#product_img').change(function () {
-                                                    $('#image_preview').attr('src', '').hide();
-                                                    var file = $('#product_img').val();
-                                                    var extension = file.substr((file.lastIndexOf('.') + 1));
-                                                    if (extension == 'jpg' || extension == 'png') {
-                                                        var tmppath = URL.createObjectURL(event.target.files[0]);
-                                                        $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
-                                                    }
-                                                });
-                                            });
-            </script>
-            <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
-            <script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
-
+                                    });
+                                    $(document).on('click', '.remove_attr', function () {
+                                        $(this).closest('.row').remove();
+                                    });
+                                    $('#special_price_from').datepicker({format: 'yyyy-mm-dd'});
+                                    $('#special_price_to').datepicker({format: 'yyyy-mm-dd'});
+                                    $('#product_img').change(function () {
+                                        $('#image_preview').attr('src', '').hide();
+                                        var file = $('#product_img').val();
+                                        var extension = file.substr((file.lastIndexOf('.') + 1));
+                                        if (extension == 'jpg' || extension == 'png') {
+                                            var tmppath = URL.createObjectURL(event.target.files[0]);
+                                            $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
+                                        }
+                                    });
+                                });
+</script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
+<script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
+<script>
+                                $("#special_price").change(function () {
+                                    console.log("in change");
+                                    console.log($('#special_price').val());
+                                    if ($('#special_price').val()) {
+                                        $("#special_price_from").rules('add', {required: true,
+                                            messages: {
+                                                required: "This field is requiired"
+                                            }
+                                        });
+                                        $("#special_price_to").rules('add', {
+                                            required: true,
+                                            messages: {
+                                                required: "This field is requiired"
+                                            }
+                                        });
+                                    }else{
+                                        $("#special_price_from").rules('remove', 'required');
+                                         $("#special_price_to").rules('remove', 'required');
+                                    }
+                                });
+</script>
