@@ -12,7 +12,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-1">
-                <div class="login-form" id="login_form"><!--login form-->
+                <div class="login-form" id="login_form" <?php
+                if (isset($forget)) {
+                    echo "style='display:none'";
+                }
+                ?>><!--login form-->
+
                     <h2>Login to your account</h2>
                     <form action="<?php echo base_url(); ?>home/login/login" method="post">
                         <label class="error"><?php echo $error; ?></label>
@@ -29,12 +34,29 @@
                         <button type="submit" value="login" class="btn btn-default" name="login">Login</button>
                     </form>
                 </div><!--/login form-->
-                <div class="login-form" id="forgot_pass_form" style="display:none">
-                    <form action="<?php echo base_url(); ?>home/login/login" method="post">
+                <div class="login-form" id="forgot_pass_form" <?php
+                if (isset($forget)) {
+                    echo "style='display:block'";
+                } else {
+                    echo "style='display:none'";
+                }
+                ?>>
+                    <form action="<?php echo base_url(); ?>home/forget_password/check" method="post">
                         <label>Enter Your Email Address</label>
-                        <input placeholder="Email Address" name="email" type="text">
-                        <label class="error"><?php // echo $email_error; ?></label>
-                        <a href="javascript:void(0)"><label id="log_in">Log In</label></a>
+                        <input placeholder="Email Address" name="email_address" type="text" value="<?php
+                        if (set_value('email_address')) {
+                            echo set_value('email_address');
+                        }
+                        ?>">
+                        <label class="error"><?php
+                            if (!empty($forget_error)) {
+                                echo $forget_error;
+                            } else {
+                                echo form_error('email_address');
+                            }
+                            ?></label>
+
+                        <div><a href="javascript:void(0)"><label id="log_in">Log In</label></a></div>
                         <button type="submit" value="reset" class="btn btn-default" name="reset">RESET</button>
                     </form>
                 </div>

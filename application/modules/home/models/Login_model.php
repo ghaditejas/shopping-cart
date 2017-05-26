@@ -1,6 +1,6 @@
 <?php
 
-class Home_login_model extends CI_Model {
+class Login_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -36,6 +36,26 @@ class Home_login_model extends CI_Model {
             return false;
         }
     }
+    
+    public function verify($search){
+        $this->db->select('user_id');
+        $this->db->where('email',$search);
+        $query=$this->db->get('user');
+        if($query->num_rows()>0){
+            return $query->row_array();
+        }else{
+            return false;
+        }
+    }
+    
+    public function add_forget($data){
+    $this->db->insert('forgot_password',$data);
+    if($this->db->insert_id()){
+        return true;
+    }else{
+        return false;
+    }
+    }
+    
 }
-
 ?>

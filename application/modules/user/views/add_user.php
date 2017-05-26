@@ -19,7 +19,7 @@ if (isset($roless)) {
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill Your Details</h3>
                     </div>
-                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>/user/user/user_add<?php if (isset($edit_id)) {
+                    <form id="add_user" class="add_user" action="<?php echo base_url(); ?>user/user/user_add<?php if (isset($edit_id)) {
     echo "/" . $edit_id;
 } ?>" method="post">
                         <!-- text input -->

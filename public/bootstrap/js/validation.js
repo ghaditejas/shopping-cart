@@ -129,7 +129,7 @@ $(document).ready(function () {
         rules: {
             category_name: {
                 required: true,
-                lettersonly: true
+                specialChar: true
             },
         },
         messages: {

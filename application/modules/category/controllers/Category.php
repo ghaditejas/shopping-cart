@@ -65,7 +65,7 @@ class Category extends CI_Controller {
     public function add($id = '') {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            $this->form_validation->set_rules('category_name', 'Category Name', 'required|alpha');
+            $this->form_validation->set_rules('category_name', 'Category Name', 'required|alpha_numeric_spaces');
 //            $this->form_validation->set_rules('conf_val', 'Configuration value', 'required');
             if ($this->form_validation->run() == False) {
                 $data['parent_category'] = $this->category_model->parent_category();
@@ -111,7 +111,7 @@ class Category extends CI_Controller {
                 $data['stat'] = $data['status'];
                 $data['edit_id'] = $id;
             }
-            $data['parent_category'] = $this->category_model->parent_category();
+            $data['parent_category'] = $this->category_model->parent_category($id);
             $data['page'] = "category/category_add";
             $this->load->view('main_template', $data);
         }

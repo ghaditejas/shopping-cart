@@ -75,7 +75,7 @@ class Banner extends CI_Controller {
                             </a>
                         </li>
                         <li>
-                            <button class="btn btn-danger" id="delete" onclick="javascript:del()">
+                            <button class="btn btn-danger" id="delete"  onclick="javascript:delete_banner('.$row['banner_id'].')">
                             <span class=""><i class="fa fa-remove"></i></span></button>
                         </li>
                         </ul> ';
@@ -122,10 +122,10 @@ class Banner extends CI_Controller {
 
                         $result = $this->banner_model->insert_banner($upload_data);
                         if ($result) {
-                            $this->session->set_flashdata('success', 'Configuration added Successfully');
+                            $this->session->set_flashdata('success', 'Banner added Successfully');
                             redirect('banner/banner/banner_view');
                         } else {
-                            $this->session->set_flashdata('error', 'Error occurred while adding user');
+                            $this->session->set_flashdata('error', 'Error occurred while adding Banner');
                             redirect('banner/banner/add');
                         }
                     } else {
@@ -138,10 +138,10 @@ class Banner extends CI_Controller {
                         }
                         $result = $this->banner_model->update_banner($id, $upload_data);
                         if ($result) {
-                            $this->session->set_flashdata('success', 'Configuration modified Successfully');
+                            $this->session->set_flashdata('success', 'Banner modified Successfully');
                             redirect('banner/banner/banner_view');
                         } else {
-                            $this->session->set_flashdata('error', 'Error occurred while modifying user');
+                            $this->session->set_flashdata('error', 'Error occurred while modifying Banner');
                             redirect('banner/banner/add/' . $id);
                         }
                     }
