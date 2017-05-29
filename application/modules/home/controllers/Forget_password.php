@@ -20,47 +20,8 @@ class Forget_password extends CI_Controller {
     }
 
     public function sent_email($user_id, $tokken) {
-//        $message = "<a href='" . base_url() . "home/login/reset/" . $user_id . "/" . $tokken . "'>Click Here to Reset Password <a>";
-//        echo $message;
-//        $this->email->from('tejaisbest@gmail.com', 'Tejas');
-//        $this->email->to('tejaisbest');
-//        $this->email->subject('Email Test');
-//        $this->email->message($message);
-//         if($this->email->send()) 
-//        echo "sent";
-        require 'PHPMailer/PHPMailerAutoload.php';
-
-        $mail = new PHPMailer;
-
-        $mail->isSMTP();                            // Set mailer to use SMTP
-        $mail->Host = 'smtp.gmail.com';             // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                     // Enable SMTP authentication
-        $mail->Username = 'tejaisbest@gmail.com';          // SMTP username
-        $mail->Password = ''; // SMTP password
-        $mail->SMTPSecure = 'tls';                  // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                          // TCP port to connect to
-
-        $mail->setFrom('info@example.com', 'CodexWorld');
-        $mail->addReplyTo('info@example.com', 'CodexWorld');
-        $mail->addAddress('john@gmail.com');   // Add a recipient
-        $mail->addCC('cc@example.com');
-        $mail->addBCC('bcc@example.com');
-
-        $mail->isHTML(true);  // Set email format to HTML
-
-        $bodyContent = '<h1>How to Send Email using PHP in Localhost by CodexWorld</h1>';
-        $bodyContent .= '<p>This is the HTML email sent from localhost using PHP script by <b>CodexWorld</b></p>';
-
-        $mail->Subject = 'Email from Localhost by CodexWorld';
-        $mail->Body = $bodyContent;
-
-        if (!$mail->send()) {
-            echo 'Message could not be sent.';
-            echo 'Mailer Error: ' . $mail->ErrorInfo;
-        } else {
-            echo 'Message has been sent';
-        }
-        exit;
+        $message = "<a href='" . base_url() . "home/login/reset/" . $user_id . "/" . $tokken . "'>Click Here to Reset Password <a>";
+        return $message;
     }
 
     public function check() {
@@ -86,13 +47,13 @@ class Forget_password extends CI_Controller {
                     'email' => $this->input->post('email_address'),
                     'created_on' => date('y-m-d H:i:s'),
                 );
-//                $result = $this->login->add_forget($data);
+                $result = $this->login->add_forget($data);
                 if (true) {
                     $sent = $this->sent_email($user_id, $tokken);
                     if ($sent) {
-                        $this->session->set_flashdata('success', 'MAIL HAS BEEN SENT TO YOUR EMAIL ADDRESS ');
+                        $this->session->set_flashdata('success', $sent);
                     } else {
-                        $this->session->set_flashdata('error', 'ERROR WHILE SENDING MAIL PLEASE TRY AGAIN');
+                        $this->session->set_flashdata('success', 'ERROR WHILE SENDING MAIL PLEASE TRY AGAIN');
                     }
                     $data['page'] = "home/login";
                     $this->load->view('home_template', $data);
@@ -104,7 +65,7 @@ class Forget_password extends CI_Controller {
             }
         }
     }
-
+     
 }
 
 ?>
