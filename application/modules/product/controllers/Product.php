@@ -333,7 +333,7 @@ class Product extends CI_Controller {
                             'meta_description' => $this->input->post('meta_description'),
                             'meta_keywords' => $this->input->post('meta_keywords'),
                             'is_featured' => $this->input->post('feature'),
-                            'modifed_by' => $this->session->userdata('user_id')
+                            'modified_by' => $this->session->userdata('user_id')
                         );
                         if ($sp_price) {
                             $upload_product['special_price'] = $this->input->post('special_price');
