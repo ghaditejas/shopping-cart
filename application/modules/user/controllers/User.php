@@ -68,13 +68,14 @@ class User extends CI_Controller {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('firstname', 'First Name', 'required');
             $this->form_validation->set_rules('lastname', 'Last Name', 'required');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
             $this->form_validation->set_rules('password', 'Password', 'required|alpha_numeric|min_length[8]|max_length[12]');
             $this->form_validation->set_rules('confirm_password', 'Password', 'required|alpha_numeric_spaces|min_length[8]|max_length[12]|matches[password]');
             $this->form_validation->set_rules('select_role[]', 'Role', 'required');
             if ($this->form_validation->run() == False) {
                 $data['role_ids']= $this->input->post('select_role[]');
                 $data['role'] = $this->user_model->get_roles();
+                $data['edit_id'] = $id;
                 $data['page'] = "user/add_user";
                 $this->load->view('main_template', $data);
             } else {

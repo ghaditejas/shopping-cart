@@ -36,7 +36,7 @@
         </div>
     </section>
 </div>
-<script src="http://localhost/shopping-cart/public/dist/js/checkall.js"></script>
+<script src="<?php echo base_url(); ?>public/dist/js/checkall.js"></script>
 <script type="text/javascript">
                 function del() {
                     var arr = [];
@@ -44,18 +44,18 @@
                         arr.push($(this).val());
                     });
                     if (arr.length == 0) {
-                        alert("Please check the category u want to delete");
+                        alert("Please check the banner you want to delete");
                     } else {
                         var r = confirm("Are you sure you want to delete");
                         console.log(arr);
                         if (r)
                             $.ajax({
-                                url: 'http://localhost/shopping-cart/banner/banner/delete',
+                                url: '<?php echo base_url(); ?>/banner/banner/delete',
                                 data: {banner_id: arr},
                                 type: 'post',
                                 success: function (output) {
                                     if (output == 1) {
-                                        alert("Selected category deleted successfully");
+                                        alert("Deleted successfully");
                                         location.reload();
                                     }
 
@@ -63,19 +63,36 @@
                             });
                     }
                 }
-</script>
-<script>
-    $(document).ready(function () {
-        $("#banner_table1").DataTable({
-            "paging": true,
-            "processing": true,
-            "serverSide": true,
-            "autoWidth": true,
-            "searching": false,
-            "ordering": false,
-            "lengthMenu": [2, 5, 10, 25, 50, 75, 100],
-            "lengthChange": true,
-            "ajax": "<?php echo base_url(); ?>banner/banner/get_data",
-        });
-    });
+                function delete_banner(id) {
+                    var arr = [];
+                    arr.push(id);
+                    var r = confirm("Are you sure you want to delete");
+                    console.log(arr);
+                    if (r)
+                        $.ajax({
+                            url: '<?php echo base_url(); ?>/banner/banner/delete',
+                            data: {banner_id: arr},
+                            type: 'post',
+                            success: function (output) {
+                                if (output == 1) {
+                                    alert("Deleted successfully");
+                                    location.reload();
+                                }
+
+                            }
+                        });
+                }
+                $(document).ready(function () {
+                    $("#banner_table1").DataTable({
+                        "paging": true,
+                        "processing": true,
+                        "serverSide": true,
+                        "autoWidth": true,
+                        "searching": false,
+                        "ordering": false,
+                        "lengthMenu": [2, 5, 10, 25, 50, 75, 100],
+                        "lengthChange": true,
+                        "ajax": "<?php echo base_url(); ?>banner/banner/get_data",
+                    });
+                });
 </script>

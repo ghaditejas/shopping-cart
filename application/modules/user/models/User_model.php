@@ -80,11 +80,7 @@ class User_model extends CI_Model {
     public function update_user($id,$data) {
         $this->db->where('user_id',$id);
         $query=$this->db->update('user',$data);
-        if($this->db->affected_rows()){
-            return true;
-        }else{
-            return false;
-        }
+        return true;
     }
 }
 ?>

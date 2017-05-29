@@ -45,11 +45,11 @@ class Category_model extends CI_Model{
     public function update_category($id,$data){
         $query="call update_category('".$data['name']."','".$data['status']."','".$data['parent_id']."','".$data['modified_by']."','".$id."')";
         $this->db->query($query);
-        if($this->db->affected_rows()){
-            return true;
-        }else{
-            return false;
+        if($data['status'] == 0){
+            $this->db->where('parent_id',$id);
+            $this->db->update('category',array('status'=>'0'));
         }
+        return true;
     }
     
     public function get_category($id){
@@ -58,7 +58,10 @@ class Category_model extends CI_Model{
         return $query->row_array(); 
     }
     
-    public function parent_category(){
+    public function parent_category($id=""){
+    if(!empty($id)){
+        $this->db->where('category_id!=',$id);
+    }
     $this->db->where('parent_id',0);
     $this->db->where('status',1);
     $query = $this->db->get('category');

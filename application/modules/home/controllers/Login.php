@@ -7,7 +7,7 @@ class Login extends CI_Controller {
         ini_set("display_errors", "1");
         parent::__construct();
         $this->load->helper('form');
-        $this->load->model('home_login_model', 'login');
+        $this->load->model('login_model', 'login');
     }
 
     public function login() {

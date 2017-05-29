@@ -17,11 +17,7 @@ class Banner_model extends CI_Model{
     public function update_banner($id,$data) {
         $this->db->where('banner_id',$id);
         $query=$this->db->update('banners',$data);
-        if($this->db->affected_rows()){
-            return true;
-        }else{
-            return false;
-        }
+        return true;
     }
     
     public function get_banner($id) {
@@ -42,12 +38,9 @@ class Banner_model extends CI_Model{
         return $query->cnt;
     }
     
-    public function delete_banner($data) {
-        $status=array(
-          'status'=>0  
-        );
-        $this->db->where_in('banner_id',$data);
-       $query=$this->db->update('banners',$status);
+    public function delete_banner($id) {
+        $this->db->where_in('banner_id',$id);
+       $query=$this->db->delete('banners');
        if($this->db->affected_rows()>0){
            return true;
         }else{

@@ -7,26 +7,26 @@ class Product_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_products_list($offset, $limit, $search,$sort) {
+    public function get_products_list($offset, $limit, $search, $sort) {
         $this->db->select('p.id,p.name,p.price,p.quantity,p.status,i.image_name,c.category_id');
         $this->db->from('product as p');
-        $this->db->join('product_images as i', 'p.id=i.product_id');
-        $this->db->join('product_categories as c', 'p.id=c.product_id');
-        if(!empty($search)){
-            $this->db->like('p.name',$search);
+        $this->db->join('product_images as i', 'p.id=i.product_id','left');
+        $this->db->join('product_categories as c', 'p.id=c.product_id','left');
+        if (!empty($search)) {
+            $this->db->like('p.name', $search);
         }
-        $this->db->order_by('p.price',$sort);
-        $this->db->limit($limit,$offset);
+        $this->db->order_by('p.price', $sort);
+        $this->db->limit($limit, $offset);
         $query = $this->db->get();
         return $query->result_array();
     }
 
     public function get_record_count($search) {
-        if(!empty($search)){
+        if (!empty($search)) {
             $this->db->like('name', $search);
         }
         $this->db->select('COUNT(id) AS cnt');
-        $query=$this->db->get('product')->row();
+        $query = $this->db->get('product')->row();
         return $query->cnt;
     }
 
@@ -52,11 +52,19 @@ class Product_model extends CI_Model {
     }
 
     public function insert_product($data) {
-//        $query="call insert_product('".$data['name']."','".$data['status']."','".$data['parent_id']."','".$data['created_on']."','".$data['created_by']."')";
-//        $this->db->query($query);
-        $query = $this->db->insert('product', $data);
-        if ($this->db->insert_id()) {
-            return $this->db->insert_id();
+        $query = "call insert_product('" . $data['name'] . "','" . $data['sku'] . "','" . $data['short_description'] . "','" . $data['long_description'] . "','" . $data['price'] . "','" . $data['status'] . "','" . $data['quantity'] . "','" . $data['meta_title'] . "','" . $data['meta_description'] . "','" . $data['meta_keywords'] . "','" . $data['is_featured'] . "','" . $data['created_on'] . "','" . $data['created_by'] . "'";
+        if (isset($data['special_price'])) {
+            $query = $query . ",'" . $data['special_price'] . "','" . $data['special_price_from'] . "','" . $data['special_price_to'] . "',@roduct_id)";
+        } else {
+            $query = $query . ",' ',' ',' ','@product_id')";
+        }
+
+        $insert = $this->db->query($query);
+        if($this->db->affected_rows()){
+            $this->db->select_max('id');
+            $id=$this->db->get('product')->row_array();
+            pr($this->db->last_query());
+            return $id['id'];
         } else {
             return false;
         }
@@ -84,8 +92,14 @@ class Product_model extends CI_Model {
     }
 
     public function update_product($id, $data) {
-//        $query="call update_product('".$data['name']."','".$data['status']."','".$data['parent_id']."','".$data['modified_by']."','".$id."')";
-//        $this->db->query($query);
+        $query = "call update_product('" . $data['name'] . "','" . $data['sku'] . "','" . $data['short_description'] . "','" . $data['long_description'] . "','" . $data['price'] . "','" . $data['status'] . "','" . $data['quantity'] . "','" . $data['meta_title'] . "','" . $data['meta_description'] . "','" . $data['meta_keywords'] . "','" . $data['is_featured'] . "','" . $data['modified_by'] . "'";
+        if (isset($data['special_price'])) {
+            $query = $query . ",'" . $data['special_price'] . "','" . $data['special_price_from'] . "','" . $data['special_price_to'] . "','".$id."')";
+        } else {
+            $query = $query . ",' ',' ',' ','".$id."')";
+        }
+        pr($query);
+        $insert = $this->db->query($query);
         $this->db->where('id', $id);
         $query = $this->db->update('product', $data);
         return true;
@@ -143,12 +157,12 @@ class Product_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_attributes($offset="", $limit="", $search="") {
+    public function get_attributes($offset = "", $limit = "", $search = "") {
         if (!empty($search)) {
             $this->db->like('name', $search);
         }
-        if($offset!="" || $limit!=""){
-        $this->db->limit($limit, $offset);
+        if ($offset != "" || $limit != "") {
+            $this->db->limit($limit, $offset);
         }
         $query = $this->db->get('product_attributes');
         return $query->result_array();
