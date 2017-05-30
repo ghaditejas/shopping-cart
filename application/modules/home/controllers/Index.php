@@ -14,7 +14,6 @@ class Index extends CI_Controller {
     }
 
     public function index() {
-//        print_r($this->session->All_userdata());
         $data['result']= $this->home->get_banner();
         $data['parent_category']= $this->home->get_parent_category();
         $data['category']= $this->home->get_category();
@@ -22,8 +21,6 @@ class Index extends CI_Controller {
         $data['product']= $this->home->get_product();
         $data['display_category']=1;
         $data['display_product']=1;
-//        pr($data['product']);
-//        exit;
         $data['error'] = "";
         $data['page']='home/homepage';
         $this->load->view('home_template', $data);

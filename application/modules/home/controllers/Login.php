@@ -35,7 +35,6 @@ class Login extends CI_Controller {
                         'fname' => $user['firstname'],
                         'lname' => $user['lastname'],
                         'email_id' => $user['email']
-//                    'role_id' => $user['role_id'],
                     );
                     $this->session->set_userdata($session_data);
                     redirect(base_url());
@@ -45,6 +44,11 @@ class Login extends CI_Controller {
             $data['page'] = 'home/login';
             $this->load->view('home_template', $data);
         }
+    }
+    
+    public function logout() {
+        $this->session->sess_destroy();
+        redirect();
     }
 
     public function register() {
@@ -84,7 +88,7 @@ class Login extends CI_Controller {
     }
 
     public function reset($id, $tokken) {
-        $accessed_date = $this->login->get_date($tokken);
+        $accessed_date = $this->login->get_date($id,$tokken);
         if ($accessed_date) {
             $current_datetime = strtotime(date('y-m-d H:i:s'));
             $tokken_datetime = strtotime($accessed_date['created_on']);
@@ -94,12 +98,10 @@ class Login extends CI_Controller {
                 $data['page'] = "home/resetpass";
                 $this->load->view('home_template', $data);
             } else {
-                pr($tokken);
-                echo "link has been expired";
+                $this->load->view('notfound');
             }
         } else {
-            pr($tokken);
-            echo "link has been expired";
+            $this->load->view('notfound');
         }
     }
 

@@ -41,13 +41,13 @@ class Forget_password extends CI_Controller {
                 $this->load->view('home_template', $data);
             } else {
                 $tokken = md5(date('y-m-d H:i:s'));
-                $data = array(
+                $pass_data= array(
                     'user_id' => $user_id,
                     'tokken' => $tokken,
                     'email' => $this->input->post('email_address'),
                     'created_on' => date('y-m-d H:i:s'),
                 );
-                $result = $this->login->add_forget($data);
+                $result = $this->login->add_forget($pass_data);
                 if (true) {
                     $sent = $this->sent_email($user_id, $tokken);
                     if ($sent) {

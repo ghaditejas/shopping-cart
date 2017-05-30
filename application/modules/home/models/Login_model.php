@@ -57,8 +57,10 @@ class Login_model extends CI_Model {
     }
     }
     
-    public function get_date($tokken){
+    public function get_date($id,$tokken){
         $this->db->select('created_on');
+        $this->db->where('user_id',$id);
+        $this->db->where('is_verified',0);
         $this->db->where('tokken',$tokken);
         $query=$this->db->get('forgot_password');
         if($query->num_rows()>0){
