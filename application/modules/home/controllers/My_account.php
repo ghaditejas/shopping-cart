@@ -29,7 +29,7 @@ class My_account extends CI_Controller {
             return false;
         }
     }
-    
+
     public function verifynew() {
         $id = $this->session->userdata("userid");
         $pass = md5($this->input->post('password'));
@@ -39,6 +39,15 @@ class My_account extends CI_Controller {
         } else {
             $this->form_validation->set_message('verifynew', 'Password Exist Enter New One');
             return false;
+        }
+    }
+
+    public function alpha_spaces($string) {
+        if (!preg_match('/^[a-zA-Z\s]+$/', $string)) {
+            $this->form_validation->set_message('alpha_spaces', 'The field may only contain alpha characters & White spaces');
+            return FALSE;
+        } else {
+            return TRUE;
         }
     }
 
@@ -73,15 +82,87 @@ class My_account extends CI_Controller {
         }
     }
 
-    public function address() {
-        $id = $this->session->userdata("userid");
-        $data['page'] = 'home/address';
-        $this->load->view('home_template', $data);
+    public function address($id = "") {
+        $data['display_category'] = 0;
+        $data['display_product'] = 0;
+        $data['error'] = "";
+        $user_id=$this->session->userdata('userid');
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $this->form_validation->set_rules('address1', 'Address1', 'required');
+            $this->form_validation->set_rules('city', 'City', 'required|callback_alpha_spaces');
+            $this->form_validation->set_rules('state', 'State', 'required|callback_alpha_spaces');
+            $this->form_validation->set_rules('country', 'Country', 'required|callback_alpha_spaces');
+            $this->form_validation->set_rules('postcode', 'Postcode', 'required|numeric|is_natural|min_length[6]|max_length[6]');
+            if ($this->form_validation->run() == False) {
+                $data["modal"] = 1;
+                $data['page'] = 'home/address';
+                $this->load->view('home_template', $data);
+            } else {
+                $data = array(
+                    'user_id' => $user_id,
+                    'address_1' => $this->input->post('address1'),
+                    'address_2' => $this->input->post('address2'),
+                    'city' => $this->input->post('city'),
+                    'state' => $this->input->post('state'),
+                    'country' => $this->input->post('country'),
+                    'zipcode' => $this->input->post('postcode')
+                );
+                if (empty($id)) {
+                    $result = $this->account->insert_address($data);
+                    if ($result) {
+                        $this->session->set_flashdata('success', 'Added added Successfully');
+                        redirect('home/my_account/address');
+                    } else {
+                        $this->session->set_flashdata('success', 'Error occurred while adding Address');
+                        redirect('coupon/coupon/add');
+                    }
+                } else {
+                    $result = $this->account->update_address($id, $data);
+                    if ($result) {
+                        $this->session->set_flashdata('success', 'Coupon modified Successfully');
+                        redirect('home/my_account/address');
+                    } else {
+                        $this->session->set_flashdata('error', 'Error occurred while modifying Coupon');
+                        redirect('coupon/coupon/add/' . $id);
+                    }
+                }
+            }
+        } else {
+            $data['page'] = 'home/address';
+            $this->load->view('home_template', $data);
+        }
     }
-    
-    public function get_address() {
-        
+
+    public function get_addresses() {
+        if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        $user_id=$this->session->userdata('userid');
+        $recordsFiltered = $recordsTotal = $this->account->get_address_count();
+        $records = $this->account->get_addresses($user_id);
+        $data = [];
+        foreach ($records as $row) {
+            $action = '<span  class="btn btn-success" onclick="edit_address(' . $row["id"] . ');"><i class="fa fa-edit"></i></span>';
+            $data[] = array($row['id'], $row['address_1'], $row['address_2'], $row['city'], $row['state'], $row['country'], $row['zipcode'], $action,);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+        exit;
     }
+
+    public function get_address_byid($id) {
+        $data = $this->account->get_address($id);
+        echo json_encode($data);
+        exit;
+    }
+
 }
 ?>
 
