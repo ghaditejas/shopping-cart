@@ -325,7 +325,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>category/category/view')" class="btn btn-danger">Cancel</button>
+                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>product/product/view')" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
                 </div>

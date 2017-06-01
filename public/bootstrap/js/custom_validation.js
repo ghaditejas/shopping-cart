@@ -24,7 +24,7 @@ $.validator.addMethod("money", function (value, element) {
         "Invald Price:Insert valid Price");
 
 $.validator.addMethod("checkdate", function (value, element) {
-    if ($('#special_price').val()!="") {
+    if ($('#special_price').val() != "") {
         var start_date = new Date($('#special_price_from').val());
         var start_time = start_date.getTime();
         var end_date = new Date(value);
@@ -34,8 +34,13 @@ $.validator.addMethod("checkdate", function (value, element) {
         } else {
             return false;
         }
-    }else{
+    } else {
         return true;
     }
 },
         "Please Choose Proper date");
+        
+$.validator.addMethod("sentence", function (value, element) {
+    return this.optional(element) || /^[a-z\s]+$/i.test(value);
+}, "This field may only contain alphabetical characters.");
+        

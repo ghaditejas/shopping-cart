@@ -16,6 +16,14 @@
         <link href="<?php echo base_url(); ?>public/bootstrap/css/custom.css" rel="stylesheet">
         <script src="<?php echo base_url(); ?>public/frontend/js/jquery.js"></script>
         <script src="<?php echo base_url(); ?>public/frontend/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>public/dist/css/AdminLTE.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/bootstrap.min.css">
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
+        <script src="<?php echo base_url(); ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/jquery.validate.min.js"></script>
+        <script src="<?php echo base_url(); ?>public/bootstrap/js/additional-methods.min.js"></script>
     </head><!--/head-->
 
     <body>
@@ -53,38 +61,21 @@
                             <div class="logo pull-left">
                                 <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>public/frontend/images/home/logo.png" alt="" /></a>
                             </div>
-                            <div class="btn-group pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                        USA
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Canada</a></li>
-                                        <li><a href="#">UK</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                        DOLLAR
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Canadian Dollar</a></li>
-                                        <li><a href="#">Pound</a></li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-8">
                             <div class="shop-menu pull-right">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                                    <?php if($this->session->userdata('loggedin')){?>
+                                    <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
                                     <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                                    <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                                    <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                    <?php }?>
+                                    <li><a href="#"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                    <li><a href="#"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                    <?php if($this->session->userdata('loggedin')){?>
+                                    <li><a href="<?php echo base_url();?>home/login/logout"><i class="fa fa-lock"></i> Logout</a></li>
+                                     <?php }else{?>
                                     <li><a href="<?php echo base_url();?>home/login/login"><i class="fa fa-lock"></i> Login</a></li>
+                                    <?php }?>
                                 </ul>
                             </div>
                         </div>

@@ -35,7 +35,6 @@ class Login extends CI_Controller {
                         'fname' => $user['firstname'],
                         'lname' => $user['lastname'],
                         'email_id' => $user['email']
-//                    'role_id' => $user['role_id'],
                     );
                     $this->session->set_userdata($session_data);
                     redirect(base_url());
@@ -45,6 +44,11 @@ class Login extends CI_Controller {
             $data['page'] = 'home/login';
             $this->load->view('home_template', $data);
         }
+    }
+    
+    public function logout() {
+        $this->session->sess_destroy();
+        redirect();
     }
 
     public function register() {
@@ -80,6 +84,24 @@ class Login extends CI_Controller {
                     redirect('/home/login/login');
                 }
             }
+        }
+    }
+
+    public function reset($id, $tokken) {
+        $accessed_date = $this->login->get_date($id,$tokken);
+        if ($accessed_date) {
+            $current_datetime = strtotime(date('y-m-d H:i:s'));
+            $tokken_datetime = strtotime($accessed_date['created_on']);
+            if (($current_datetime - $tokken_datetime) < 86400) {
+                $data['display_category'] = 0;
+                $data['display_product'] = 0;
+                $data['page'] = "home/resetpass";
+                $this->load->view('home_template', $data);
+            } else {
+                $this->load->view('notfound');
+            }
+        } else {
+            $this->load->view('notfound');
         }
     }
 
