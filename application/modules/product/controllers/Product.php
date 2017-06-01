@@ -139,7 +139,7 @@ class Product extends CI_Controller {
         $err = '';
         $file_name = '';
         $data['stat'] = 1;
-        $data['feature'] = 1;
+        $data['feature'] = 0;
         $data['error_img'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('product_name', 'Product Name', 'required');

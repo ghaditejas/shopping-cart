@@ -34,7 +34,7 @@ class Home_model extends CI_Model{
         return $query->result_array();
     }
     
-    public function get_product() {
+    public function get_featured_product() {
         $this->db->select('p.id,p.name,p.price,p.status,i.image_name,c.category_id');
         $this->db->from('product as p');
         $this->db->join('product_images as i', 'p.id=i.product_id');

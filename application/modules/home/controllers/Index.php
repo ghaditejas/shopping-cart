@@ -18,7 +18,7 @@ class Index extends CI_Controller {
         $data['parent_category']= $this->home->get_parent_category();
         $data['category']= $this->home->get_category();
         $data['attribute']= $this->home->get_attribute();
-        $data['product']= $this->home->get_product();
+        $data['product']= $this->home->get_featured_product();
         $data['display_category']=1;
         $data['display_product']=1;
         $data['error'] = "";
