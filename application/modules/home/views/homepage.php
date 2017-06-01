@@ -71,10 +71,8 @@
 			</div>
 		</div>
 	</section><!--/slider-->
-	
-	<section>
-		<div class="container">
-			<div class="row">
-
+	<?php $this->load->view('home_templates/category');
+        $this->load->view('home_templates/product');
+        ?>
 
 	

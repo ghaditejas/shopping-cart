@@ -11,8 +11,6 @@ class Login extends CI_Controller {
     }
 
     public function login() {
-        $data['display_category'] = 0;
-        $data['display_product'] = 0;
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -52,8 +50,6 @@ class Login extends CI_Controller {
     }
 
     public function register() {
-        $data['display_category'] = 0;
-        $data['display_product'] = 0;
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('fname', 'First Name', 'required|alpha');
@@ -93,8 +89,6 @@ class Login extends CI_Controller {
             $current_datetime = strtotime(date('y-m-d H:i:s'));
             $tokken_datetime = strtotime($accessed_date['created_on']);
             if (($current_datetime - $tokken_datetime) < 86400) {
-                $data['display_category'] = 0;
-                $data['display_product'] = 0;
                 $data['page'] = "home/resetpass";
                 $this->load->view('home_template', $data);
             } else {

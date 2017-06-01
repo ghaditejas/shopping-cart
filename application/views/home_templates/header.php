@@ -65,17 +65,17 @@
                         <div class="col-sm-8">
                             <div class="shop-menu pull-right">
                                 <ul class="nav navbar-nav">
-                                    <?php if($this->session->userdata('loggedin')){?>
-                                    <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
-                                    <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                                    <?php }?>
+                                    <?php if ($this->session->userdata('loggedin')) { ?>
+                                        <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
+                                        <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                                    <?php } ?>
                                     <li><a href="#"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                     <li><a href="#"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-                                    <?php if($this->session->userdata('loggedin')){?>
-                                    <li><a href="<?php echo base_url();?>home/login/logout"><i class="fa fa-lock"></i> Logout</a></li>
-                                     <?php }else{?>
-                                    <li><a href="<?php echo base_url();?>home/login/login"><i class="fa fa-lock"></i> Login</a></li>
-                                    <?php }?>
+                                    <?php if ($this->session->userdata('loggedin')) { ?>
+                                        <li><a href="<?php echo base_url(); ?>home/login/logout"><i class="fa fa-lock"></i> Logout</a></li>
+                                    <?php } else { ?>
+                                        <li><a href="<?php echo base_url(); ?>home/login/login"><i class="fa fa-lock"></i> Login</a></li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <ul class="nav navbar-nav collapse navbar-collapse">
                                     <li><a href="<?php echo base_url(); ?>" class="active">Home</a></li>
                                     <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-                                        
+
                                     </li> 
 <!--                                    <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                         <ul role="menu" class="sub-menu">
@@ -107,17 +107,20 @@
                                             <li><a href="blog-single.html">Blog Single</a></li>
                                         </ul>
                                     </li> -->
-                                    
+
                                     <li><a href="contact-us.html">Contact Us</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div class="search_box pull-right">
-                                <input type="text" placeholder="Search"/>
-                            </div>
+                            <form  id="search_form" action="<?php echo base_url();?>home/product/view" method="post">
+                                <div class="search_box pull-right">
+                                    <input type="text" placeholder="Search" name="search" id='Search'/>
+                                    <input type='hidden' id="category_id" name ="category_id" value='0'>                             
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div><!--/header-bottom-->
-        </header><!--/header-->
+            </div>
+        </header>

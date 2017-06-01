@@ -1,17 +1,11 @@
 <?php
 
-class Home_model extends CI_Model{
+class Product_model extends CI_Model{
     
     public function __construct() {
         
         parent::__construct();
         $this->load->database();
-    }
-    
-    public function get_banner() {
-        $this->db->where('status',1);
-        $query=$this->db->get('banners');
-        return $query->result_array();
     }
     
     public function get_parent_category() {
@@ -34,23 +28,37 @@ class Home_model extends CI_Model{
         return $query->result_array();
     }
     
-    public function get_featured_product($id="") {
+    public function get_product($id,$search,$min_price,$max_price,$sort,$field) {
         $this->db->select('p.id,p.name,p.price,p.status,i.image_name,c.category_id');
         $this->db->from('product as p');
         $this->db->join('product_images as i', 'p.id=i.product_id');
         $this->db->join('product_categories as c', 'p.id=c.product_id');
         $this->db->where('p.status',1);
-        if(empty($id)){
-        $this->db->where('p.is_featured',1);        
-        }else{
+        if(!empty($search)){
+            $this->db->where('p.name',$search);
+        }
+        if(!empty($id)){
         $this->db->where('c.category_id',$id);
         }
-//        $this->db->order_by('p.price',$sort);
-//        $this->db->limit($limit,$offset);
+        if($min_price != ""){
+            $this->db->where('p.price>=',$min_price);
+            $this->db->where('p.price<=',$max_price);
+        }
+        if(!empty($sort)){
+            $this->db->order_by('p.'.$field,$sort);
+        }
+//      $this->db->limit($limit,$offset);
         $query = $this->db->get();
-//        pr($this->db->last_query());
-//        exit;
         return $query->result_array();
+    }
+    
+    public function get_category_name($id){
+        $this->db->select('name,parent_id');
+        $this->db->where('category_id',$id);
+        $query=$this->db->get('category')->row_array();
+        return $query;
+        
     }
 }
 ?>
+

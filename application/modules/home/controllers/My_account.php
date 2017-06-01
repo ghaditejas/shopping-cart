@@ -11,8 +11,6 @@ class My_account extends CI_Controller {
     }
 
     public function view() {
-        $data['display_category'] = 0;
-        $data['display_product'] = 0;
         $data['error'] = "";
         $data['page'] = 'home/myaccount';
         $this->load->view('home_template', $data);
@@ -52,8 +50,6 @@ class My_account extends CI_Controller {
     }
 
     public function change_pass() {
-        $data['display_category'] = 0;
-        $data['display_product'] = 0;
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('old_pass', 'Password', 'required|min_length[8]|max_length[12]|callback_verify');
@@ -83,8 +79,6 @@ class My_account extends CI_Controller {
     }
 
     public function address($id = "") {
-        $data['display_category'] = 0;
-        $data['display_product'] = 0;
         $data['error'] = "";
         $user_id=$this->session->userdata('userid');
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
