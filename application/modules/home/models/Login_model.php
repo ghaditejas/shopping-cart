@@ -70,5 +70,18 @@ class Login_model extends CI_Model {
         }
         
     }
+    
+    public function update_user($id,$data) {
+        $this->db->where('user_id',$id);
+        $this->db->update('user',$data);
+        return true;
+    }
+    
+    public function update_status($tokken) {
+        $data=array('is_verified'=>1);
+        $this->db->where('tokken',$tokken);
+        $this->db->update('forgot_password',$data);
+        return true;
+    }
 }
 ?>

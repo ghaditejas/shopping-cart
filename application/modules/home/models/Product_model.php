@@ -40,6 +40,9 @@ class Product_model extends CI_Model{
         if(!empty($id)){
         $this->db->where('c.category_id',$id);
         }
+        if(empty($id) && empty($search)){
+            $this->db->where('is_featured',1);
+        }
         if($min_price != ""){
             $this->db->where('p.price>=',$min_price);
             $this->db->where('p.price<=',$max_price);
@@ -58,6 +61,24 @@ class Product_model extends CI_Model{
         $query=$this->db->get('category')->row_array();
         return $query;
         
+    }
+    
+    public function get_currency($currency) {
+        $this->db->select('v.config_value,t.config_type');
+        $this->db->from('configuration_value as v');
+        $this->db->join('configuration_type as t','v.config_type_id=t.config_type_id');
+        $this->db->where('t.config_type',$currency);
+        $query=$this->db->get()->row_array();
+        return $query['config_value'];
+    }
+    
+    public function get_cart_product($id){
+        $this->db->select('p.name,p.price,p.id,i.image_name,p.short_description');
+        $this->db->from('product as p');
+        $this->db->join('product_images as i','p.id=i.product_id');
+        $this->db->where('p.id',$id);
+        $query=$this->db->get()->row_array();
+        return $query;
     }
 }
 ?>

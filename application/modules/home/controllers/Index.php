@@ -15,6 +15,7 @@ class Index extends CI_Controller {
 
     public function index($id="") {
         $data['result']= $this->home->get_banner();
+        $data['currency']=$this->home->get_currency('currency');
         $data['parent_category']= $this->home->get_parent_category();
         $data['category']= $this->home->get_category();
         $data['attribute']= $this->home->get_attribute();

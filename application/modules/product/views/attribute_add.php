@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Configuration
+            Attribute
         </h1>
     </section>
     <section class="content">

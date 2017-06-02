@@ -89,6 +89,8 @@ class Login extends CI_Controller {
             $current_datetime = strtotime(date('y-m-d H:i:s'));
             $tokken_datetime = strtotime($accessed_date['created_on']);
             if (($current_datetime - $tokken_datetime) < 86400) {
+                $data['id']=$id;
+                $data['tokken']=$tokken;
                 $data['page'] = "home/resetpass";
                 $this->load->view('home_template', $data);
             } else {
@@ -96,6 +98,30 @@ class Login extends CI_Controller {
             }
         } else {
             $this->load->view('notfound');
+        }
+    }
+    
+    public function resetpass($id){
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
+            if ($this->form_validation->run() == False) {
+                $data['page'] = "home/resetpass";
+                $this->load->view('home_template', $data);
+            } else {
+                $data = array(
+                    'user_id' => $id,
+                    'password' => md5($this->input->post('password')),
+                );
+                $result = $this->login->update_user($id,$data);
+                if ($result) {
+                    $this->login->update_status($tokken);
+                    $this->session->set_flashdata('success', 'Password Changed Successfully');
+                    redirect('/home/login/login');
+                } else {
+                    $this->session->set_flashdata('error', 'Error occurred while changing password');
+                    redirect('/home/login/login');
+                }
+            }
         }
     }
 
