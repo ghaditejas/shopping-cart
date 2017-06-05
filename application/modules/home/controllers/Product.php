@@ -38,6 +38,12 @@ class Product extends CI_Controller {
         $category = $this->product->get_category_name($id);
         $data['title'] = $category['name'];
         $data['in'] = $category['parent_id'];
+        if ($this->session->userdata('loggedin')) {
+            $user_id = $this->session->userdata('userid');
+            $data['wishlist'] = $this->product->get_wishlist($user_id);
+        } else {
+            $data['wishlist'] = array();
+        }
         $data['id'] = $id;
         $data['search'] = $search;
         $data['error'] = "";
@@ -75,10 +81,46 @@ class Product extends CI_Controller {
         }
         echo $message;
     }
-    
-    public function cart_view(){
-        $data['cart']=$this->session->userdata('cart');
+
+    public function cart_view() {
+        $data['cart'] = $this->session->userdata('cart');
         $data['page'] = 'home/cart_view';
+        $this->load->view('home_template', $data);
+    }
+
+    public function wishlist($operation, $id) {
+        if ($operation == "add") {
+            $data = array(
+                'product_id' => $id,
+                'user_id' => $this->session->userdata('userid')
+            );
+            $result = $this->product->add_wishlist($data);
+            if ($result) {
+                $message = "Product Added Successfully in Wishlist";
+            } else {
+                $message = "Error while Adding  product to wishlist";
+            }
+        }
+        if ($operation == "remove") {
+            $user_id = $this->session->userdata('userid');
+            $result = $this->product->remove_wishlist($user_id, $id);
+            if ($result) {
+                $message = "Product Added Successfully in Wishlist";
+            } else {
+                $message = "Error while Adding  product to wishlist";
+            }
+        }
+        echo $message;
+    }
+
+    public function wishlist_view() {
+        if ($this->session->userdata('loggedin')) {
+            $user_id = $this->session->userdata('userid');
+            $data['wishlist'] = $this->product->get_product_wishlist($user_id);
+        } else {
+            $data['wishlist'] = array();
+        }
+        $data['page'] = 'home/wishlist';
         $this->load->view('home_template', $data);
     }
 

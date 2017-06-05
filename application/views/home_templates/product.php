@@ -14,22 +14,24 @@ $cart = $this->session->userdata('cart');
                                 <?php echo $row['price'] ?></h2>
                             <p><?php echo $row['name']; ?></p>
                             <?php
-                            if(!empty($cart)){
-                            if (!(array_key_exists($row['id'], $cart))) {
-                                ?>
-                                <a href="#" class="btn btn-default add-to-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Add to cart</span></a>
+                            if (!empty($cart)) {
+                                if (!(array_key_exists($row['id'], $cart))) {
+                                    ?>
+                                    <a href="javascript:void(0);" class="btn btn-default add-to-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Add to cart</span></a>
                                 <?php } else {
+                                    ?>
+                                    <a href="javascript:void(0);" class="btn btn-default remove-from-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Remove from cart</span></a>    
+                                    <?php
+                                }
+                            } else {
                                 ?>
-                                <a href="#" class="btn btn-default remove-from-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Remove from cart</span></a>    
-                                <?php
-                            }}else{?>
-                               <a href="#" class="btn btn-default add-to-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Add to cart</span></a> 
-                            <?php }?>
+                                <a href="javascript:void(0);" class="btn btn-default add-to-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i><span class="cart_heading">Add to cart</span></a> 
+                            <?php } ?>
                         </div>
                         <!--                        <div class="product-overlay">
                                                     <div class="overlay-content">
                                                         <h2><?php echo $currency ?>
-    <?php echo $row['price'] ?></h2>
+                        <?php echo $row['price'] ?></h2>
                                                         <p><?php echo $row['name']; ?></p>
                                                         <a href="#" class="btn btn-default add-to-cart" id="<?php echo $row['id'] ?>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                                     </div>
@@ -37,13 +39,21 @@ $cart = $this->session->userdata('cart');
                     </div>
                     <div class="choose">
                         <ul class="nav nav-pills nav-justified">
-                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                            <?php 
+                                if (in_array($row['id'],$wishlist)) {
+                                    ?>
+                                    <li><a href="javascript:void(0);" class="remove-from-wishlist" id="<?php echo $row['id'] ?>"><i class="fa fa-plus-square"></i><span class="wishlist-heading">Remove from wishlist</span></a></li>            
+                                <?php 
+                                } else {
+                                ?>
+                                <li><a href="javascript:void(0);" class="add-to-wishlist" id="<?php echo $row['id'] ?>"><i class="fa fa-plus-square"></i><span class="wishlist-heading">Add to wishlist</span></a></li>            
+                                        <?php }
+                                        ?>
                         </ul>
                     </div>
                 </div>
             </div>
-<?php } ?>
+        <?php } ?>
     </div><!--products-->
 </div>
 <script>
@@ -57,7 +67,7 @@ $cart = $this->session->userdata('cart');
             url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
             success: function (message) {
                 if (message) {
-                    notify(message,"success","top","right");
+                    notify(message, "success", "top", "right");
                 } else {
                     alert("error while" + message)
                 }
@@ -74,11 +84,54 @@ $cart = $this->session->userdata('cart');
             url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
             success: function (message) {
                 if (message) {
-                    notify(message,"success","top","right");
+                    notify(message, "success", "top", "right");
                 } else {
                     alert("error while" + message)
                 }
             }
         })
+    })
+    $('.add-to-wishlist').click(function () {
+<?php if ($this->session->userdata('loggedin')) { ?>
+            $(this).removeClass("add-to-wishlist");
+            $(this).addClass("remove-from-wishlist");
+            $(this).find(".wishlist-heading").text("Remove from wishlist");
+            var product_id = ($(this).attr('id'));
+            var operation = "add";
+            $.ajax({
+                url: '<?php echo base_url(); ?>home/product/wishlist/' + operation + '/' + product_id,
+                success: function (message) {
+                    if (message) {
+                        notify(message, "success", "top", "right");
+                    } else {
+                        alert("error while" + message)
+                    }
+                }
+            })
+<?php } else { ?>
+            window.location = "<?php echo base_url(); ?>home/login/login";
+<?php } ?>
+    })
+
+    $('.remove-from-wishlist').click(function () {
+  <?php if ($this->session->userdata('loggedin')) { ?>
+            $(this).removeClass("remove-from-wishlist");
+            $(this).addClass("add-to-wishlist");
+            $(this).find(".wishlist-heading").text("Add to wishlist");
+            var product_id = ($(this).attr('id'));
+            var operation = "remove";
+            $.ajax({
+                url: '<?php echo base_url(); ?>home/product/wishlist/' + operation + '/' + product_id,
+                success: function (message) {
+                    if (message) {
+                        notify(message, "success", "top", "right");
+                    } else {
+                        alert("error while" + message)
+                    }
+                }
+            })
+<?php } else { ?>
+            window.location = "<?php echo base_url(); ?>home/login/login";
+<?php } ?>
     })
 </script>

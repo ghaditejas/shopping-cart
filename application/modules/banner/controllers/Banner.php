@@ -125,7 +125,7 @@ class Banner extends CI_Controller {
                             $this->session->set_flashdata('success', 'Banner added Successfully');
                             redirect('banner/banner/banner_view');
                         } else {
-                            $this->session->set_flashdata('error', 'Error occurred while adding Banner');
+                            $this->session->set_flashdata('success', 'Error occurred while adding Banner');
                             redirect('banner/banner/add');
                         }
                     } else {
@@ -141,7 +141,7 @@ class Banner extends CI_Controller {
                             $this->session->set_flashdata('success', 'Banner modified Successfully');
                             redirect('banner/banner/banner_view');
                         } else {
-                            $this->session->set_flashdata('error', 'Error occurred while modifying Banner');
+                            $this->session->set_flashdata('success', 'Error occurred while modifying Banner');
                             redirect('banner/banner/add/' . $id);
                         }
                     }

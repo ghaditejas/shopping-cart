@@ -32,7 +32,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a  href="#">
+                                <a  href="<?php echo base_url(); ?>home/product/wishlist_view">
                                     Wishlist  
                                 </a>
                             </h4>

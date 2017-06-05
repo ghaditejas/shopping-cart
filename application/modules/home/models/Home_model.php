@@ -52,6 +52,7 @@ class Home_model extends CI_Model{
 //        exit;
         return $query->result_array();
     }
+    
     public function get_currency($currency) {
         $this->db->select('v.config_value,t.config_type');
         $this->db->from('configuration_value as v');
@@ -60,5 +61,16 @@ class Home_model extends CI_Model{
         $query=$this->db->get()->row_array();
         return $query['config_value'];
     }
+    
+    public function add_message($data) {
+        $this->db->insert('contact_us',$data);
+        if($this->db->insert_id()>0){
+            return true;
+        }else{
+            return false;
+        }
+                
+    }
+    
 }
 ?>

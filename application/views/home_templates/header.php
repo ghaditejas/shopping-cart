@@ -67,7 +67,7 @@
                                 <ul class="nav navbar-nav">
                                     <?php if ($this->session->userdata('loggedin')) { ?>
                                         <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                                        <li><a href="<?php echo base_url(); ?>home/product/wishlist_view"><i class="fa fa-star"></i> Wishlist</a></li>
                                     <?php } ?>
                                     <li><a href="#"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                     <li><a href="<?php echo base_url(); ?>home/product/cart_view"><i class="fa fa-shopping-cart"></i> Cart</a></li>
@@ -108,7 +108,7 @@
                                         </ul>
                                     </li> -->
 
-                                    <li><a href="contact-us.html">Contact Us</a></li>
+                                    <li><a href="<?php echo base_url();?>home/index/contact_us">Contact Us</a></li>
                                 </ul>
                             </div>
                         </div>

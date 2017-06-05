@@ -80,6 +80,49 @@ class Product_model extends CI_Model{
         $query=$this->db->get()->row_array();
         return $query;
     }
+    
+    public function add_wishlist($data) {
+        $this->db->insert('user_wish_list',$data);
+        if($this->db->insert_id()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function remove_wishlist($user_id,$id) {
+        $this->db->where('user_id',$user_id);
+        $this->db->where('product_id',$id);
+        $this->db->delete('user_wish_list');
+        if($this->db->affected_rows()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function get_wishlist($user_id) {
+        $this->db->select('product_id');
+        $this->db->where('user_id',$user_id);
+        $query=$this->db->get('user_wish_list')->result_array();
+        $ret = [];
+        if(!empty($query)){
+            foreach($query as $v){
+                $ret[] = $v['product_id']; 
+            }
+        }
+        return $ret;
+    }
+    
+    public function get_product_wishlist($user_id) {
+        $this->db->select('i.image_name,p.name,p.id,p.price,w.id as wishlist_id,p.short_description');
+        $this->db->from('product as p');
+        $this->db->join('product_images as i','p.id=i.product_id');
+        $this->db->join('user_wish_list as w','p.id=w.product_id');
+        $this->db->where('w.user_id',$user_id);
+        $query=$this->db->get()->result_array();
+        return $query;
+    }
 }
 ?>
 
