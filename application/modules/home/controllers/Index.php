@@ -68,6 +68,32 @@ class Index extends CI_Controller {
         }
     }
 
+    public function get_cms() {
+        $title = $this->home->get_title();
+        if ($title) {
+            $string = '<div class = "single-widget">
+        <h2>Shop</h2>
+        <ul class = "nav nav-pills nav-stacked">';
+            foreach ($title as $row) {
+                $string = $string . '<li><a href ="' . base_url() . 'home/index/view_cms/' . $row['slug'] . '" target="_blank">' . $row['title'] . '</a></li>';
+            }
+            $string = $string . ' </ul></div>';
+            echo $string;
+        } else {
+            return false;
+        }
+    }
+
+    public function view_cms($slug) {
+        $data['cms'] = $this->home->get_content($slug);
+        if ($data['cms']) {
+            $data['page'] = 'home/cms';
+        } else {
+            $data['page'] = 'notfound';
+        }
+        $this->load->view('home_template', $data);
+    }
+
 }
 
 ?>

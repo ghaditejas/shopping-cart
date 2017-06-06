@@ -15,7 +15,6 @@
         </h1>
     </section>
     <section class="content">
-        <p align="right"><button type="button"  onclick="javascript: window.location.assign('<?php echo base_url(); ?>user/user/user_add')" class="btn btn-primary btn-lg" style="">Add</button></p>
         <div class="box box-primary">
             <div class="box-body table-responsive no-padding">
                 <table class="table table-bordered table-striped" id="user_table">

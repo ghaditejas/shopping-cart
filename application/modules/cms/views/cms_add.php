@@ -15,23 +15,32 @@
                         $urlstring = '';
                     }
                     ?>
-                    <form id="add_product" class="add_user"  action="<?php echo base_url(); ?>cms/cms/update<?php echo $urlstring; ?>" method="post">
+                    <form id="add_cms" class="add_user"  action="<?php echo base_url(); ?>cms/cms/update<?php echo $urlstring; ?>" method="post">
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Title*</label>
-                                    <input class="form-control" name="product_name" id="category_name" type="text" value="<?php
-                                    if (set_value('product_name') != "") {
-                                        echo set_value('product_name');
+                                    <input class="form-control" name="title" id="title" type="text" value="<?php
+                                    if (set_value('title') != "") {
+                                        echo set_value('title');
+                                    } else if (isset($title)) {
+                                        echo $title;
                                     }
                                     ?>">
-                                    <label class="error"><?php echo form_error('product_name'); ?></label>
+                                    <label class="error"><?php echo form_error('title'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label>Content*</label>
-                                    <textarea class="ckeditor" name="editor1"></textarea>
+                                    <textarea class="ckeditor" name="content"><?php
+                                    if (set_value('content') != "") {
+                                        echo set_value('content');
+                                    } else if (isset($content)) {
+                                        echo $content;
+                                    }
+                                    ?></textarea>
+                                    <label class="error"><?php echo form_error('content'); ?></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -40,6 +49,8 @@
                                     <input class="form-control" name="meta_title" id="meta_title" type="text" value="<?php
                                     if (set_value('meta_title') != "") {
                                         echo set_value('meta_title');
+                                    } else if (isset($meta_title)) {
+                                        echo $meta_title;
                                     }
                                     ?>">
                                     <label class="error"><?php echo form_error('meta_title'); ?></label>
@@ -51,6 +62,8 @@
                                     <input class="form-control" name="meta_description" id="meta_description" type="text" value="<?php
                                     if (set_value('meta_description') != "") {
                                         echo set_value('meta_description');
+                                    } else if (isset($meta_description)) {
+                                        echo $meta_description;
                                     }
                                     ?>">
                                     <label class="error"><?php echo form_error('meta_description'); ?></label>
@@ -62,6 +75,8 @@
                                     <input class="form-control" name="meta_keywords" id="meta_keywords" type="text" value="<?php
                                     if (set_value('meta_keywords') != "") {
                                         echo set_value('meta_keywords');
+                                    } else if (isset($meta_keywords)) {
+                                        echo $meta_keywords;
                                     }
                                     ?>">
                                     <label class="error"><?php echo form_error('meta_keywords'); ?></label>

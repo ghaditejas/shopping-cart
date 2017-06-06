@@ -8,6 +8,7 @@ class Product extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('product_model', 'product');
+        $this->load->model('My_account_model', 'account');
     }
 
     public function view($id = "") {
@@ -72,18 +73,31 @@ class Product extends CI_Controller {
             $cart[$id] = $data;
             $this->session->set_userdata('cart', $cart);
             $message = "Product Added Successfully";
+            $redirect=0;
         }
         if ($operation == "remove") {
             $cart = $this->session->userdata('cart');
             unset($cart[$id]);
             $this->session->set_userdata('cart', $cart);
             $message = " Product Removed From Cart";
+            $cart=$this->session->userdata('cart');
+            if(empty($cart)){
+                $redirect=1;
+            }else{
+                $redirect=0;
+            }
         }
-        echo $message;
+        $data=array(
+            'message' => $message,
+            'redirect' => $redirect
+        );
+        echo json_encode($data);
+        exit;
     }
 
     public function cart_view() {
         $data['cart'] = $this->session->userdata('cart');
+        $data['currency'] = $this->product->get_currency('currency');
         $data['page'] = 'home/cart_view';
         $this->load->view('home_template', $data);
     }
@@ -105,9 +119,9 @@ class Product extends CI_Controller {
             $user_id = $this->session->userdata('userid');
             $result = $this->product->remove_wishlist($user_id, $id);
             if ($result) {
-                $message = "Product Added Successfully in Wishlist";
+                $message = "Product Removed Successfully in Wishlist";
             } else {
-                $message = "Error while Adding  product to wishlist";
+                $message = "Error while Removing  product to wishlist";
             }
         }
         echo $message;
@@ -121,6 +135,22 @@ class Product extends CI_Controller {
             $data['wishlist'] = array();
         }
         $data['page'] = 'home/wishlist';
+        $this->load->view('home_template', $data);
+    }
+
+    public function checkout() {
+        $data['cart'] = $this->session->userdata('cart');
+        if (empty($data['cart'])) {
+            redirect(base_url());
+        } else if ($this->session->userdata('loggedin')) {
+            $data['currency'] = $this->product->get_currency('currency');
+            $user_id = $this->session->userdata('userid');
+            $data['address'] = $this->account->get_addresses($user_id);
+            $data['page'] = 'home/checkout';
+        } else {
+            $data['error'] = "";
+            $data['page'] = 'home/login';
+        }
         $this->load->view('home_template', $data);
     }
 

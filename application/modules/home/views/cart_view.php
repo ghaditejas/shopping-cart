@@ -25,11 +25,12 @@
                                     <a href=""><img src="<?php echo base_url(); ?>upload/product/<?php echo $_value['image'] ?> " alt="" style="height:100px;width:80px"></a>
                                 </td>
                                 <td class="cart_description" style="vertical-align:middle">
-                                    <h4><?php echo $_value['name'] ?></h4>
-                                    <p><?php echo $_value['rowid'] ?></p>
+                                    <h4><?php echo $_value['name']; ?></h4>
+                                    <p><?php echo $_value['rowid'];?></p>
                                 </td>
                                 <td class="cart_price" style="vertical-align:middle">
-                                    <p><?php echo $_value['price'] ?></p>
+                                    <p><?php echo $currency;?>
+                                    <?php echo $_value['price']; ?></p>
                                 </td>
                                 <td class="cart_quantity" style="vertical-align:middle">
                                     <div class="cart_quantity_button">
@@ -39,7 +40,9 @@
                                     </div>
                                 </td>
                                 <td class="cart_total" style="vertical-align:middle">
-                                    <p class="cart_total_price"><?php echo $_value['sub_total'] ?></p>
+                                    <p class="cart_total_price"><?php 
+                                    echo $currency;?>
+                                    <?php echo $_value['sub_total'] ?></p>
                                 </td>
                                 <td class="cart_delete" style="border:0px">
                                     <a class="cart_quantity_delete remove-from-cart" href="javascript:void(0)" id="<?php echo $_key ?>"><i class="fa fa-times"></i></a>
@@ -65,10 +68,15 @@
         var that=$(this);
         $.ajax({
             url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
-            success: function (message) {
-                if (message) {
-                    notify(message,"success","top","right");
-                    that.closest('tr').remove();
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    notify(data.message,"success","top","right");
+                       if(data.redirect){
+                            window.location.href = '<?php echo base_url();?>';
+                        }else{
+                        that.closest('tr').remove();
+                    }
                 } else {
                     alert("error while" + message);
                 }

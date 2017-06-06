@@ -43,7 +43,7 @@
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>coupon/coupon/view')" class="btn btn-danger">Cancel</button>
+                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>user_queries/user_queries/view')" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
                 </div>

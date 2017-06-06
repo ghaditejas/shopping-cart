@@ -69,7 +69,7 @@
                                         <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
                                         <li><a href="<?php echo base_url(); ?>home/product/wishlist_view"><i class="fa fa-star"></i> Wishlist</a></li>
                                     <?php } ?>
-                                    <li><a href="#"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                        <li><a href="<?php echo base_url(); ?>home/product/checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                     <li><a href="<?php echo base_url(); ?>home/product/cart_view"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                                     <?php if ($this->session->userdata('loggedin')) { ?>
                                         <li><a href="<?php echo base_url(); ?>home/login/logout"><i class="fa fa-lock"></i> Logout</a></li>

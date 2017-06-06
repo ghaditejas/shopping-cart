@@ -65,15 +65,16 @@ $cart = $this->session->userdata('cart');
         var operation = "add";
         $.ajax({
             url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
-            success: function (message) {
-                if (message) {
-                    notify(message, "success", "top", "right");
+            dataType:'json',
+            success: function (data) {
+                if (data) {
+                    notify(data.message, "success", "top", "right");
                 } else {
-                    alert("error while" + message)
+                    alert("error while" + data.message)
                 }
             }
         })
-    })
+    });
     $('.remove-from-cart').click(function () {
         $(this).removeClass("remove-from-cart");
         $(this).addClass("add-to-cart");
@@ -82,15 +83,16 @@ $cart = $this->session->userdata('cart');
         var operation = "remove";
         $.ajax({
             url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
-            success: function (message) {
-                if (message) {
-                    notify(message, "success", "top", "right");
+            dataType:'json',
+            success: function (data) {
+                if (data) {
+                    notify(data.message, "success", "top", "right");
                 } else {
-                    alert("error while" + message)
+                    alert("error while" + data.message)
                 }
             }
         })
-    })
+    });
     $('.add-to-wishlist').click(function () {
 <?php if ($this->session->userdata('loggedin')) { ?>
             $(this).removeClass("add-to-wishlist");
@@ -111,7 +113,7 @@ $cart = $this->session->userdata('cart');
 <?php } else { ?>
             window.location = "<?php echo base_url(); ?>home/login/login";
 <?php } ?>
-    })
+    });
 
     $('.remove-from-wishlist').click(function () {
   <?php if ($this->session->userdata('loggedin')) { ?>
@@ -133,5 +135,5 @@ $cart = $this->session->userdata('cart');
 <?php } else { ?>
             window.location = "<?php echo base_url(); ?>home/login/login";
 <?php } ?>
-    })
+    });
 </script>

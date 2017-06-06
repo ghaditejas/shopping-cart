@@ -72,5 +72,25 @@ class Home_model extends CI_Model{
                 
     }
     
+    public function get_title() {
+        $this->db->select('title,slug');
+        $query = $this->db->get('cms')->result_array();
+        if($query){
+            return $query;
+        }else{
+            return false;
+        }
+    }
+    
+    public function get_content($slug) {
+        $this->db->select('content,title');
+        $this->db->where('slug',$slug);
+        $query = $this->db->get('cms')->row_array();
+        if($query){
+            return $query;
+        }else{
+            return false;
+        }
+    }
 }
 ?>
