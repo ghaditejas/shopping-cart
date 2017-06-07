@@ -52,7 +52,7 @@ class Product extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
-    public function cart($operation, $id) {
+    public function cart($operation, $id, $quantity = "") {
         if ($operation == "add") {
             $data = $this->product->get_cart_product($id);
             $cart = $this->session->userdata('cart');
@@ -73,24 +73,44 @@ class Product extends CI_Controller {
             $cart[$id] = $data;
             $this->session->set_userdata('cart', $cart);
             $message = "Product Added Successfully";
-            $redirect=0;
-        }
-        if ($operation == "remove") {
+            $redirect = 0;
+        } else if ($operation == "update") {
+            $cart = $this->session->userdata('cart');
+            $subtotal = $cart[$id]['sub_total'] / $cart[$id]['quantity'];
+            $cart[$id]['quantity'] = $quantity;
+            $cart[$id]['sub_total'] = $subtotal * $quantity;
+            $this->session->set_userdata('cart', $cart);
+            $message = " Product in Cart Updated Successfully";
+            $cart = $this->session->userdata('cart');
+            $total=0;
+            foreach($cart as $row){
+                $total=$total+$row['sub_total'];
+            }
+            $redirect = 0;
+            $data = array(
+                'quantity' => $quantity,
+                'subtotal' => $subtotal * $quantity,
+                'total' => $total
+            );
+        } else if ($operation == "remove") {
             $cart = $this->session->userdata('cart');
             unset($cart[$id]);
             $this->session->set_userdata('cart', $cart);
             $message = " Product Removed From Cart";
-            $cart=$this->session->userdata('cart');
-            if(empty($cart)){
-                $redirect=1;
-            }else{
-                $redirect=0;
+            $cart = $this->session->userdata('cart');
+            $total=0;
+            foreach($cart as $row){
+                $total=$total+$row['sub_total'];
             }
+            if (empty($cart)) {
+                $redirect = 1;
+            } else {
+                $redirect = 0;
+            }
+            $data=array('total'=>$total);
         }
-        $data=array(
-            'message' => $message,
-            'redirect' => $redirect
-        );
+        $data['message'] = $message;
+        $data['redirect'] = $redirect;
         echo json_encode($data);
         exit;
     }

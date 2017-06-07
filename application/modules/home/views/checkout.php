@@ -1,6 +1,5 @@
 <?php
 $total = 0;
-pr($this->session->ALL_userdata());
 ?>
 <section id="cart_items">
     <div class="container">
@@ -32,7 +31,7 @@ pr($this->session->ALL_userdata());
                         foreach ($cart as $_key => $_value) {
                             $total = $total + $_value['sub_total'];
                             ?>
-                            <tr>
+                            <tr class="cart_listing">
                                 <td class="cart_product" style="border:0px">
                                     <a href=""><img src="<?php echo base_url(); ?>upload/product/<?php echo $_value['image'] ?> " alt="" style="height:100px;width:80px"></a>
                                 </td>
@@ -41,19 +40,19 @@ pr($this->session->ALL_userdata());
                                     <p><?php echo $_value['rowid'] ?></p>
                                 </td>
                                 <td class="cart_price" style="vertical-align:middle">
-                                    <p><?php echo $currency ?>
-                                        <?php echo $_value['price'] ?></p>
+                                    <p><?php echo $currency; ?>
+                                        <?php echo $_value['price']; ?></p>
                                 </td>
                                 <td class="cart_quantity" style="vertical-align:middle">
                                     <div class="cart_quantity_button">
-                                        <a class="cart_quantity_up" href="javascript:void(0)" id="<?php echo $_key; ?>"> + </a>
-                                        <input class="cart_quantity_input" name="quantity" disabled="" value="1" autocomplete="off" size="2" type="text">
-                                        <a class="cart_quantity_down" href="javascript:void(0)" id="<?php echo $_key; ?>"> - </a>
+                                        <a class="cart_quantity_change" href="javascript:void(0)" id="<?php echo $_key; ?>" data-quantity="incr"> + </a>
+                                        <input class="cart_quantity_input" name="quantity" disabled="" value="<?php echo $_value['quantity']; ?>" autocomplete="off" size="2" type="text">
+                                        <a class="cart_quantity_change" href="javascript:void(0)" id="<?php echo $_key; ?>" data-quantity="decr"> - </a>
                                     </div>
                                 </td>
                                 <td class="cart_total" style="vertical-align:middle">
-                                    <p class="cart_total_price"><?php echo $currency; ?>
-                                        <?php echo $_value['sub_total']; ?></p>
+                                    <p class="cart_total_price"><?php echo $currency; ?><span class="total">
+                                            <?php echo $_value['sub_total']; ?></span></p>
                                 </td>
                                 <td class="cart_delete" style="border:0px">
                                     <a class="cart_quantity_delete remove-from-cart" href="javascript:void(0)" id="<?php echo $_key ?>"><i class="fa fa-times"></i></a>
@@ -75,25 +74,26 @@ pr($this->session->ALL_userdata());
                                     <?php if (!empty($cart)) { ?>   
                                         <tr>
                                             <td>Cart Sub Total</td>
-                                            <td><?php echo $currency; ?>
-                                                <?php echo $total; ?></td>
+                                            <td><span><?php echo $currency; ?>
+                                                    <span class="subtotal_bill"><?php echo $total; ?></span></span></td>
                                         </tr>
                                         <tr class="shipping-cost">
                                             <td>Shipping Cost</td>
-                                            <?php if ($total > 5000) { ?>
-                                                <td>Free</td>		
-                                                <?php
-                                            } else {
-                                                $total = $total + 500;
-                                                ?>
-                                                <td><?php echo $currency; ?>
-                                                    500</td>
-                                            <?php } ?>
+                                            <td><span><?php echo $currency; ?>
+                                                    <?php if ($total > 5000) { ?>
+                                                        <span class="shipping_tax">0</span>		
+                                                        <?php
+                                                    } else {
+                                                        $total = $total + 500;
+                                                        ?>
+                                                        <?php echo $currency; ?>
+                                                        <span class="shipping_tax">500</span>
+                                                    <?php } ?></span></td>
                                         </tr>
                                         <tr>
                                             <td>Total</td>
                                             <td><span><?php echo $currency; ?>
-                                                    <?php echo $total; ?></span></td>
+                                                    <span class="total_bill"> <?php echo $total; ?></span></span></td>
                                         </tr>
                                     <?php } ?>  
                                 </tbody>
@@ -104,72 +104,87 @@ pr($this->session->ALL_userdata());
             </table>
         </div>
         <div class="shopper-informations">
-            <div class="row">
-                <div class="col-md-12 clearfix">
-                    <div class="bill-to" style="margin-right:10px;">
-                        <div class="form-one">
-                            <p>Bill To:
-                                <select class="select" id="bill-address">
-                                    <option value="">Select Address</option>
-                                    <?php foreach ($address as $row) { ?>
-                                        <option value="<?php echo $row['id'] ?>"><?php echo $row['address_1'] . ',' . $row['address_2'] . ',' . $row['city'] . ',' . $row['state'] . ',' . $row['country'] . ',' . $row['zipcode']; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </p>
-                            <form> 
-                                <input placeholder="First Name *" type="text" id="first_name" name="firstname">
-                                <input placeholder="Last Name *" type="text" id="last_name" name="lastname">
-                                <input placeholder="Email*" type="text" id="email" name="email">
-                                <input placeholder="Address 1 *" type="text" id="address_1" name="address_1">
-                                <input placeholder="Address 2" type="text" id="address_2" name="address_2">
-                                <input placeholder="Country*" type="text" id="country" name="country">
-                                <input placeholder="State*" type="text" id="state" name="state">
-                                <input placeholder="Zip / Postal Code *" type="text" id="zip" name="zip">
-                                <input placeholder="Mobile Phone" type="text" id="mobile" name="mobile">
-                            </form>
-                            <label><input class="checkbox uncheck" id="ship_check" type="checkbox">Same for Ship Address</label>
+            <form  id="" action="<?php echo base_url()?>home/checkout/bill" method="post">
+                <div class="row">
+                    <div class="col-md-12 clearfix">
+                        <div class="bill-to" style="margin-right:10px;">
+
+                            <div class="form-one">
+                                <p>Bill To:
+                                    <select class="select" id="bill-address">
+                                        <option value="">Select Address</option>
+                                        <?php foreach ($address as $row) { ?>
+                                            <option value="<?php echo $row['id'] ?>"><?php echo $row['address_1'] . ',' . $row['address_2'] . ',' . $row['city'] . ',' . $row['state'] . ',' . $row['country'] . ',' . $row['zipcode']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </p>
+                                <input placeholder="First Name *" type="text" id="first_name" name="firstname" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('first_name')){echo set_value('first_name');}?>' >
+                                <label class="error" style='color:red;'><?php echo form_error('first_name');?></label>
+                                <input placeholder="Last Name *" type="text" id="last_name" name="lastname" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('lastname')){echo set_value('lastname');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('last_name');?></label>
+                                <input placeholder="Email*" type="text" id="email" name="email" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('email')){echo set_value('email');}?>'> 
+                                <label class="error" style='color:red;'><?php echo form_error('email');?></label>
+                                <input placeholder="Address 1 *" type="text" id="address_1" name="address_1" class='input' style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('address_1')){echo set_value('address_1');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('address_1');?></label>
+                                <input placeholder="Address 2" type="text" id="address_2" name="address_2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('address_2')){echo set_value('address_2');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('address_2');?></label>
+                                <input placeholder="City*" type="text" id="city" name="city" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('city')){echo set_value('city');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('city');?></label>
+                                <input placeholder="Country*" type="text" id="country" name="country" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('country')){echo set_value('country');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('country');?></label>
+                                <input placeholder="State*" type="text" id="state" name="state" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('state')){echo set_value('state');}?>'>
+                                <label class="error"><?php echo form_error('state');?></label>
+                                <input placeholder="Zip / Postal Code *" type="text" id="zip" name="zip" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('zip')){echo set_value('zip');}?>'>
+                                <label class="error"><?php echo form_error('zip');?></label>
+                                <input placeholder="Mobile Phone" type="text" id="mobile" name="mobile" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('mobile')){echo set_value('mobile');}?>'>
+                                <label class="error"><?php echo form_error('mobile');?></label>
+                                <p>
+                                <label><input class="checkbox uncheck" id="ship_check" type="checkbox">Same for Ship Address</label>
+                                </p>
+                            </div>
+
+                            <div class="form-two">
+                                <p>Ship To:
+                                    <select  class="select" id="ship-address">
+                                        <option value="" >Select Address</option>
+                                        <?php foreach ($address as $row) { ?>
+                                            <option value="<?php echo $row['id'] ?>"><?php echo $row['address_1'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </p>
+
+                                <input placeholder="First Name *" type="text" id="first_name2" name="firstname2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('firstname2')){echo set_value('firstname2');}?>'>
+                                <label class="error"><?php echo form_error('firstname2');?></label>
+                                <input placeholder="Last Name *" type="text" id="last_name2" name="lastname2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('lastname2')){echo set_value('lastname2');}?>'>
+                                <label class="error"><?php echo form_error('lastname2');?></label>
+                                <input placeholder="Email*" type="text" id="email2" name="email2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('email2')){echo set_value('email2');}?>'>
+                                <label class="error"><?php echo form_error('email2');?></label>
+                                <input placeholder="Address 1 *" type="text" id="address_12" name="address_12" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('address_12')){echo set_value('address_12');}?>'>
+                                <label class="error"><?php echo form_error('address_12');?></label>
+                                <input placeholder="Address 2" type="text" id="address_22" name="address_22" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('address_22')){echo set_value('address_22');}?>'>
+                                <label class="error"><?php echo form_error('address_22');?></label>
+                                <input placeholder="City*" type="text" id="city2" name="city2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('city2')){echo set_value('city2');}?>'>
+                                <label class="error" style='color:red;'><?php echo form_error('city2');?></label>
+                                <input placeholder="Country*" type="text" id="country2" name="country2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('country2')){echo set_value('country2');}?>'>
+                                <label class="error"><?php echo form_error('country2');?></label>
+                                <input placeholder="State*" type="text" id="state2" name="state2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('state2')){echo set_value('state2');}?>'>
+                                <label class="error"><?php echo form_error('state2');?></label>
+                                <input placeholder="Zip / Postal Code *" type="text" id="zip2" name="zip2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('zip2')){echo set_value('zip2');}?>'>
+                                <label class="error"><?php echo form_error('zip2');?></label>
+                                <input placeholder="Mobile Phone" type="text" id="mobile2" name="mobile2" style='background:#F0F0E9;border: 0 none;margin-bottom:10px;padding:10px;width:100%;font-weight:300' value='<?php if(set_value('mobile2')){echo set_value('mobile2');}?>'>
+                                <label class="error"><?php echo form_error('mobile2');?></label>
+
+                            </div>
+
                         </div>
 
-                        <div class="form-two">
-                            <p>Ship To:
-                                <select  class="select" id="ship-address">
-                                    <option value="" >Select Address</option>
-                                    <?php foreach ($address as $row) { ?>
-                                        <option value="<?php echo $row['id'] ?>"><?php echo $row['address_1'] ?></option>
-                                    <?php } ?>
-                                </select>
-                            </p>
-                            <form> 
-                                <input placeholder="First Name *" type="text" id="first_name2" name="firstname">
-                                <input placeholder="Last Name *" type="text" id="last_name2" name="lastname">
-                                <input placeholder="Email*" type="text" id="email2" name="email">
-                                <input placeholder="Address 1 *" type="text" id="address_12" name="address_1">
-                                <input placeholder="Address 2" type="text" id="address_22" name="address_2">
-                                <input placeholder="Country*" type="text" id="country2" name="country">
-                                <input placeholder="State*" type="text" id="state2" name="state">
-                                <input placeholder="Zip / Postal Code *" type="text" id="zip2" name="zip">
-                                <input placeholder="Mobile Phone" type="text" id="mobile2" name="mobile">
-                            </form>
-                        </div>
                     </div>
 
                 </div>
+                <input  type="submit" class="btn btn-danger" value='Continue' style="width:250px;height:50px">
+            </form>
+        </div>
 
-            </div>
-        </div>
-        <div class="payment-options">
-            <div class="row">
-                <span>
-                    <label><input type="checkbox"> Direct Bank Transfer</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Check Payment</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Paypal</label>
-                </span>
-            </div>
-        </div>
 </section>
 <script>
     function set_addr_values(address) {
@@ -268,20 +283,67 @@ pr($this->session->ALL_userdata());
             var that = $(this);
             $.ajax({
                 url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id,
-                dataType:'json',
+                dataType: 'json',
                 success: function (data) {
                     if (data) {
                         notify(data.message, "success", "top", "right");
-                        if(data.redirect){
-                            window.location.href = '<?php echo base_url();?>';
-                        }else{
-                        that.closest('tr').remove();
-                    }
+                        if (data.redirect) {
+                            window.location.href = '<?php echo base_url(); ?>';
+                        } else {
+                            that.closest('tr').remove();
+                        }
+                        that.closest('.cart_listing').find('.total').text(data.subtotal);
+                        $('.subtotal_bill').text(data.total);
+                        if (data.total > 5000) {
+                            $('.shipping_tax').text('free');
+                            $('.total_bill').text(data.total);
+                        } else {
+                            var total = data.total + 500;
+                            $('.shipping_tax').text('500');
+                            $('.total_bill').text(total);
+                        }
                     } else {
                         alert("error while" + message);
                     }
                 }
             });
+        });
+        $(".cart_quantity_change").click(function () {
+            var id = $(this).attr('id');
+            var quantity = $(this).closest('.cart_listing').find('.cart_quantity_input').val();
+            if ($(this).attr('data-quantity') == 'incr') {
+                quantity++;
+            } else {
+                quantity--;
+            }
+            var operation = "update";
+            var that = $(this);
+            if (quantity > 0) {
+                $.ajax({
+                    url: '<?php echo base_url(); ?>home/product/cart/' + operation + '/' + id + '/' + quantity,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            notify(data.message, "success", "top", "right");
+                            that.closest('.cart_listing').find('.cart_quantity_input').val(data.quantity);
+                            that.closest('.cart_listing').find('.total').text(data.subtotal);
+                            $('.subtotal_bill').text(data.total);
+                            if (data.total > 5000) {
+                                $('.shipping_tax').text('free');
+                                $('.total_bill').text(data.total);
+                            } else {
+                                var total = data.total + 500;
+                                $('.shipping_tax').text('500');
+                                $('.total_bill').text(total);
+                            }
+                        } else {
+                            alert("error while" + message);
+                        }
+                    }
+                });
+            } else {
+                notify('Invalid Quantity', "success", "top", "right");
+            }
         });
     });
 </script>

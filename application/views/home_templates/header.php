@@ -13,7 +13,6 @@
         <link href="<?php echo base_url(); ?>public/frontend/css/animate.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>public/frontend/css/main.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>public/frontend/css/responsive.css" rel="stylesheet">
-        <link href="<?php echo base_url(); ?>public/bootstrap/css/custom.css" rel="stylesheet">
         <script src="<?php echo base_url(); ?>public/frontend/js/jquery.js"></script>
         <script src="<?php echo base_url(); ?>public/frontend/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="<?php echo base_url(); ?>public/dist/css/AdminLTE.min.css">
@@ -24,6 +23,7 @@
         <script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>public/bootstrap/js/jquery.validate.min.js"></script>
         <script src="<?php echo base_url(); ?>public/bootstrap/js/additional-methods.min.js"></script>
+        <link href="<?php echo base_url(); ?>public/bootstrap/css/custom.css" rel="stylesheet">
     </head><!--/head-->
 
     <body>
@@ -69,7 +69,7 @@
                                         <li><a href="<?php echo base_url(); ?>home/my_account/view"><i class="fa fa-user"></i> Account</a></li>
                                         <li><a href="<?php echo base_url(); ?>home/product/wishlist_view"><i class="fa fa-star"></i> Wishlist</a></li>
                                     <?php } ?>
-                                        <li><a href="<?php echo base_url(); ?>home/product/checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                        <li><a href="<?php echo base_url(); ?>home/checkout/checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                     <li><a href="<?php echo base_url(); ?>home/product/cart_view"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                                     <?php if ($this->session->userdata('loggedin')) { ?>
                                         <li><a href="<?php echo base_url(); ?>home/login/logout"><i class="fa fa-lock"></i> Logout</a></li>
