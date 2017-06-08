@@ -106,6 +106,7 @@ class Checkout extends CI_Controller {
     }
 
     public function order() {
+        $coupon = $this->session->userdata('coupon');
         $cart = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -113,9 +114,9 @@ class Checkout extends CI_Controller {
             if ($this->form_validation->run() == False) {
                 $data['bill'] = json_decode($this->input->post('address'), true);
                 $data['payment'] = $this->checkout->get_payment_gateway();
-                $dat['cart'] = $cart;
+                $data['cart'] = $cart;
                 $data['page'] = 'home/order_review';
-                
+
                 $this->load->view('home_template', $data);
             } else {
                 $bill = json_decode($this->input->post('address'), true);
@@ -139,10 +140,16 @@ class Checkout extends CI_Controller {
                     'shipping_state' => $bill['shipping_state'],
                     'shipping_zipcode' => $bill['shipping_zipcode'],
                     'shipping_mobile' => $bill['shipping_mobile'],
+                    'billing_email'=> $bill['billing_email'],
+                    'shipping_email'=> $bill['shipping_email']
                 );
+                if ($coupon) {
+                    $data['coupon_id'] = $coupon['id'];
+                    $data['discount'] = ($this->input->post('total') / 100) * $coupon['percent_off'];
+                }
                 $order_id = $this->checkout->place_order($data);
                 if ($order_id) {
-                    $order_details=[];
+                    $order_details = [];
                     foreach ($cart as $_k => $_v) {
                         $order_detail[] = array(
                             'order_id' => $order_id,
@@ -151,20 +158,63 @@ class Checkout extends CI_Controller {
                             'amount' => $_v['sub_total']
                         );
                     }
-                $result= $this->checkout->order_details($order_detail);
-                if($result){
-                    $this->session->unset_userdata('cart');
-                    $this->session->set_flashdata('success', 'Order Placed Successfully');
-                    redirect();
-                }else{
-                    $this->session->set_flashdata('success', 'Error Occured while Placing Order');
-                    redirec();
-                }
-                }else{
+                    $result = $this->checkout->order_details($order_detail);
+                    if ($coupon) {
+                        $coupon_used = array(
+                            'user_id' => $this->session->userdata('userid'),
+                            'order_id' => $order_id,
+                            'coupon_id' => $coupon['id'],
+                            'created_on' => date('Y-m-d')
+                        );
+                        $result1 = $this->checkout->coupons_used($coupon_used);
+                        $result2 = $this->checkout->update_coupon();
+                    }
+                    if ($result) {
+                        $this->session->unset_userdata('cart');
+                        $this->session->unset_userdata('coupon');
+                        $this->session->set_flashdata('success', 'Order Placed Successfully');
+                        redirect('home/checkout/view_invoice/'.$order_id);
+                    } else {
+                        $this->session->set_flashdata('success', 'Error Occured while Placing Order');
+                        redirect();
+                    }
+                } else {
                     $this->session->set_flashdata('success', 'Error Occured while Placing Order');
                     redirect();
                 }
             }
+        }
+    }
+
+    public function view_invoice($id) {
+        $user_id = $this->session->userdata['userid'];
+        $data['currency'] = $this->product->get_currency('currency');
+        $data['user_order'] = $this->checkout->get_user_order($id, $user_id);
+        $data['order_details'] = $this->checkout->get_order_details($id);
+        foreach ($data['order_details'] as $_k => $_v) {
+            $product = $this->checkout->get_image($_v['product_id']);
+            $_v['name'] = $product['name'];
+            $_v['image'] = $product['image_name'];
+            $_v['price'] = $product['price'];
+            $data['order_details'][$_k] = $_v;
+        }
+        $data['page'] = 'home/invoice';
+        $this->load->view('home_template', $data);
+    }
+
+    public function check_coupon($code) {
+        $user_id = $this->session->userdata('userid');
+        $coupon = $this->checkout->coupon_verify($code);
+        if ($coupon) {
+            $result = $this->checkout->coupon_use_verfy($coupon['id'], $user_id);
+            if ($result) {
+                $this->session->set_userdata('coupon', $coupon);
+                echo json_encode($coupon);
+            } else {
+                echo 0;
+            }
+        } else {
+            echo 0;
         }
     }
 

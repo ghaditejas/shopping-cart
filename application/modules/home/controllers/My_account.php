@@ -8,6 +8,7 @@ class My_account extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('My_account_model', 'account');
+        $this->load->model('product_model', 'product');
     }
 
     public function view() {
@@ -80,7 +81,7 @@ class My_account extends CI_Controller {
 
     public function address($id = "") {
         $data['error'] = "";
-        $user_id=$this->session->userdata('userid');
+        $user_id = $this->session->userdata('userid');
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('address1', 'Address1', 'required');
             $this->form_validation->set_rules('city', 'City', 'required|callback_alpha_spaces');
@@ -108,7 +109,7 @@ class My_account extends CI_Controller {
                         redirect('home/my_account/address');
                     } else {
                         $this->session->set_flashdata('success', 'Error occurred while adding Address');
-                        redirect('coupon/coupon/add');
+                        redirect('home/my_account/address');
                     }
                 } else {
                     $result = $this->account->update_address($id, $data);
@@ -117,7 +118,7 @@ class My_account extends CI_Controller {
                         redirect('home/my_account/address');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying Coupon');
-                        redirect('coupon/coupon/add/' . $id);
+                        redirect('home/my_account/address' . $id);
                     }
                 }
             }
@@ -133,8 +134,8 @@ class My_account extends CI_Controller {
         } else {
             $draw = 1;
         }
-        $user_id=$this->session->userdata('userid');
-        $recordsFiltered = $recordsTotal = $this->account->get_address_count();
+        $user_id = $this->session->userdata('userid');
+        $recordsFiltered = $recordsTotal = $this->account->get_address_count($user_id);
         $records = $this->account->get_addresses($user_id);
         $data = [];
         foreach ($records as $row) {
@@ -155,6 +156,76 @@ class My_account extends CI_Controller {
         $data = $this->account->get_address($id);
         echo json_encode($data);
         exit;
+    }
+
+    public function my_orders() {
+        $data['page'] = 'home/my_order';
+        $this->load->view('home_template', $data);
+    }
+
+    public function get_orders() {
+        if (isset($_GET['draw'])) {
+            $draw = $_GET['draw'];
+        } else {
+            $draw = 1;
+        }
+        if (isset($_GET['search']['value'])) {
+            $search = $_GET['search']['value'];
+        } else {
+            $search = "";
+        }
+        if (isset($_GET['order']['0']['dir'])) {
+            $sort = $_GET['order']['0']['dir'];
+        } else {
+            $sort = "desc";
+        }
+        $user_id = $this->session->userdata('userid');
+        $recordsFiltered = $recordsTotal = $this->account->get_order_count($user_id, $search);
+        $records = $this->account->get_orders($user_id, $search, $sort);
+        $currency = $this->product->get_currency('currency');
+        $data = [];
+        foreach ($records as $row) {
+            $view_order = '<a href="' . base_url() . 'home/checkout/view_invoice/' . $row['id'] . '">View Order</a>';
+            $grand_total = '<span>' . $currency . '</span>' . $row['grand_total'];
+            $data[] = array($row['id'], $row['created_on'], $row['status'], $grand_total, $view_order);
+        }
+        $return = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        );
+        echo json_encode($return);
+        exit;
+    }
+
+    public function track_order() {
+        $data['error'] = '';
+        $data['track'] = 0;
+        $data['status']='';
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $this->form_validation->set_rules('order_id', 'Order Id', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            if ($this->form_validation->run() == False) {
+                $data['page'] = 'home/track_order';
+                $this->load->view('home_template', $data);
+            } else {
+                $order_id = $this->input->post('order_id');
+                $email = $this->input->post('email');
+                $result = $this->account->get_order_status($order_id, $email);
+                if ($result) {
+                    $data['status'] = $result;
+                    $data['track'] = 1;
+                } else {
+                    $data['error'] = "Invalid Details";
+                }
+                $data['page'] = 'home/track_order';
+                $this->load->view('home_template', $data);
+            }
+        } else {
+            $data['page'] = 'home/track_order';
+            $this->load->view('home_template', $data);
+        }
     }
 
 }
