@@ -57,7 +57,7 @@ $cart = $this->session->userdata('cart');
     </div><!--products-->
 </div>
 <script>
-    $('.add-to-cart').click(function () {
+     $(document).on('click','.add-to-cart',function () {
         $(this).removeClass("add-to-cart");
         $(this).addClass("remove-from-cart");
         $(this).find(".cart_heading").text("Remove from cart");
@@ -75,7 +75,7 @@ $cart = $this->session->userdata('cart');
             }
         })
     });
-    $('.remove-from-cart').click(function () {
+    $(document).on('click','.remove-from-cart',function () {
         $(this).removeClass("remove-from-cart");
         $(this).addClass("add-to-cart");
         $(this).find(".cart_heading").text("Add to cart");
@@ -93,7 +93,7 @@ $cart = $this->session->userdata('cart');
             }
         })
     });
-    $('.add-to-wishlist').click(function () {
+    $(document).on('click','.add-to-wishlist',function () {
 <?php if ($this->session->userdata('loggedin')) { ?>
             $(this).removeClass("add-to-wishlist");
             $(this).addClass("remove-from-wishlist");
@@ -115,7 +115,7 @@ $cart = $this->session->userdata('cart');
 <?php } ?>
     });
 
-    $('.remove-from-wishlist').click(function () {
+    $(document)('click','.remove-from-wishlist',function () {
   <?php if ($this->session->userdata('loggedin')) { ?>
             $(this).removeClass("remove-from-wishlist");
             $(this).addClass("add-to-wishlist");
