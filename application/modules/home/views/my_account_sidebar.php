@@ -32,7 +32,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a  href="#">
+                                <a  href="<?php echo base_url(); ?>home/product/wishlist_view">
                                     Wishlist  
                                 </a>
                             </h4>
@@ -41,8 +41,17 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a  href="#">
+                                <a  href="<?php echo base_url(); ?>home/my_account/my_orders">
                                     My Orders  
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a  href="#">
+                                    Track Orders  
                                 </a>
                             </h4>
                         </div>

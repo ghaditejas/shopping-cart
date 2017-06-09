@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Configuration
+            Banner
         </h1>
     </section>
     <section class="content">
@@ -80,9 +80,12 @@
 <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
 <script src="<?php echo base_url(); ?>public/bootstrap/js/validation.js"></script>
 <script>
-    if(<?php echo isset($edit_id);?>){
-    setTimeout(function () {
-        $("#banner_img").rules("remove", "required");
-    }, 400);}
+<?php if (isset($edit_id)) { ?>
+
+        setTimeout(function () {
+            $("#banner_img").rules("remove", "required");
+        }, 400);
+
+<?php } ?>
 </script>
 

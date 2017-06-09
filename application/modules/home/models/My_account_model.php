@@ -55,11 +55,47 @@ class My_account_model extends CI_Model {
         return $query->result_array();
     }
     
-    public function get_address_count(){
+    public function get_address_count($user_id){
         $this->db->select('COUNT(id) AS cnt');
+        $this->db->where('user_id',$user_id);
         $query=$this->db->get('user_address')->row();
         return $query->cnt;
     }
+    
+    public function get_order_count($user_id,$search){
+        $this->db->select('COUNT(id) AS cnt');
+        if (!empty($search)) {
+            $this->db->where('id', $search);
+        }
+        $this->db->where('user_id',$user_id);
+        $query=$this->db->get('user_order')->row_array();
+        return $query['cnt'];
+    }
+    
+    public function get_orders($user_id,$search,$sort) {
+        $this->db->select('id,created_on,status,grand_total');
+         $this->db->where('user_id',$user_id);
+         if (!empty($search)) {
+            $this->db->where('id', $search);
+        }
+        $this->db->order_by('created_on', $sort);
+        $query = $this->db->get('user_order');
+        return $query->result_array();
+    }
+    
+    public function get_order_status($order_id,$email) {
+        $this->db->select('status');
+        $this->db->where('id',$order_id)->group_start();
+        $this->db->where('billing_email',$email);
+        $this->db->or_where('shipping_email',$email)->group_end();
+        $query = $this->db->get('user_order')->row_array();
+        pr($this->db->last_query());
+        if($query){
+            return $query['status'];
+        }else{
+            return false;
+        }
+    } 
 
 }
 
