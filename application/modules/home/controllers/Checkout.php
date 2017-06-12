@@ -140,8 +140,8 @@ class Checkout extends CI_Controller {
                     'shipping_state' => $bill['shipping_state'],
                     'shipping_zipcode' => $bill['shipping_zipcode'],
                     'shipping_mobile' => $bill['shipping_mobile'],
-                    'billing_email'=> $bill['billing_email'],
-                    'shipping_email'=> $bill['shipping_email']
+                    'billing_email' => $bill['billing_email'],
+                    'shipping_email' => $bill['shipping_email']
                 );
                 if ($coupon) {
                     $data['coupon_id'] = $coupon['id'];
@@ -170,10 +170,14 @@ class Checkout extends CI_Controller {
                         $result2 = $this->checkout->update_coupon();
                     }
                     if ($result) {
-                        $this->session->unset_userdata('cart');
-                        $this->session->unset_userdata('coupon');
-                        $this->session->set_flashdata('success', 'Order Placed Successfully');
-                        redirect('home/checkout/view_invoice/'.$order_id);
+                        if ($this->input->post('pay') == 2) {
+                            $this->paypal_submit($order_id);
+                        } else {
+                            $this->session->unset_userdata('cart');
+                            $this->session->unset_userdata('coupon');
+                            $this->session->set_flashdata('success', 'Order Placed Successfully');
+                            redirect('home/checkout/view_invoice/' . $order_id);
+                        }
                     } else {
                         $this->session->set_flashdata('success', 'Error Occured while Placing Order');
                         redirect();
@@ -184,6 +188,13 @@ class Checkout extends CI_Controller {
                 }
             }
         }
+    }
+
+    public function paypal_submit($order_id) {
+        $data['discount'] = $this->checkout->get_discount($order_id);
+        $data['products'] = $this->checkout->get_product_details($order_id);
+        $data['order_id'] = $order_id;
+        $this->load->view('home/paypal', $data);
     }
 
     public function view_invoice($id) {
@@ -215,6 +226,20 @@ class Checkout extends CI_Controller {
             }
         } else {
             echo 0;
+        }
+    }
+
+    public function paypal_trans($order_id) {
+        $status = 'processing';
+        $data = array(
+            'status' => $status
+        );
+        $result = $this->checkout->update_user_order($order_id, $data);
+        if ($result) {
+            $this->session->unset_userdata('cart');
+            $this->session->unset_userdata('coupon');
+            $this->session->set_flashdata('success', 'Order Placed Successfully');
+            redirect('home/checkout/view_invoice/' . $order_id);
         }
     }
 
