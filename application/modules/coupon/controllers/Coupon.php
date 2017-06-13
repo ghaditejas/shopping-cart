@@ -1,4 +1,16 @@
 <?php
+/**
+ * Coupon Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of coupon
+ *
+ * @category Coupon
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 
 class Coupon extends CI_Controller {
 
@@ -8,6 +20,12 @@ class Coupon extends CI_Controller {
         $this->load->model('permission_model');
     }
     
+    /**
+     * Used to load coupon list page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'coupon');
         if ($result) {
@@ -17,7 +35,13 @@ class Coupon extends CI_Controller {
         }
         $this->load->view('main_template', $data);
     }
-
+    
+    /**
+     * Used to get list of coupons
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data(){
          if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -57,6 +81,12 @@ class Coupon extends CI_Controller {
         echo json_encode($return);
     }
     
+    /**
+     * Used to add/edit coupon
+     * 
+     * @method  add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add($id = '') {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('coupon_code', 'Coupon Code', 'required|alpha_numeric|is_unique[coupon.code]');

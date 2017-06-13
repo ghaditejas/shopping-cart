@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Products Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of product and attribute
+ *
+ * @category Product
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Product extends CI_Controller {
 
     public function __construct() {
@@ -12,6 +23,12 @@ class Product extends CI_Controller {
         ini_set("display_errors", "1");
     }
 
+    /**
+     * Used to load product list page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
         if ($result) {
@@ -22,6 +39,12 @@ class Product extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of products
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -71,6 +94,12 @@ class Product extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to upload banner image file
+     * 
+     * @method  do_upload
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function do_upload() {
         $file_name = false;
         $error = false;
@@ -96,6 +125,12 @@ class Product extends CI_Controller {
         return array('file_name' => $file_name, 'error' => $error);
     }
 
+    /**
+     * Used to check price_input
+     * 
+     * @method  price
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function price($number) {
         if (preg_match('/^\d{0,9}(\.\d{0,2})?$/', $number)) {
             return true;
@@ -104,7 +139,13 @@ class Product extends CI_Controller {
             return false;
         }
     }
-
+    
+    /**
+     * Used to check date
+     * 
+     * @method  checkdate
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function checkdate($string) {
         if ($this->input->post('special_price_from')) {
             $strt_time = strtotime($this->input->post('special_price_from'));
@@ -121,6 +162,12 @@ class Product extends CI_Controller {
         }
     }
 
+    /**
+     * Used to validate attribute field
+     * 
+     * @method  validate_attribute
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function validate_attribute() {
         $err = [];
         $attribute = $this->input->post('attribute[]');
@@ -135,6 +182,12 @@ class Product extends CI_Controller {
         return $err;
     }
 
+    /**
+     * Used to add product
+     * 
+     * @method  add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add() {
         $err = '';
         $file_name = '';
@@ -271,6 +324,12 @@ class Product extends CI_Controller {
         }
     }
 
+    /**
+     * Used to edit product
+     * 
+     * @method  edit
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function edit($id) {
         $err = '';
         $file_name = '';
@@ -405,6 +464,12 @@ class Product extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load attribute list page
+     * 
+     * @method  attribute_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function attribute_view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'attribute');
         if ($result) {
@@ -415,6 +480,12 @@ class Product extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of attributes
+     * 
+     * @method  get_attribute_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_attribute_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -459,6 +530,12 @@ class Product extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to add/edit attribute
+     * 
+     * @method  attribute_add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function attribute_add($id = '') {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {

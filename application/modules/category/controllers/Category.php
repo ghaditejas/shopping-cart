@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Category Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of categroy
+ *
+ * @category Category
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Category extends CI_Controller {
 
     public function __construct() {
@@ -8,6 +19,12 @@ class Category extends CI_Controller {
         $this->load->model('permission_model');
     }
 
+    /**
+     * Used to load category list page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'category');
         if ($result) {
@@ -18,6 +35,12 @@ class Category extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of categories
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -62,6 +85,12 @@ class Category extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to add/edir  category
+     * 
+     * @method  add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add($id = '') {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
