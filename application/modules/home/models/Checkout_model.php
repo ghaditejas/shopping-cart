@@ -100,6 +100,27 @@ class Checkout_model extends CI_Model {
         }
     }
     
+    public function get_discount($id){
+        $this->db->select('discount');
+        $this->db->where('id',$id);
+        $query=$this->db->get('user_order')->row_array();
+        return $query['discount'];
+    }
+    
+    public function get_product_details($order_id) {
+        $this->db->select('o.quantity,o.amount,o.product_id,o.order_id,p.name,p.id,p.price');
+        $this->db->from('order_details as o');
+        $this->db->join('product as p','o.product_id=p.id');
+        $this->db->where('o.order_id',$order_id);
+        $query=$this->db->get()->result_array();
+        return $query;
+    }
+    
+    public function update_user_order($order_id,$data) {
+        $this->db->where('id',$order_id);
+        $this->db->update('user_order',$data);
+        return true;
+    }
 
 }
 

@@ -12,7 +12,6 @@ class User_model extends CI_Model {
         $this->db->from('user');
         $this->db->join('user_role', 'user.user_id = user_role.user_id');
         $this->db->join('roles','roles.role_id=user_role.role_id');
-        $this->db->where('user_role.role_id!=', 5);
         if(!empty($search)){
             $this->db->like('firstname',$search);
             $this->db->or_like('lastname',$search);

@@ -168,27 +168,14 @@
                         </li>
                         <li class="treeview">
                             <a href="#">
-                                <i class="fa fa-cog"></i> <span>System</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="../forms/general.html"><i class="fa fa-angle-double-right "></i> General Elements</a></li>
-                                <li><a href="../forms/advanced.html"><i class="fa fa-angle-double-right "></i> Advanced Elements</a></li>
-                                <li><a href="../forms/editors.html"><i class="fa fa-angle-double-right "></i> Editors</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
                                 <i class="fa fa-bar-chart"></i> <span>Report</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="../tables/simple.html"><i class="fa fa-angle-double-right"></i> Simple tables</a></li>
-                                <li><a href="../tables/data.html"><i class="fa fa-angle-double-right"></i> Data tables</a></li>
+                                <li><a href="<?php echo base_url(); ?>order_management/order_manage/order_view"><i class="fa fa-angle-double-right"></i>Orders</a></li>
+                                <li><a href="<?php echo base_url(); ?>coupon_used/coupon_used/view"><i class="fa fa-angle-double-right"></i>Coupons</a></li>
                             </ul>
                         </li>
                 </section>                
