@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Banner Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of banner
+ *
+ * @category Banner
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Banner extends CI_Controller {
 
     public function __construct() {
@@ -9,6 +21,12 @@ class Banner extends CI_Controller {
         $this->load->library('upload');
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function banner_view() {
         $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
         if ($result) {
@@ -19,6 +37,12 @@ class Banner extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to upload banner image file
+     * 
+     * @method  do_upload
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function do_upload() {
         $file_name = false;
         $error = false;
@@ -44,24 +68,30 @@ class Banner extends CI_Controller {
         return array('file_name' => $file_name, 'error' => $error);
     }
 
+    /**
+     * Used to get list of banners
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
-        if(isset($_GET['draw'])){
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
-        }else{
+        } else {
             $draw = 1;
         }
-        if(isset($_GET['start'])){
+        if (isset($_GET['start'])) {
             $offset = $_GET['start'];
-        }else{
+        } else {
             $offset = 0;
         }
-        if(isset($_GET['length'])){
+        if (isset($_GET['length'])) {
             $limit = $_GET['length'];
-        }else{
+        } else {
             $limit = LIST_LIMIT;
         }
         $recordsFiltered = $recordsTotal = $this->banner_model->get_record_count();
-        $data = $this->banner_model->get_banners($offset,$limit);
+        $data = $this->banner_model->get_banners($offset, $limit);
         foreach ($data as $row) {
             if ($row['status'] == 1) {
                 $stat = '<span class="label label-success">Active</span>';
@@ -75,23 +105,29 @@ class Banner extends CI_Controller {
                             </a>
                         </li>
                         <li>
-                            <button class="btn btn-danger" id="delete"  onclick="javascript:delete_banner('.$row['banner_id'].')">
+                            <button class="btn btn-danger" id="delete"  onclick="javascript:delete_banner(' . $row['banner_id'] . ')">
                             <span class=""><i class="fa fa-remove"></i></span></button>
                         </li>
                         </ul> ';
             $image = '<img src="../../upload/' . $row['banner_path'] . '" style="height:120px;width:150px">';
             $checkbox = '<label><input class="checkbox checkbox_check" id="' . $row['banner_id'] . '" type="checkbox" name="cat_ids[]" value="' . $row['banner_id'] . '"></label>';
-            $ret[] = array($checkbox,$row['banner_id'],$image,$stat,$action);
+            $ret[] = array($checkbox, $row['banner_id'], $image, $stat, $action);
         }
         $return = array(
             'draw' => $draw,
-            'recordsTotal'=>$recordsTotal,
-            'recordsFiltered'=>$recordsFiltered,
-            'data'=>$ret
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $ret
         );
         echo json_encode($return);
     }
 
+    /**
+     * Used to add/edir  banner
+     * 
+     * @method  add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add($id = "") {
         $file_name = '';
         $data['stat'] = 1;
@@ -167,6 +203,12 @@ class Banner extends CI_Controller {
         }
     }
 
+    /**
+     * Used to delete banner
+     * 
+     * @method  add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function delete() {
         $data = $this->input->post('banner_id');
         $res = $this->banner_model->delete_banner($data);
