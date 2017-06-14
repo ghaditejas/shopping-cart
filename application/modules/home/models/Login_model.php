@@ -19,6 +19,17 @@ class Login_model extends CI_Model {
         }
     }
     
+    public function check_user($tokken,$api){
+        $this->db->select('user_id,firstname,lastname,email');
+        if($api=='Google'){
+            $this->db->where('google_token',$tokken);
+        }else if($api == 'twitter'){
+            $this->db->where('twitter_token',$tokken);
+        }
+        $query = $this->db->get('user')->row_array();
+        return $query;
+    }
+    
     public function insert_user($data){
         $this->db->insert('user', $data);
         if ($this->db->insert_id()) {

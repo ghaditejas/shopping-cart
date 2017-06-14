@@ -33,6 +33,8 @@
                         <a href="javascript:void(0)"><label id="Forget_password">Forget Password</label></a>
                         <button type="submit" value="login" class="btn btn-default" name="login">Login</button>
                     </form>
+                    <button class="btn btn-danger" style="margin-top: 5px"><a href="<?php echo base_url();?>home/google_login" style="color:white"><i class="fa fa-google-plus"></i>Login with Google</a></button><br>
+                    <button class="btn btn-danger" style="margin-top: 5px"><a href="<?php echo base_url();?>home/twitter_login/auth" style="color:white"><i class="fa fa-twitter"></i>Login with twitter</a></button>
                 </div><!--/login form-->
                 <div class="login-form" id="forgot_pass_form" <?php
                 if (isset($forget)) {

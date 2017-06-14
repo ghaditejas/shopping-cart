@@ -18,6 +18,7 @@ class Twitter_login extends CI_Controller {
      */
     function __construct() {
         parent::__construct();
+        $this->load->model('login_model', 'login');
         $this->load->library('twitteroauth');
         $this->config->load('twitter');      
         if ($this->session->userdata('access_token') && $this->session->userdata('access_token_secret')) {
@@ -58,7 +59,6 @@ class Twitter_login extends CI_Controller {
     public function callback() {
         if (!$this->input->get('oauth_token') && $this->session->userdata('request_token') !== $this->input->get('oauth_token')) {
             $this->reset_session();
-            // set falsh message for login fail
             redirect(base_url('/twitter/auth'));
         } else {
             $access_token = $this->connection->getAccessToken($this->input->get('oauth_verifier'));            
@@ -124,13 +124,32 @@ class Twitter_login extends CI_Controller {
     }
 
     public function set_userdata($data){
-        pr($data);
-        exit;
-        // db table entry
-        // instance session setup
-        
+        $role = 5;
+        $role_array = array();
+        $user = $this->login->check_user($data['user_id'], 'twitter');
+        if ($user) {
+            $this->session->set_userdata('loggedin', 1);
+            $this->session->set_userdata('userig', $user['user_id']);
+            $this->session->set_userdata('fname', $user['firstname']);
+            $this->session->set_userdata('lname', $user['lastname']);
+            $this->session->set_userdata('email_id', $user['email']);
+        } else {
+            $user_data=array(
+                'firstname'=>$data['screen_name'],
+                'lastname' =>$data['screen_name'],
+                'twitter_token' =>$data['user_id']
+            );
+            $userId = $this->login->insert_user($user_data);
+            $role_array[] = array('user_id' => $userId, 'role_id' => $role);
+            $result_ins = $this->login->insert_roles($role_array);
+            if ($result_ins) {
+                $this->session->set_userdata('loggedin', 1);
+                $this->session->set_userdata('userig', $userId);
+                $this->session->set_userdata('fname', $data['screen_name']);
+                $this->session->set_userdata('lname', $data['screen_name']);
+                $this->session->set_userdata('email_id', '');
+            }
+        }
+        redirect();
     }
 }
-
-/* End of file twitter.php */
-/* Location: ./application/controllers/twitter.php */
