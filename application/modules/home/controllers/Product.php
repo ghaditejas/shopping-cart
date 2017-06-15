@@ -11,7 +11,7 @@ class Product extends CI_Controller {
         $this->load->model('My_account_model', 'account');
     }
 
-    public function view($id = "") {
+    public function view($id = "",$offset=1) {
         $search = "";
         $min_price = "";
         $max_price = "";
@@ -20,6 +20,7 @@ class Product extends CI_Controller {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $search = $this->input->post('search');
             $id = $this->input->post('category_id');
+            $offset=$this->input->post('offset');
             if ($this->input->post('price')) {
                 $price_arr = explode(',', $this->input->post('price'));
                 $min_price = $price_arr[0];
@@ -31,11 +32,19 @@ class Product extends CI_Controller {
                 }
             }
         }
+        $limit=2;
+        $offset=($offset-1)*$limit;
+        $count=$this->product->get_product_count($id, $search, $min_price, $max_price);
+        if($count % $limit == 0){
+            $data['pages']=$count/$limit;
+        }else{
+            $data['pages']=floor(($count/$limit)+1);
+        }
         $data['currency'] = $this->product->get_currency('currency');
         $data['parent_category'] = $this->product->get_parent_category();
         $data['category'] = $this->product->get_category();
         $data['attribute'] = $this->product->get_attribute();
-        $data['product'] = $this->product->get_product($id, $search, $min_price, $max_price, $sort, $field);
+        $data['product'] = $this->product->get_product($id, $search, $min_price, $max_price, $sort, $field,$offset,$limit);
         $category = $this->product->get_category_name($id);
         $data['title'] = $category['name'];
         $data['in'] = $category['parent_id'];
@@ -47,6 +56,8 @@ class Product extends CI_Controller {
         }
         $data['id'] = $id;
         $data['search'] = $search;
+        $data['offset']=($offset/$limit)+1;
+        $data['limit']=$limit;
         $data['error'] = "";
         $data['page'] = 'home/product_view';
         $this->load->view('home_template', $data);
@@ -82,9 +93,9 @@ class Product extends CI_Controller {
             $this->session->set_userdata('cart', $cart);
             $message = " Product in Cart Updated Successfully";
             $cart = $this->session->userdata('cart');
-            $total=0;
-            foreach($cart as $row){
-                $total=$total+$row['sub_total'];
+            $total = 0;
+            foreach ($cart as $row) {
+                $total = $total + $row['sub_total'];
             }
             $redirect = 0;
             $data = array(
@@ -98,16 +109,16 @@ class Product extends CI_Controller {
             $this->session->set_userdata('cart', $cart);
             $message = " Product Removed From Cart";
             $cart = $this->session->userdata('cart');
-            $total=0;
-            foreach($cart as $row){
-                $total=$total+$row['sub_total'];
+            $total = 0;
+            foreach ($cart as $row) {
+                $total = $total + $row['sub_total'];
             }
             if (empty($cart)) {
                 $redirect = 1;
             } else {
                 $redirect = 0;
             }
-            $data=array('total'=>$total);
+            $data = array('total' => $total);
         }
         $data['message'] = $message;
         $data['redirect'] = $redirect;
@@ -171,6 +182,17 @@ class Product extends CI_Controller {
             $data['error'] = "";
             $data['page'] = 'home/login';
         }
+        $this->load->view('home_template', $data);
+    }
+
+    public function product_details($id) {
+        $data['cart'] = $this->session->userdata('cart');
+        $data['currency'] = $this->product->get_currency('currency');
+        $data['parent_category'] = $this->product->get_parent_category();
+        $data['category'] = $this->product->get_category();
+        $data['attribute'] = $this->product->get_attribute_details($id);
+        $data['product'] = $this->product->get_product_details($id);
+        $data['page'] = 'home/product_details';
         $this->load->view('home_template', $data);
     }
 

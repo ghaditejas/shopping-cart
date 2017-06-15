@@ -49,7 +49,7 @@
                                         </div>
                                     </div>-->
                     </div><!--/category-products-->
-                    <form action="<?php echo base_url(); ?>home/product/view" method="post">
+                    <form  id='filter' action="<?php echo base_url(); ?>home/product/view" method="post">
                        <div class="price-range">
                            <h2>Filter</h2>
                         <select class="form-control" name="sort">
@@ -77,7 +77,7 @@
                                         </div>
                                         <div class="tooltip-inner">2500 : 4500</div>
                                     </div>
-                                    <input type="text" class="span2" value="[2500,4500]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="[2500,4500]" id="sl2" name="price">
+                                    <input type="text" class="span2" value="[0,10000]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="[0,10000]" id="sl2" name="price">
                                 </div>
                                 <br>
                                 <b class="pull-left">$ 0</b> <b class="pull-right">$ 100000</b>
@@ -96,6 +96,12 @@
                         } else {
                             echo 0;
                         }?>'>
+                        <input type="hidden" id="offset" name='offset' value="<?php
+                        if (isset($offset)) {
+                            echo $offset;
+                        } else {
+                            echo 1;
+                        }?>">
                         <button type="submit" value="login" class="btn btn-success" name="login">Filter</button>
                     </form>
                 </div>

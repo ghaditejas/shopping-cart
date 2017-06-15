@@ -57,9 +57,10 @@
                 <div class="col-sm-3 col-sm-offset-7">
                     <div class="single-widget">
                         <h2>About Shopper</h2>
-                        <form action="#" class="searchform">
-                            <input type="text" placeholder="Your email address" />
+                        <form action="<?php base_url();?>home/index/subscribe" class="searchform" method='post'>
+                            <input type="text" name='subscribe' placeholder="Your email address" style="color:black"/>
                             <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                            <label class='error'><?php echo form_error('subscribe'); ?></label>
                             <p>Get the most recent updates from <br />our site and be updated your self...</p>
                         </form>
                     </div>

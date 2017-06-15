@@ -24,7 +24,7 @@
                             ?>
                             <tr class="cart_listing">
                                 <td class="cart_product" style="border:0px">
-                                    <a href=""><img src="<?php echo base_url(); ?>upload/product/<?php echo $_value['image'] ?> " alt="" style="height:100px;width:80px"></a>
+                                    <a href="<?php echo base_url();?>home/product/product_details/<?php echo $_key; ?>"><img src="<?php echo base_url(); ?>upload/product/<?php echo $_value['image'] ?> " alt="" style="height:100px;width:80px"></a>
                                 </td>
                                 <td class="cart_description" style="vertical-align:middle">
                                     <h4><?php echo $_value['name']; ?></h4>
