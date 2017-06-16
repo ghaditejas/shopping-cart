@@ -26,6 +26,10 @@
         <script src="<?php echo base_url(); ?>public/bootstrap/js/additional-methods.min.js"></script>
         <link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/custom.css">
         <!--<link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/ckeditor.css">-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {packages: ['corechart', 'line']});
+        </script>
     </head>
 
     <body class="hold-transition skin-blue layout-boxed sidebar-mini">

@@ -107,7 +107,15 @@ class Order_manage extends CI_Controller {
         }
         $this->load->view('invoice',$data); 
     }
-
+    
+    public function graph(){
+        $data = $this->order->get_graph_data();
+        foreach($data as $row){
+            $month[] = array($row['month'],floor($row['sale'])); 
+        }
+//        pr($month);
+        echo json_encode($month);
+    }
 }
 ?>
 

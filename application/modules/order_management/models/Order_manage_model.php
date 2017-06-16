@@ -53,6 +53,13 @@ class Order_manage_model extends CI_Model {
         return $query;
     }
 
+    public function get_graph_data() {
+        $this->db->select('SUM( grand_total ) as sale , MONTHNAME( STR_TO_DATE( DATE_FORMAT( created_on,  "%m" ) ,"%m" ) ) as month');
+        $this->db->group_by('DATE_FORMAT( created_on,  "%m" )');
+        $query = $this->db->get('user_order')->result_array();
+        return $query;
+    }
+
 }
 
 ?>

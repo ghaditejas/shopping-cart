@@ -37,6 +37,7 @@
             </div>
         </div>
     </section>
+    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
     <div id="myModal" class="modal" style='display:none'>
 
     </div>
@@ -67,6 +68,46 @@
             "lengthChange": true,
             "ajax": "<?php echo base_url(); ?>order_management/order_manage/get_data",
         });
+        $.ajax({
+            url: '<?php echo base_url(); ?>order_management/order_manage/graph',
+            dataType: 'json',
+            success: function (jsn) {
+//                var arr = [];
+//                for (var x in jsn) {
+//                    arr.push(parsed[x]);
+//                }
+//                $.each(jsn,function (x,v){
+//                  console.log(x+'---'+v);  
+//                });
+                google.charts.setOnLoadCallback(function () {
+                    // Define the chart to be drawn.
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Sales');
+                    data.addRows(jsn);
+
+                    // Set chart options
+                    var options = {
+                        chart: {
+                            title: 'Sales',
+                            subtitle: 'As per month'
+                        },
+                        hAxis: {
+                            title: 'Month',
+                        },
+                        vAxis: {
+                            title: 'Sales',
+                        },
+                        'width': 550,
+                        'height': 400
+                    };
+
+                    // Instantiate and draw the chart.
+                    var chart = new google.charts.Line(document.getElementById('container'));
+                    chart.draw(data, options);
+                });
+            }
+        });
     });
     $(document).on('click', '.bill', function () {
         var id = $(this).attr('id');
@@ -87,6 +128,6 @@
     $(document).on('click', '.close', function () {
         $('.modal').empty();
         $('.modal').css('display', "none");
-     
+
     });
 </script>

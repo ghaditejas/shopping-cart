@@ -14,6 +14,7 @@ class Index extends CI_Controller {
         $this->load->model('Home_model', 'home');
         $this->load->model('product_model', 'product');
         $this->load->library('Mcapi');
+        $this->load->library('email');
     }
 
     public function index($id = "") {
@@ -128,24 +129,29 @@ class Index extends CI_Controller {
         }
     }
 
-//    public function sentmail() {
-//        $this->mandrill->init($this->config->item('mandrill_api_key'));
-//        $mandrill_ready = TRUE;
-//        if ($mandrill_ready) {
-//            //Send us some email!
-//            $email = array(
-//                'html' => '<p>This is my message<p>', //Consider using a view file
-//                'text' => 'This is my plaintext message',
-//                'subject' => 'This is my subject',
-//                'from_email' => 'tejasg2607@gmail.com',
-//                'from_name' => 'Tejas',
-//                'to' => array(array('email' => 'tejasg2607@gmail.com')) //Check documentation for more details on this one
-//                    //'to' => array(array('email' => 'joe@example.com' ),array('email' => 'joe2@example.com' )) //for multiple emails
-//            );
-//            $result = $this->mandrill->messages_send($email);
-//        }
-//        
-//    }
+    public function sentmail() {
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => "smtp.gmail.com",
+            'port' => 465,
+            'username' => 'tejasg2607@gmail.com',
+            'password' => 'tejasg123',
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1'
+        );
+
+        // bool whether to validate email or not      
+        $this->email->set_newline("\r\n");
+        $this->email->from('tejasg2607@gmail.com');
+        $this->email->to('shreyas.dharav@wwindia.com'); //to(data['email']) send one to customer & copy to superadmin
+        $this->email->subject('subject');
+        $this->email->message('messgae');
+        if (!$this->email->send()) {
+            show_error($this->email->print_debugger());
+            echo FALSE;
+        } else
+            echo TRUE;
+    }
 
 }
 
