@@ -78,6 +78,10 @@ class User_queries extends CI_Controller {
                     'modify_by' => $this->session->userdata('user_id')
                 );
                 $this->contact->update_query($id, $data);
+                $email = $this->input->post('email');
+                $msg = $this->input->post('note');
+                $subject = $this->input->post('subject');
+                send_mail($email,$subject,$msg);
                 $this->session->set_flashdata('success', 'Note added Successfully');
                 redirect('user_queries/user_queries/view');
             }

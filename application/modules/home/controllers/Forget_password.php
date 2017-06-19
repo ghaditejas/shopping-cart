@@ -19,9 +19,9 @@ class Forget_password extends CI_Controller {
         }
     }
 
-    public function sent_email($user_id, $tokken) {
+    public function sent_email($user_id, $tokken, $email) {
         $message = "<a href='" . base_url() . "home/login/reset/" . $user_id . "/" . $tokken . "'>Click Here to Reset Password <a>";
-        return $message;
+        return send_mail($email, 'Reset Password', $message);
     }
 
     public function check() {
@@ -41,17 +41,18 @@ class Forget_password extends CI_Controller {
                 $this->load->view('home_template', $data);
             } else {
                 $tokken = md5(date('y-m-d H:i:s'));
-                $pass_data= array(
+                $email = $this->input->post('email_address');
+                $pass_data = array(
                     'user_id' => $user_id,
                     'tokken' => $tokken,
-                    'email' => $this->input->post('email_address'),
+                    'email' => $email,
                     'created_on' => date('y-m-d H:i:s'),
                 );
                 $result = $this->login->add_forget($pass_data);
                 if (true) {
-                    $sent = $this->sent_email($user_id, $tokken);
+                    $sent = $this->sent_email($user_id, $tokken, $email);
                     if ($sent) {
-                        $this->session->set_flashdata('success', $sent);
+                        $this->session->set_flashdata('success', 'Mail Has Been Sent on Given Email Id');
                     } else {
                         $this->session->set_flashdata('success', 'ERROR WHILE SENDING MAIL PLEASE TRY AGAIN');
                     }
@@ -65,7 +66,7 @@ class Forget_password extends CI_Controller {
             }
         }
     }
-     
+
 }
 
 ?>

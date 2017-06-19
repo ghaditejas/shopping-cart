@@ -60,10 +60,11 @@ class Login extends CI_Controller {
                 $data['page'] = "home/login";
                 $this->load->view('home_template', $data);
             } else {
+                $email = $this->input->post('email_id');
                 $data = array(
                     'firstname' => $this->input->post('fname'),
                     'lastname' => $this->input->post('lname'),
-                    'email' => $this->input->post('email_id'),
+                    'email' => $email,
                     'password' => md5($this->input->post('pas')),
                     'status' => 1
                 );
@@ -73,6 +74,7 @@ class Login extends CI_Controller {
                 $role_array[] = array('user_id' => $result, 'role_id' => $role);
                 $result_ins = $this->login->insert_roles($role_array);
                 if ($result && $result_ins) {
+                    send_mail($email,'Registeration Successfull','Congrats you have been registered Successfully');
                     $this->session->set_flashdata('success', 'User added Successfully');
                     redirect('/home/login/login');
                 } else {

@@ -26,11 +26,11 @@
                             </div>
                             <div class="form-group">
                                 <label>To</label>
-                                <input class="form-control" disabled="" name="email" id="percent" type="text" value="<?php echo $query['email']; ?>">
+                                <input class="form-control" readonly name="email" id="percent" type="text" value="<?php echo $query['email']; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input class="form-control" disabled="" name="subject" id="uses" type="text" value="<?php echo 'RE:'.$query['subject']; ?>">
+                                <input class="form-control" readonly name="subject" id="uses" type="text" value="<?php echo 'RE:'.$query['subject']; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Message</label>

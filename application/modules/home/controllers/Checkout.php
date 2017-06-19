@@ -199,6 +199,7 @@ class Checkout extends CI_Controller {
 
     public function view_invoice($id) {
         $user_id = $this->session->userdata['userid'];
+        $email = $this->session->userdata['email_id'];
         $data['currency'] = $this->product->get_currency('currency');
         $data['user_order'] = $this->checkout->get_user_order($id, $user_id);
         $data['order_details'] = $this->checkout->get_order_details($id);
@@ -210,6 +211,9 @@ class Checkout extends CI_Controller {
             $data['order_details'][$_k] = $_v;
         }
         $data['page'] = 'home/invoice';
+        $msg=$this->load->view('home/invoice',$data,true);
+        send_mail($email,'Order Details',$msg);
+        send_mail('tejasg2607@gmail.com','Order Details',$msg);
         $this->load->view('home_template', $data);
     }
 

@@ -46,17 +46,21 @@ class Index extends CI_Controller {
                 $data['page'] = 'home/contact_us';
                 $this->load->view('home_template', $data);
             } else {
+                $email = $this->input->post('email');
+                $msg = $this->input->post('message');
                 $data = array(
                     'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
+                    'email' => $email,
                     'subject' => $this->input->post('subject'),
-                    'message' => $this->input->post('message'),
+                    'message' => $msg,
                     'note_admin' => '',
                     'created_by' => '',
-                    'created_date' => date('Y-m-d')
+                    'created_on' => date('Y-m-d')
                 );
                 $result = $this->home->add_message($data);
                 if ($result) {
+                    $subject = 'User Query by:'.$email;
+                    send_mail('tejasg2607@gmail.com',$subject,$msg);
                     $this->session->set_flashdata('success', 'Message send Successfully');
                     redirect(base_url());
                 } else {
@@ -127,30 +131,6 @@ class Index extends CI_Controller {
             }
             redirect(base_url());
         }
-    }
-
-    public function sentmail() {
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => "smtp.gmail.com",
-            'port' => 465,
-            'username' => 'tejasg2607@gmail.com',
-            'password' => 'tejasg123',
-            'mailtype' => 'html',
-            'charset' => 'iso-8859-1'
-        );
-
-        // bool whether to validate email or not      
-        $this->email->set_newline("\r\n");
-        $this->email->from('tejasg2607@gmail.com');
-        $this->email->to('shreyas.dharav@wwindia.com'); //to(data['email']) send one to customer & copy to superadmin
-        $this->email->subject('subject');
-        $this->email->message('messgae');
-        if (!$this->email->send()) {
-            show_error($this->email->print_debugger());
-            echo FALSE;
-        } else
-            echo TRUE;
     }
 
 }

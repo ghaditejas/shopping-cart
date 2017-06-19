@@ -59,7 +59,7 @@ class Order_manage extends CI_Controller {
                 $action = $action . '>pending</option>';
             }
             if ($row['status'] == 'processing') {
-                $action = $action . '<option value="processing" selected="selected">pending</option>';
+                $action = $action . '<option value="processing" selected="selected">processing</option>';
             } else {
                 $action = $action . '<option value="processing">processing</option>';
             }
@@ -88,6 +88,9 @@ class Order_manage extends CI_Controller {
     public function update_status($id, $value) {
         $data = array('status' => $value);
         $result = $this->order->update_order($id, $data);
+        $email= $this->order->get_email_id($id);
+        $msg='Status of your  Order has been changed to '.$value;
+        send_mail($email,'Order Status',$msg);
         if ($result) {
             echo 'Order status changed Successfully';
         } else {

@@ -60,6 +60,12 @@ class Order_manage_model extends CI_Model {
         return $query;
     }
 
+    public function get_email_id($id) {
+        $this->db->select('billing_email');
+        $this->db->where('id',$id);
+        $query = $this->db->get('user_order')->row_array();
+        return $query['billing_email'];
+    }
 }
 
 ?>
