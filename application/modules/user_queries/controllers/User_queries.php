@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Coupon Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of coupon
+ *
+ * @category User Queries
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class User_queries extends CI_Controller {
 
     public function __construct() {
@@ -7,6 +18,12 @@ class User_queries extends CI_Controller {
         $this->load->model('user_queries_model', 'contact');
     }
 
+    /**
+     * Used to load user queries list page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
 //        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
         if (true) {
@@ -17,6 +34,12 @@ class User_queries extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of user queries
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -64,6 +87,12 @@ class User_queries extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to reply to the user queries
+     * 
+     * @method  reply
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function reply($id) {
         $data['edit_id'] = $id;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {

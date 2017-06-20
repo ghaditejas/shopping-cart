@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Order Manage Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of order management
+ *
+ * @category Order Manage
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Order_manage extends CI_Controller {
 
     public function __construct() {
@@ -9,6 +21,12 @@ class Order_manage extends CI_Controller {
         $this->load->library('upload');
     }
 
+    /**
+     * Used to load order list page
+     * 
+     * @method  order_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function order_view() {
 //        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
         if (true) {
@@ -19,6 +37,12 @@ class Order_manage extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of order
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -85,6 +109,12 @@ class Order_manage extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to update order status
+     * 
+     * @method  update_status
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function update_status($id, $value) {
         $data = array('status' => $value);
         $result = $this->order->update_order($id, $data);
@@ -98,6 +128,12 @@ class Order_manage extends CI_Controller {
         }
     }
 
+    /**
+     * Used to get invoice page
+     * 
+     * @method  get_invoice
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_invoice($id) {
         $data['order_id']=$id;
         $data['user_order'] = $this->order->get_user_order($id);
@@ -111,12 +147,17 @@ class Order_manage extends CI_Controller {
         $this->load->view('invoice',$data); 
     }
     
+    /**
+     * Used to show graph
+     * 
+     * @method  graph
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function graph(){
         $data = $this->order->get_graph_data();
         foreach($data as $row){
             $month[] = array($row['month'],floor($row['sale'])); 
         }
-//        pr($month);
         echo json_encode($month);
     }
 }

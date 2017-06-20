@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Coupon Controller
  *
@@ -11,7 +12,6 @@
  * @license  http://neosofttech.com/  Neosoft
  * @link     NA
  */
-
 class Coupon extends CI_Controller {
 
     public function __construct() {

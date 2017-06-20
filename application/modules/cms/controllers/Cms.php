@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * CMS Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of coupon
+ *
+ * @category CMS
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Cms extends CI_Controller {
 
     public function __construct() {
@@ -7,6 +19,12 @@ class Cms extends CI_Controller {
         $this->load->model('cms_model','cms');
     }
 
+    /**
+     * Used to load Cms list page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
 //        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
         if (true) {
@@ -17,6 +35,12 @@ class Cms extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of cms
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -64,6 +88,12 @@ class Cms extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to validate form field 
+     * 
+     * @method  alpha_dash_space
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function alpha_dash_space($string) {
         if (!empty($string)) {
             if (!preg_match('/^[a-zA-Z\s]+$/', $string)) {
@@ -75,6 +105,12 @@ class Cms extends CI_Controller {
         }
     }
 
+    /**
+     * Used to add/edit cms
+     * 
+     * @method  update
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function update($id = "") {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('title', 'Title', 'required|callback_alpha_dash_space');
@@ -129,6 +165,12 @@ class Cms extends CI_Controller {
         }
     }
     
+    /**
+     * Used to delete cms
+     * 
+     * @method  delete
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function delete() {
         $data = $this->input->post('id');
         $res = $this->cms->delete_cms($data);

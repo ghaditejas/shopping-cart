@@ -1,5 +1,17 @@
-<?php
+ <?php
 
+ /**
+ * Order Manage Model
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of order management 
+ *
+ * @category Coupon
+ * @package  Model
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Order_manage_model extends CI_Model {
 
     public function __construct() {

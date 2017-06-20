@@ -206,7 +206,7 @@ class Banner extends CI_Controller {
     /**
      * Used to delete banner
      * 
-     * @method  add
+     * @method  delete
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function delete() {

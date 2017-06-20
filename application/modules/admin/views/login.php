@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 2 | Log in</title>
+        <title>ShoppigCart</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -27,15 +27,15 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition login-page">
+    <body background = '<?php echo base_url();?>public/images/background.jpg' class="hold-transition">
         <div class="login-box">
             <div class="login-logo">
-                <a href="../../index2.html"><b>Admin</b>LTE</a>
+                <a href="<?php echo base_url();?>admin"><b>Shopping</b>Cart</a>
             </div>
             <!-- /.login-logo -->
-            <div class="login-box-body">
-                <p class="login-box-msg">Sign in to start your account</p>
-                <label><?php if($error!="")echo $error ;?></label>
+            <div class="login-box-body" style="background:none">
+                <h3> <p class="login-box-msg"style="color:black">Sign in</p> </h3>
+                <label class="error"><?php if($error!="")echo $error ;?></label>
                 <form  id="login" action="<?php echo base_url()?>admin/index/verification" method="post">
                     <div class="form-group has-feedback">
                         <input type="email" name="email" id="email" class="form-control" placeholder="Email*">
