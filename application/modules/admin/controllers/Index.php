@@ -69,6 +69,11 @@ class Index extends CI_Controller {
             }
         }
     }
+    
+    public function no_permission() {
+            $data['page'] = "no_permission";
+            $this->load->view('main_template', $data);
+    }
 
 }
 

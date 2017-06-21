@@ -262,6 +262,67 @@ $(document).ready(function () {
             form.submit();
         }
     });
+    
+    $("#add_note").validate({
+        rules: {
+            note: {
+                required: true
+            },
+        },
+        messages: {
+            note: {
+                required: "This field is Required",
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+    
+    $("#add_cms").validate({
+        rules: {
+            title: {
+                required: true,
+                sentence: true
+            },
+            content: {
+                required: true,
+            },
+            meta_title: {
+                required: true,
+                sentence: true
+            },
+            meta_description: {
+                required: true,
+                sentence: true
+            },
+            meta_keywords: {
+                required: true,
+                sentence: true
+            },
+        },
+        messages: {
+            title: {
+                required: "This field is Required"
+            },
+            content: {
+                required: "This field is Required"
+            },
+            meta_title: {
+                required: "This field is Required"
+            },
+            meta_description: {
+                required: "This field is Required"
+            },
+            meta_keywords: {
+                required: "This field is Required"
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+    
 });
 
 

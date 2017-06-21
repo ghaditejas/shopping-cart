@@ -16,7 +16,9 @@ class Cms extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('cms_model','cms');
+        $this->load->model('cms_model', 'cms');
+        check_session();
+        check_permission('banner');
     }
 
     /**
@@ -26,12 +28,7 @@ class Cms extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
-        if (true) {
-            $data['page'] = "cms/cms_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "cms/cms_list";
         $this->load->view('main_template', $data);
     }
 
@@ -70,14 +67,14 @@ class Cms extends CI_Controller {
             $checkbox = '<label><input class="checkbox checkbox_check" id="' . $row['id'] . '" type="checkbox" name="cat_ids[]" value="' . $row['id'] . '"></label>';
             $action = '<ul class="nav navbar-nav">
                         <li><a href="' . base_url() . 'cms/cms/update/' . $row['id'] .
-                      '" style="padding-top:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>
+                    '" style="padding-top:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>
                         </li>
                         <li>
-                            <button class="btn btn-danger" id="delete"  onclick="javascript:delete_cms('.$row['id'].')">
+                            <button class="btn btn-danger" id="delete"  onclick="javascript:delete_cms(' . $row['id'] . ')">
                             <span class=""><i class="fa fa-remove"></i></span></button>
                         </li>
                         </ul>';
-            $data[] = array($checkbox,$row['id'], $row['title'], $action,);
+            $data[] = array($checkbox, $row['id'], $row['title'], $action,);
         }
         $return = array(
             'draw' => $draw,
@@ -122,7 +119,7 @@ class Cms extends CI_Controller {
                 $data['page'] = "cms/cms_add";
                 $this->load->view('main_template', $data);
             } else {
-                $title= $this->input->post('title');
+                $title = $this->input->post('title');
                 $slug = strtolower(preg_replace('/\s+/', '_', trim($title)));
                 $data = array(
                     'title' => $this->input->post('title'),
@@ -156,15 +153,15 @@ class Cms extends CI_Controller {
                 }
             }
         } else {
-            if(!empty($id)){
-                $data = $this->cms->get_cms_id($id);                
+            if (!empty($id)) {
+                $data = $this->cms->get_cms_id($id);
                 $data['edit_id'] = $id;
             }
             $data['page'] = "cms/cms_add";
             $this->load->view('main_template', $data);
         }
     }
-    
+
     /**
      * Used to delete cms
      * 

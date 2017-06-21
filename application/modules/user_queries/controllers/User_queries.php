@@ -16,6 +16,8 @@ class User_queries extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_queries_model', 'contact');
+        check_session();
+        check_permission('user queries');
     }
 
     /**
@@ -25,12 +27,7 @@ class User_queries extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
-        if (true) {
             $data['page'] = "user_queries/user_query_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
         $this->load->view('main_template', $data);
     }
 

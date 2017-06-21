@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Category Controller
  *
@@ -16,7 +17,8 @@ class Category extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('category_model');
-        $this->load->model('permission_model');
+        check_session();
+        check_permission('category');
     }
 
     /**
@@ -26,12 +28,7 @@ class Category extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'category');
-        if ($result) {
-            $data['page'] = "category/category_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "category/category_list";
         $this->load->view('main_template', $data);
     }
 
@@ -74,7 +71,7 @@ class Category extends CI_Controller {
             }
             $action = '<a href="' . base_url() . 'category/category/add/' . $row['category_id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
-            $data[] = array($row['category_id'], $row['name'],$stat,$row['parent_name'],$action,);
+            $data[] = array($row['category_id'], $row['name'], $stat, $row['parent_name'], $action,);
         }
         $return = array(
             'draw' => $draw,
@@ -129,7 +126,7 @@ class Category extends CI_Controller {
                         redirect('category/category/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('category/category/add/'.$id);
+                        redirect('category/category/add/' . $id);
                     }
                 }
             }

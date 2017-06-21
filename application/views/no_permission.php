@@ -6,7 +6,7 @@
         </h1>
     </section>
     <section class="content">
-        <div class="callout callout-info">
+        <div class="callout callout-danger ">
             <h4>Tip!</h4>
 
             <p>Add the layout-boxed class to the body tag to get this layout. The boxed layout is helpful when working on

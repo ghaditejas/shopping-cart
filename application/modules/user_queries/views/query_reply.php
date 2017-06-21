@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Fill In Details</h3>
                     </div>
-                    <form id="add_coupon" class="add_user" action="<?php echo base_url(); ?>user_queries/user_queries/reply/<?php
+                    <form id="add_note" class="add_note" action="<?php echo base_url(); ?>user_queries/user_queries/reply/<?php
                         echo  $edit_id;
                     ?>" method="post">
                         <!-- text input -->
@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Note</label>
-                                <input class="form-control" name="note" id="uses" type="text" value="">
+                                <textarea class="form-control" name="note" id="note" type="text" value=""></textarea>
                                 <label class="error"><?php echo form_error('note')?></label>
                             </div>
                             

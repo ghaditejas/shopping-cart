@@ -16,9 +16,10 @@ class Order_manage extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('permission_model');
         $this->load->model('order_manage_model', 'order');
         $this->load->library('upload');
+        check_session();
+        check_permission('orders');
     }
 
     /**
@@ -28,12 +29,7 @@ class Order_manage extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function order_view() {
-//        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
-        if (true) {
             $data['page'] = "order_management/order_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
         $this->load->view('main_template', $data);
     }
 

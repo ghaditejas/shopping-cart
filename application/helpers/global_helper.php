@@ -15,7 +15,7 @@ if (!function_exists('send_mail')) {
     function send_mail($to, $subject, $body) {
         $CI = & get_instance();
         $CI->load->library('PHPMailer');
-        $mail= new PHPMailer();
+        $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Host = "smtp.elasticemail.com";
         $mail->SMTPAuth = true;
@@ -36,6 +36,29 @@ if (!function_exists('send_mail')) {
         }
     }
 
+    if (!function_exists('check_session')) {
+
+        function check_session() {
+            $CI = & get_instance();
+            if (!($CI->session->userdata('logged_in'))) {
+                redirect('admin');
+            }
+        }
+
+    }
+
+    if (!function_exists('check_permission')) {
+
+        function check_permission($module) {
+            $CI = & get_instance();
+            $CI->load->model('permission_model');
+            $result = $CI->permission_model->permission($CI->session->userdata('user_id'), $module);
+            if(!($result)){
+                redirect('admin/index/no_permission');
+            }
+        }
+
+    }
 }
 ?>
 

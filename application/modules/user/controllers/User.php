@@ -1,24 +1,43 @@
 <?php
 
+/**
+ * User Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of banner
+ *
+ * @category User
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class User extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model');
-        $this->load->model('permission_model');
+        check_session();
+        check_permission('admin_user');
     }
 
+    /**
+     * Used to load user list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'admin_user');
-        if ($result) {
-//            $data['result'] = $this->user_model->get_users();
-            $data['page'] = "user/user_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "user/user_list";
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to get list of user
+     * 
+     * @method  get_data
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_data() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -63,17 +82,34 @@ class User extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to add/edit user
+     * 
+     * @method  user_add
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function user_add($id = "") {
         $data['stat'] = 1;
+        $data['error']='';
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('firstname', 'First Name', 'required');
             $this->form_validation->set_rules('lastname', 'Last Name', 'required');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
+            if (empty($id)) {
+                $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
+            } else {
+                if(!empty(($this->input->post('email')))){
+                $result = $this->user_model->get_email($this->input->post('email'),$id);
+                if(!(empty($result ))){
+                    $data['error'] = "Email Id already Exist";
+                }
+                }
+                $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            }
             $this->form_validation->set_rules('password', 'Password', 'required|alpha_numeric|min_length[8]|max_length[12]');
             $this->form_validation->set_rules('confirm_password', 'Password', 'required|alpha_numeric_spaces|min_length[8]|max_length[12]|matches[password]');
             $this->form_validation->set_rules('select_role[]', 'Role', 'required');
-            if ($this->form_validation->run() == False) {
-                $data['role_ids']= $this->input->post('select_role[]');
+            if ($this->form_validation->run() == False || !(empty($data['error']))) {
+                $data['role_ids'] = $this->input->post('select_role[]');
                 $data['role'] = $this->user_model->get_roles();
                 $data['edit_id'] = $id;
                 $data['page'] = "user/add_user";
@@ -95,7 +131,7 @@ class User extends CI_Controller {
                     }
                     $result_ins = $this->user_model->insert_roles($role_array);
                     if ($result && $result_ins) {
-                        $this->session->set_flashdata('success', 'User added Successfully');
+                        $this->session->set_flashdata('su ccess', 'User added Successfully');
                         redirect('user/user/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while adding user');
@@ -113,7 +149,7 @@ class User extends CI_Controller {
                         redirect('user/user/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('user/user/user_add/'.$id);
+                        redirect('user/user/user_add/' . $id);
                     }
                 }
             }
@@ -122,6 +158,7 @@ class User extends CI_Controller {
                 $data = $this->user_model->get_user($id);
                 $data['stat'] = $data['status'];
                 $data['edit_id'] = $id;
+                $data['error']='';
             }
             $data['role'] = $this->user_model->get_roles();
             $data['page'] = "user/add_user";

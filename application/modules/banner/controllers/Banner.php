@@ -16,9 +16,12 @@ class Banner extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('permission_model');
+//        error_reporting(E_ALL);
+//        ini_set("display_errors", "1");
         $this->load->model('banner_model');
         $this->load->library('upload');
+        check_session();
+        check_permission('banner');
     }
 
     /**
@@ -28,12 +31,7 @@ class Banner extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function banner_view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'banner');
-        if ($result) {
-            $data['page'] = "banner/banner_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "banner/banner_list";
         $this->load->view('main_template', $data);
     }
 
@@ -123,7 +121,7 @@ class Banner extends CI_Controller {
     }
 
     /**
-     * Used to add/edir  banner
+     * Used to add/edit  banner
      * 
      * @method  add
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>

@@ -5,20 +5,17 @@ class Config extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('config_model');
-        $this->load->model('permission_model');
+        check_session();
+        check_permission('configuration');
     }
+
     public function config_view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'configuration');
-        if ($result) {
-            $data['page'] = "config/config_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "config/config_list";
         $this->load->view('main_template', $data);
     }
 
-    public function get_data(){
-         if (isset($_GET['draw'])) {
+    public function get_data() {
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
         } else {
             $draw = 1;
@@ -50,7 +47,7 @@ class Config extends CI_Controller {
             }
             $action = '<a href="' . base_url() . 'config/config/config_update/' . $row['config_value_id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
-            $data[] = array($row['config_value_id'], $row['config_type'], $row['config_value'],$stat, $action,);
+            $data[] = array($row['config_value_id'], $row['config_type'], $row['config_value'], $stat, $action,);
         }
         $return = array(
             'draw' => $draw,
@@ -60,7 +57,7 @@ class Config extends CI_Controller {
         );
         echo json_encode($return);
     }
-    
+
     public function config_update($id = "") {
         $data['stat'] = 1;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -93,7 +90,7 @@ class Config extends CI_Controller {
                         redirect('config/config/config_view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying user');
-                        redirect('config/config/config_update/'.$id);
+                        redirect('config/config/config_update/' . $id);
                     }
                 }
             }

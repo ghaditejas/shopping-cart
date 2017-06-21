@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Products Controller
  *
@@ -17,10 +18,11 @@ class Product extends CI_Controller {
         parent::__construct();
         $this->load->model('product_model');
         $this->load->model('category/category_model');
-        $this->load->model('permission_model');
         $this->load->library('upload');
-        error_reporting(E_ALL);
-        ini_set("display_errors", "1");
+        check_session();
+        check_permission('product');
+//        error_reporting(E_ALL);
+//        ini_set("display_errors", "1");
     }
 
     /**
@@ -30,12 +32,7 @@ class Product extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'product');
-        if ($result) {
-            $data['page'] = "product/product_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "product/product_list";
         $this->load->view('main_template', $data);
     }
 
@@ -139,7 +136,7 @@ class Product extends CI_Controller {
             return false;
         }
     }
-    
+
     /**
      * Used to check date
      * 
@@ -400,44 +397,44 @@ class Product extends CI_Controller {
                             $upload_product['special_price_to'] = $this->input->post('special_price_to');
                         }
                         $result1 = $this->product_model->update_product($id, $upload_product);
-                        if($result1){
-                        $upload_product_categories = array(
-                            'category_id' => $this->input->post('category'),
-                        );
-                        $result2 = $this->product_model->update_product_category($id, $upload_product_categories);
+                        if ($result1) {
+                            $upload_product_categories = array(
+                                'category_id' => $this->input->post('category'),
+                            );
+                            $result2 = $this->product_model->update_product_category($id, $upload_product_categories);
 
-                        $upload_product_images = array(
-                            'status' => $this->input->post('status'),
-                            'modified_by' => $this->session->userdata('user_id')
-                        );
-                        if ($file_name) {
-                            $upload_product_images['image_name'] = $file_name;
-                        }
-                        $result3 = $this->product_model->update_product_image($id, $upload_product_images);
-
-                        $del_attr_val_id = $this->product_model->get_product_attr_assoc($id);
-                        foreach ($del_attr_val_id as $row) {
-                            $attr_val_id[] = $row['product_attribute_value_id'];
-                        }
-                        if ($del_attr_val_id) {
-                            $del_attr_assoc = $this->product_model->del_product_attr_assoc($id);
-                            $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);
-                        }
-
-                        $attributes = $this->input->post('attribute');
-                        $attribute_values = $this->input->post('attr_value');
-                        foreach ($attributes as $_k => $_v) {
-                            if ($_v != "") {
-                                $insert_attr = array(
-                                    'product_attribute_id' => $_v,
-                                    'attribute_value' => $attribute_values[$_k],
-                                    'created_on' => date('Y-m-d'),
-                                    'created_by' => $this->session->userdata('user_id')
-                                );
-
-                                $this->product_model->insert_attribute_data($insert_attr, $id);
+                            $upload_product_images = array(
+                                'status' => $this->input->post('status'),
+                                'modified_by' => $this->session->userdata('user_id')
+                            );
+                            if ($file_name) {
+                                $upload_product_images['image_name'] = $file_name;
                             }
-                        }
+                            $result3 = $this->product_model->update_product_image($id, $upload_product_images);
+
+                            $del_attr_val_id = $this->product_model->get_product_attr_assoc($id);
+                            foreach ($del_attr_val_id as $row) {
+                                $attr_val_id[] = $row['product_attribute_value_id'];
+                            }
+                            if ($del_attr_val_id) {
+                                $del_attr_assoc = $this->product_model->del_product_attr_assoc($id);
+                                $del_attr_value = $this->product_model->del_product_attr_value($attr_val_id);
+                            }
+
+                            $attributes = $this->input->post('attribute');
+                            $attribute_values = $this->input->post('attr_value');
+                            foreach ($attributes as $_k => $_v) {
+                                if ($_v != "") {
+                                    $insert_attr = array(
+                                        'product_attribute_id' => $_v,
+                                        'attribute_value' => $attribute_values[$_k],
+                                        'created_on' => date('Y-m-d'),
+                                        'created_by' => $this->session->userdata('user_id')
+                                    );
+
+                                    $this->product_model->insert_attribute_data($insert_attr, $id);
+                                }
+                            }
                             $this->session->set_flashdata('success', 'Product modified Successfully');
                             redirect('product/product/view');
                         } else {

@@ -17,9 +17,10 @@ class Coupon extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('coupon_model');
-        $this->load->model('permission_model');
+        check_session();
+        check_permission('coupon');
     }
-    
+
     /**
      * Used to load coupon list page
      * 
@@ -27,23 +28,18 @@ class Coupon extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-        $result = $this->permission_model->permission($this->session->userdata('user_id'), 'coupon');
-        if ($result) {
-            $data['page'] = "coupon/coupon_list";
-        } else {
-            $data['page'] = "no_permission";
-        }
+        $data['page'] = "coupon/coupon_list";
         $this->load->view('main_template', $data);
     }
-    
+
     /**
      * Used to get list of coupons
      * 
      * @method  get_data
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
-    public function get_data(){
-         if (isset($_GET['draw'])) {
+    public function get_data() {
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
         } else {
             $draw = 1;
@@ -70,7 +66,7 @@ class Coupon extends CI_Controller {
         foreach ($records as $row) {
             $action = '<a href="' . base_url() . 'coupon/coupon/add/' . $row['id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
-            $data[] = array($row['id'],$row['code'], $row['percent_off'], $row['no_of_uses'],$action,);
+            $data[] = array($row['id'], $row['code'], $row['percent_off'], $row['no_of_uses'], $action,);
         }
         $return = array(
             'draw' => $draw,
@@ -80,7 +76,7 @@ class Coupon extends CI_Controller {
         );
         echo json_encode($return);
     }
-    
+
     /**
      * Used to add/edit coupon
      * 
@@ -99,7 +95,7 @@ class Coupon extends CI_Controller {
                 $data = array(
                     'code' => $this->input->post('coupon_code'),
                     'percent_off' => $this->input->post('percent'),
-                    'no_of_uses' =>$this->input->post('uses')
+                    'no_of_uses' => $this->input->post('uses')
                 );
                 if (empty($id)) {
                     pr($this->session->All_userdata());
@@ -121,19 +117,20 @@ class Coupon extends CI_Controller {
                         redirect('coupon/coupon/view');
                     } else {
                         $this->session->set_flashdata('error', 'Error occurred while modifying Coupon');
-                        redirect('coupon/coupon/add/'.$id);
+                        redirect('coupon/coupon/add/' . $id);
                     }
                 }
             }
         } else {
             if (!empty($id)) {
-                $data = $this->coupon_model->get_coupon($id);                
+                $data = $this->coupon_model->get_coupon($id);
                 $data['edit_id'] = $id;
             }
             $data['page'] = "coupon/coupon_add";
             $this->load->view('main_template', $data);
         }
     }
+
 }
 
 ?>

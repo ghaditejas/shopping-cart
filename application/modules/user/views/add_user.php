@@ -56,6 +56,7 @@ if (isset($roless)) {
                                 }
                                        ?>">
                                 <label class="error"><?php echo form_error('email'); ?></label>
+                                <label class="error"><?php echo $error; ?></label>
                             </div>
                             <div class="form-group">
                                 <label>Password*</label>
