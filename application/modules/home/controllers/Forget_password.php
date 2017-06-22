@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Forget Password Controller
+ *
+ * PHP Version 5.6
+ * It contains forget passwords functionality definition of Shopping cart
+ *
+ * @category Forget Password
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Forget_password extends CI_Controller {
 
     public function __construct() {
@@ -9,6 +21,12 @@ class Forget_password extends CI_Controller {
         $this->load->library('email');
     }
 
+    /**
+     * Used to verify the inserted email id
+     * 
+     * @method  verification
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function verification() {
         $email = $this->input->post('email_address');
         $verify = $this->login->verify($email);
@@ -19,11 +37,23 @@ class Forget_password extends CI_Controller {
         }
     }
 
+    /**
+     * Used to send maail to user which consist change password link
+     * 
+     * @method  sent_email
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function sent_email($user_id, $tokken, $email) {
         $message = "<a href='" . base_url() . "home/login/reset/" . $user_id . "/" . $tokken . "'>Click Here to Reset Password <a>";
         return send_mail($email, 'Reset Password', $message);
     }
 
+    /**
+     * Used to generate tokken for the user
+     * 
+     * @method  check
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function check() {
         $data["error"] = "";
         $data['forget_error'] = "";

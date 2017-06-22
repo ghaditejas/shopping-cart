@@ -1,15 +1,23 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+ * Index Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of banner
+ *
+ * @category Index
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Index extends CI_Controller {
 
     public function __construct() {
         error_reporting(E_ALL);
         ini_set("display_errors", "1");
         parent::__construct();
-        $this->load->config('mandrill');
-        $this->load->library('mandrill');
         $this->load->helper('form');
         $this->load->model('Home_model', 'home');
         $this->load->model('product_model', 'product');
@@ -17,6 +25,12 @@ class Index extends CI_Controller {
         $this->load->library('email');
     }
 
+    /**
+     * Used to load homepage
+     * 
+     * @method  index
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function index($id = "") {
         $data['result'] = $this->home->get_banner();
         $data['currency'] = $this->home->get_currency('currency');
@@ -36,6 +50,12 @@ class Index extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to view and store user queries 
+     * 
+     * @method  contact_us
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function contact_us() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('name', 'Name', 'required');
@@ -76,6 +96,12 @@ class Index extends CI_Controller {
         }
     }
 
+    /**
+     * Used to get static cms pages
+     * 
+     * @method  get_cms
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_cms() {
         $title = $this->home->get_title();
         if ($title) {
@@ -92,6 +118,12 @@ class Index extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load static cms pages 
+     * 
+     * @method  view_cms
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view_cms($slug) {
         $data['cms'] = $this->home->get_content($slug);
         if ($data['cms']) {
@@ -102,6 +134,12 @@ class Index extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to subscribe  
+     * 
+     * @method  subscribe
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function subscribe() {
         $this->form_validation->set_rules('subscribe', 'Email for subscription', 'required');
         if ($this->form_validation->run() == False) {

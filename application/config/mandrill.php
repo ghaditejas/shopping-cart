@@ -1,5 +1,0 @@
-<?php
-
-$config['mandrill_api_key'] = 'LM5ByieahNi6WnVzVo0rKA';
-			       	
-?>

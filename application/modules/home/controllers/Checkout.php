@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Checkout Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of banner
+ *
+ * @category Checkout
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Checkout extends CI_Controller {
 
     public function __construct() {
@@ -12,6 +24,12 @@ class Checkout extends CI_Controller {
         $this->load->model('checkout_model', 'checkout');
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function checkout() {
         $data['cart'] = $this->session->userdata('cart');
         if (empty($data['cart'])) {
@@ -28,6 +46,12 @@ class Checkout extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function alpha_spaces($string) {
         if (!empty($string)) {
             if (!preg_match('/^[a-zA-Z\s]+$/', $string)) {
@@ -39,6 +63,12 @@ class Checkout extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function bill() {
         $data['cart'] = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');
@@ -96,6 +126,12 @@ class Checkout extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function select() {
         if ($this->input->post('pay')) {
             return true;
@@ -105,6 +141,12 @@ class Checkout extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function order() {
         $coupon = $this->session->userdata('coupon');
         $cart = $this->session->userdata('cart');
@@ -190,6 +232,12 @@ class Checkout extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load banner list page
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function paypal_submit($order_id) {
         $data['discount'] = $this->checkout->get_discount($order_id);
         $data['products'] = $this->checkout->get_product_details($order_id);
@@ -197,6 +245,12 @@ class Checkout extends CI_Controller {
         $this->load->view('home/paypal', $data);
     }
 
+    /**
+     * Used to load invoice page
+     * 
+     * @method  view_invoice
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view_invoice($id) {
         $user_id = $this->session->userdata['userid'];
         $email = $this->session->userdata['email_id'];
@@ -217,6 +271,12 @@ class Checkout extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to check if entered coupon is valid
+     * 
+     * @method  check_coupon
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function check_coupon($code) {
         $user_id = $this->session->userdata('userid');
         $coupon = $this->checkout->coupon_verify($code);
@@ -233,6 +293,12 @@ class Checkout extends CI_Controller {
         }
     }
 
+    /**
+     * Used to update order status after  paypal transaction
+     * 
+     * @method  paypal_trans
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function paypal_trans($order_id) {
         $status = 'processing';
         $data = array(

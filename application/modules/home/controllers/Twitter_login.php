@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Twitter OAuth library.
- * Sample controller.
- * Requirements: enabled Session library, enabled URL helper
- * Please note that this sample controller is just an example of how you can use the library.
+ * Twitter Login Controller
+ *
+ * PHP Version 5.6
+ * It contains login functionality using twitter
+ *
+ * @category Twitter Login 
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
  */
 class Twitter_login extends CI_Controller {
 
-    /**
-     * TwitterOauth class instance.
-     */
     private $connection;
 
-    /**
-     * Controller constructor
-     */
     function __construct() {
         parent::__construct();
         $this->load->model('login_model', 'login');
@@ -29,16 +29,18 @@ class Twitter_login extends CI_Controller {
             $this->connection = $this->twitteroauth->create($this->config->item('twitter_consumer_token'), $this->config->item('twitter_consumer_secret'));
         }
     }
+    
     /**
-     * Here comes authentication process begin.
-     * @access	public
-     * @return	void
+     * Used to call twitter login page
+     * 
+     * @method  auth
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function auth() {
         if ($this->session->userdata('access_token') && $this->session->userdata('access_token_secret')) {
             redirect(base_url('/'));
         } else {
-            $request_token = $this->connection->getRequestToken(base_url('home/twitter_login/callback'));            
+            $request_token = $this->connection->getRequestToken(base_url('home/twitter_login/callback'));
             $this->session->set_userdata('request_token', $request_token['oauth_token']);
             $this->session->set_userdata('request_token_secret', $request_token['oauth_token_secret']);          
             if ($this->connection->http_code == 200) {
@@ -52,14 +54,15 @@ class Twitter_login extends CI_Controller {
     }
 
     /**
-     * Callback function, landing page for twitter.
-     * @access	public
-     * @return	void
+     * Used to unset variables in session requiried while logging in
+     * 
+     * @method  banner_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function callback() {
         if (!$this->input->get('oauth_token') && $this->session->userdata('request_token') !== $this->input->get('oauth_token')) {
             $this->reset_session();
-            redirect(base_url('/twitter/auth'));
+            redirect(base_url('home/twitter_login/auth'));
         } else {
             $access_token = $this->connection->getAccessToken($this->input->get('oauth_verifier'));            
             if ($this->connection->http_code == 200) {
@@ -68,51 +71,16 @@ class Twitter_login extends CI_Controller {
                 $this->set_userdata($access_token);
                 redirect(base_url('/'));
             } else {
-                // An error occured. Add your notification code here.
-                echo '<br>callback else - http_code error'; 
-               // redirect(base_url('/'));
+                echo 'Error while logging in';
             }
         }
     }
-
-    public function post($in_reply_to) {
-        $message = $this->input->post('message');
-        if (!$message || mb_strlen($message) > 140 || mb_strlen($message) < 1) {
-            // Restrictions error. Notification here.
-            redirect(base_url('/'));
-        } else {
-            if ($this->session->userdata('access_token') && $this->session->userdata('access_token_secret')) {
-                $content = $this->connection->get('account/verify_credentials');
-                if (isset($content->errors)) {
-                    // Most probably, authentication problems. Begin authentication process again.
-                    $this->reset_session();
-                    redirect(base_url('/twitter/auth'));
-                } else {
-                    $data = array(
-                        'status' => $message,
-                        'in_reply_to_status_id' => $in_reply_to
-                    );
-                    $result = $this->connection->post('statuses/update', $data);
-
-                    if (!isset($result->errors)) {
-                        // Everything is OK
-                        redirect(base_url('/'));
-                    } else {
-                        // Error, message hasn't been published
-                        redirect(base_url('/'));
-                    }
-                }
-            } else {
-                // User is not authenticated.
-                redirect(base_url('/Twitter_login/auth'));
-            }
-        }
-    }
-
+    
     /**
-     * Reset session data
-     * @access	private
-     * @return	void
+     * Used to logout a user
+     * 
+     * @method  reset_session
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     private function reset_session() {
         $this->session->unset_userdata('access_token');
@@ -123,6 +91,12 @@ class Twitter_login extends CI_Controller {
         $this->session->unset_userdata('twitter_screen_name');
     }
 
+    /**
+     * Used to set login session and add user details in database
+     * 
+     * @method  set_userdata
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function set_userdata($data){
         $role = 5;
         $role_array = array();

@@ -1,7 +1,17 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+ * Google Login Controller
+ *
+ * PHP Version 5.6
+ * It contains login functionality through google
+ *
+ * @category Google Login
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Google_login extends CI_Controller {
 
     public function __construct() {
@@ -10,6 +20,12 @@ class Google_login extends CI_Controller {
         $this->load->library('googleplus');
     }
 
+    /**
+     * Used to call google login page 
+     * 
+     * @method  index
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function index() {
 
         if ($this->session->userdata('loggedin') == 1) {
@@ -26,6 +42,12 @@ class Google_login extends CI_Controller {
         redirect($login_url);
     }
 
+    /**
+     * Used to login session and add user details in database
+     * 
+     * @method  profile
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function profile($user_profile) {
         if ($this->session->userdata('loggedin') == 1) {
             redirect('/');
@@ -33,7 +55,6 @@ class Google_login extends CI_Controller {
         $role = 5;
         $role_array = array();
         $user = $this->login->check_user($user_profile['id'], 'Google');
-        pr($user);
         if (!empty($user)) {
             $this->session->set_userdata('loggedin', 1);
             $this->session->set_userdata('userid', $user['user_id']);
@@ -61,6 +82,12 @@ class Google_login extends CI_Controller {
         redirect('/');
     }
 
+    /**
+     * Used to logout a user
+     * 
+     * @method  logout
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function logout() {
         $this->session->sess_destroy();
         $this->googleplus->revokeToken();

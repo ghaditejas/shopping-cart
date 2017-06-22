@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * My Account Controller
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of my account
+ *
+ * @category My Account
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class My_account extends CI_Controller {
 
     public function __construct() {
@@ -11,12 +23,24 @@ class My_account extends CI_Controller {
         $this->load->model('product_model', 'product');
     }
 
+    /**
+     * Used to view my account page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
         $data['error'] = "";
         $data['page'] = 'home/myaccount';
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to valdate old password of user
+     * 
+     * @method  verify
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function verify() {
         $id = $this->session->userdata("userid");
         $pass = md5($this->input->post('old_pass'));
@@ -29,6 +53,12 @@ class My_account extends CI_Controller {
         }
     }
 
+    /**
+     * Used to validate new password entered by user
+     * 
+     * @method  verifynew
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function verifynew() {
         $id = $this->session->userdata("userid");
         $pass = md5($this->input->post('password'));
@@ -41,6 +71,12 @@ class My_account extends CI_Controller {
         }
     }
 
+    /**
+     * Used to validate a input for alphabets and space
+     * 
+     * @method  alpha_spaces
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function alpha_spaces($string) {
         if (!preg_match('/^[a-zA-Z\s]+$/', $string)) {
             $this->form_validation->set_message('alpha_spaces', 'The field may only contain alpha characters & White spaces');
@@ -50,6 +86,12 @@ class My_account extends CI_Controller {
         }
     }
 
+    /**
+     * Used to change user password
+     * 
+     * @method  change_pass
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function change_pass() {
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -79,6 +121,12 @@ class My_account extends CI_Controller {
         }
     }
 
+    /**
+     * Used to view address of user
+     * 
+     * @method  address
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function address($id = "") {
         $data['error'] = "";
         $user_id = $this->session->userdata('userid');
@@ -128,6 +176,12 @@ class My_account extends CI_Controller {
         }
     }
 
+    /**
+     * Used to get addresses of a user
+     * 
+     * @method  get_addresses
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_addresses() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -152,17 +206,35 @@ class My_account extends CI_Controller {
         exit;
     }
 
+    /**
+     * Used to get address detail
+     * 
+     * @method  get_address_byid
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_address_byid($id) {
         $data = $this->account->get_address($id);
         echo json_encode($data);
         exit;
     }
 
+    /**
+     * Used to view order placed by user
+     * 
+     * @method  my_orders
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function my_orders() {
         $data['page'] = 'home/my_order';
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to get orders placed by user
+     * 
+     * @method  get_orders
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_orders() {
         if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
@@ -199,6 +271,12 @@ class My_account extends CI_Controller {
         exit;
     }
 
+    /**
+     * Used to view order status 
+     * 
+     * @method  track_order
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function track_order() {
         $data['error'] = '';
         $data['track'] = 0;

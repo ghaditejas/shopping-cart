@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Login Controller
+ *
+ * PHP Version 5.6
+ * It contains login functionality definition of shopping cart
+ *
+ * @category Login
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Login extends CI_Controller {
 
     public function __construct() {
@@ -10,6 +22,12 @@ class Login extends CI_Controller {
         $this->load->model('login_model', 'login');
     }
 
+    /**
+     * Used to login a user
+     * 
+     * @method  login
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function login() {
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -44,11 +62,23 @@ class Login extends CI_Controller {
         }
     }
     
+    /**
+     * Used to logout a  user
+     * 
+     * @method  logout
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function logout() {
         $this->session->sess_destroy();
         redirect();
     }
 
+    /**
+     * Used to create a new user
+     * 
+     * @method  register
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function register() {
         $data['error'] = "";
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -85,6 +115,12 @@ class Login extends CI_Controller {
         }
     }
 
+    /**
+     * Used to load reset passsword page
+     * 
+     * @method  reset
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function reset($id, $tokken) {
         $accessed_date = $this->login->get_date($id,$tokken);
         if ($accessed_date) {
@@ -103,6 +139,12 @@ class Login extends CI_Controller {
         }
     }
     
+    /**
+     * Used to reset user password
+     * 
+     * @method  resetpass
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function resetpass($id){
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
