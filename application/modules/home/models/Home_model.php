@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Home_model Model
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of Homepage 
+ *
+ * @category Home
+ * @package  Model
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Home_model extends CI_Model{
     
     public function __construct() {
@@ -8,12 +20,24 @@ class Home_model extends CI_Model{
         $this->load->database();
     }
     
+    /**
+     * Used to get banners
+     * 
+     * @method  get_banner
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_banner() {
         $this->db->where('status',1);
         $query=$this->db->get('banners');
         return $query->result_array();
     }
     
+    /**
+     * Used to get parent category
+     * 
+     * @method  get_parent_category
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_parent_category() {
         $this->db->where('parent_id',0);
         $this->db->where('status',1);
@@ -21,6 +45,12 @@ class Home_model extends CI_Model{
         return $query->result_array();
     }
     
+    /**
+     * Used to get categories
+     * 
+     * @method  get_category
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_category() {
         $this->db->where('parent_id!=',0);
         $this->db->where('status',1);
@@ -28,12 +58,24 @@ class Home_model extends CI_Model{
         return $query->result_array();
     }
     
+    /**
+     * Used to get product attributes
+     * 
+     * @method  get_attribute
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_attribute() {
         $this->db->where('status',1);
         $query=$this->db->get('product_attributes');
         return $query->result_array();
     }
     
+    /**
+     * Used to get products details
+     * 
+     * @method  get_featured_product
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_featured_product($id="") {
         $this->db->select('p.id,p.name,p.price,p.status,i.image_name,c.category_id');
         $this->db->from('product as p');
@@ -45,14 +87,16 @@ class Home_model extends CI_Model{
         }else{
         $this->db->where('c.category_id',$id);
         }
-//        $this->db->order_by('p.price',$sort);
-//        $this->db->limit($limit,$offset);
         $query = $this->db->get();
-//        pr($this->db->last_query());
-//        exit;
         return $query->result_array();
     }
     
+    /**
+     * Used to get currency format from database
+     * 
+     * @method  get_currency
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_currency($currency) {
         $this->db->select('v.config_value,t.config_type');
         $this->db->from('configuration_value as v');
@@ -62,6 +106,12 @@ class Home_model extends CI_Model{
         return $query['config_value'];
     }
     
+    /**
+     * Used to insert reply by admin to user query
+     * 
+     * @method  add_message
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add_message($data) {
         $this->db->insert('contact_us',$data);
         if($this->db->insert_id()>0){
@@ -72,6 +122,12 @@ class Home_model extends CI_Model{
                 
     }
     
+    /**
+     * Used to get titles of the cms 
+     * 
+     * @method  get_title
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_title() {
         $this->db->select('title,slug');
         $query = $this->db->get('cms')->result_array();
@@ -82,6 +138,12 @@ class Home_model extends CI_Model{
         }
     }
     
+    /**
+     * Used to get content of the cms
+     * 
+     * @method  get_content
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_content($slug) {
         $this->db->select('content,title');
         $this->db->where('slug',$slug);

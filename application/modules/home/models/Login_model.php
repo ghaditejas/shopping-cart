@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Login_model Model
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of Checkout 
+ *
+ * @category Login
+ * @package  Model
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Login_model extends CI_Model {
 
     public function __construct() {
@@ -7,6 +19,12 @@ class Login_model extends CI_Model {
         $this->load->database();
     }
 
+    /**
+     * Used to check user login credentials
+     * 
+     * @method  login
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function login($email,$password) {
         $this->db->where('status',1);
         $this->db->where('email',$email);
@@ -19,6 +37,12 @@ class Login_model extends CI_Model {
         }
     }
     
+    /**
+     * Used to get user details by verifying tokken
+     * 
+     * @method  check_user
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function check_user($tokken,$api){
         $this->db->select('user_id,firstname,lastname,email');
         if($api=='Google'){
@@ -30,6 +54,12 @@ class Login_model extends CI_Model {
         return $query;
     }
     
+    /**
+     * Used to insert user details
+     * 
+     * @method  insert_user
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function insert_user($data){
         $this->db->insert('user', $data);
         if ($this->db->insert_id()) {
@@ -39,6 +69,12 @@ class Login_model extends CI_Model {
         }
     }
     
+    /**
+     * Used to insert user role
+     * 
+     * @method  insert_roles
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function insert_roles($data) {
         $this->db->insert_batch('user_role', $data);
         if($this->db->insert_id()) {
@@ -48,6 +84,12 @@ class Login_model extends CI_Model {
         }
     }
     
+    /**
+     * Used to verify  if the email exist in database 
+     * 
+     * @method  verify
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function verify($search){
         $this->db->select('user_id');
         $this->db->where('email',$search);
@@ -59,6 +101,12 @@ class Login_model extends CI_Model {
         }
     }
     
+    /**
+     * Used to insert reset password generated tokken
+     * 
+     * @method  add_forget
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add_forget($data){
     $this->db->insert('forgot_password',$data);
     if($this->db->insert_id()){
@@ -68,6 +116,12 @@ class Login_model extends CI_Model {
     }
     }
     
+    /**
+     * Used to get created on date of the reset password tokken 
+     * 
+     * @method  get_date
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_date($id,$tokken){
         $this->db->select('created_on');
         $this->db->where('user_id',$id);
@@ -82,12 +136,24 @@ class Login_model extends CI_Model {
         
     }
     
+    /**
+     * Used to update user password
+     * 
+     * @method  update_user
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function update_user($id,$data) {
         $this->db->where('user_id',$id);
         $this->db->update('user',$data);
         return true;
     }
     
+    /**
+     * Used to update status of the reset password tokken
+     * 
+     * @method  update_status
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function update_status($tokken) {
         $data=array('is_verified'=>1);
         $this->db->where('tokken',$tokken);

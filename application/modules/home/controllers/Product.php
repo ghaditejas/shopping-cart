@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Product Controller
+ *
+ * PHP Version 5.6
+ * It contains add/remove/update products in cart and wishlist functionality definition of shopping cart
+ *
+ * @category Product
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Product extends CI_Controller {
 
     public function __construct() {
@@ -11,6 +23,12 @@ class Product extends CI_Controller {
         $this->load->model('My_account_model', 'account');
     }
 
+    /**
+     * Used to add/remove/update operation of products in cart
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view($id = "",$offset=1) {
         $search = "";
         $min_price = "";
@@ -63,6 +81,12 @@ class Product extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to load checkout page
+     * 
+     * @method  checkout
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function cart($operation, $id, $quantity = "") {
         if ($operation == "add") {
             $data = $this->product->get_cart_product($id);
@@ -126,6 +150,12 @@ class Product extends CI_Controller {
         exit;
     }
 
+    /**
+     * Used to load cart page
+     * 
+     * @method  cart_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function cart_view() {
         $data['cart'] = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');
@@ -133,6 +163,12 @@ class Product extends CI_Controller {
         $this->load->view('home_template', $data);
     }
 
+    /**
+     * Used to add/remove wishlist
+     * 
+     * @method  wishlist
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function wishlist($operation, $id) {
         if ($operation == "add") {
             $data = array(
@@ -158,6 +194,12 @@ class Product extends CI_Controller {
         echo $message;
     }
 
+    /**
+     * Used to load wiishlist page
+     * 
+     * @method  wishlist_view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function wishlist_view() {
         if ($this->session->userdata('loggedin')) {
             $user_id = $this->session->userdata('userid');
@@ -168,23 +210,13 @@ class Product extends CI_Controller {
         $data['page'] = 'home/wishlist';
         $this->load->view('home_template', $data);
     }
-
-    public function checkout() {
-        $data['cart'] = $this->session->userdata('cart');
-        if (empty($data['cart'])) {
-            redirect(base_url());
-        } else if ($this->session->userdata('loggedin')) {
-            $data['currency'] = $this->product->get_currency('currency');
-            $user_id = $this->session->userdata('userid');
-            $data['address'] = $this->account->get_addresses($user_id);
-            $data['page'] = 'home/checkout';
-        } else {
-            $data['error'] = "";
-            $data['page'] = 'home/login';
-        }
-        $this->load->view('home_template', $data);
-    }
-
+    
+    /**
+     * Used to load product details page
+     * 
+     * @method  product_details
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function product_details($id) {
         $data['cart'] = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');

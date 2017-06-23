@@ -25,9 +25,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to load checkout page
      * 
-     * @method  banner_view
+     * @method  checkout
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function checkout() {
@@ -47,9 +47,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to validate input for alpha spaces 
      * 
-     * @method  banner_view
+     * @method  alpha_spaces
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function alpha_spaces($string) {
@@ -64,9 +64,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to load bill page
      * 
-     * @method  banner_view
+     * @method  bill
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function bill() {
@@ -127,9 +127,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to check whether payment method is selected
      * 
-     * @method  banner_view
+     * @method  select
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function select() {
@@ -142,9 +142,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to pplace a order 
      * 
-     * @method  banner_view
+     * @method  order
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function order() {
@@ -233,9 +233,9 @@ class Checkout extends CI_Controller {
     }
 
     /**
-     * Used to load banner list page
+     * Used to paypal payment page
      * 
-     * @method  banner_view
+     * @method  paypal_submit
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function paypal_submit($order_id) {

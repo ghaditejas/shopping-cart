@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Product_model Model
+ *
+ * PHP Version 5.6
+ * It contains crud functionality definition of Checkout 
+ *
+ * @category Product
+ * @package  Model
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Product_model extends CI_Model {
 
     public function __construct() {
@@ -8,6 +20,12 @@ class Product_model extends CI_Model {
         $this->load->database();
     }
 
+    /**
+     * Used to get parent category
+     * 
+     * @method  get_payment_gateway
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_parent_category() {
         $this->db->where('parent_id', 0);
         $this->db->where('status', 1);
@@ -15,6 +33,12 @@ class Product_model extends CI_Model {
         return $query->result_array();
     }
 
+    /**
+     * Used to get categories
+     * 
+     * @method  get_category
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_category() {
         $this->db->where('parent_id!=', 0);
         $this->db->where('status', 1);
@@ -22,12 +46,24 @@ class Product_model extends CI_Model {
         return $query->result_array();
     }
 
+    /**
+     * Used to get attributes 
+     * 
+     * @method  get_attribute
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_attribute() {
         $this->db->where('status', 1);
         $query = $this->db->get('product_attributes');
         return $query->result_array();
     }
 
+    /**
+     * Used to get products count
+     * 
+     * @method  get_product_count
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_product_count($id, $search, $min_price, $max_price) {
         $this->db->select('count(p.id) as cnt ');
         $this->db->from('product as p');
@@ -53,6 +89,12 @@ class Product_model extends CI_Model {
     
     }
     
+    /**
+     * Used to get products
+     * 
+     * @method  get_product
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_product($id, $search, $min_price, $max_price, $sort, $field,$offset,$limit) {
         $this->db->select('p.id,p.name,p.price,p.status,i.image_name,c.category_id');
         $this->db->from('product as p');
@@ -80,6 +122,12 @@ class Product_model extends CI_Model {
         return $query->result_array();
     }
 
+    /**
+     * Used to get category name 
+     * 
+     * @method  get_category_name
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_category_name($id) {
         $this->db->select('name,parent_id');
         $this->db->where('category_id', $id);
@@ -87,6 +135,12 @@ class Product_model extends CI_Model {
         return $query;
     }
 
+    /**
+     * Used to get currency format from database
+     * 
+     * @method  get_currency
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_currency($currency) {
         $this->db->select('v.config_value,t.config_type');
         $this->db->from('configuration_value as v');
@@ -96,6 +150,12 @@ class Product_model extends CI_Model {
         return $query['config_value'];
     }
 
+    /**
+     * Used to get product details 
+     * 
+     * @method  get_cart_product
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_cart_product($id) {
         $this->db->select('p.name,p.price,p.id,i.image_name,p.short_description');
         $this->db->from('product as p');
@@ -105,6 +165,12 @@ class Product_model extends CI_Model {
         return $query;
     }
 
+    /**
+     * Used to insert product in wishlist
+     * 
+     * @method  add_wishlist
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function add_wishlist($data) {
         $this->db->insert('user_wish_list', $data);
         if ($this->db->insert_id() > 0) {
@@ -114,6 +180,12 @@ class Product_model extends CI_Model {
         }
     }
 
+    /**
+     * Used to delete product from wishlist
+     * 
+     * @method  remove_wishlist
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function remove_wishlist($user_id, $id) {
         $this->db->where('user_id', $user_id);
         $this->db->where('product_id', $id);
@@ -125,6 +197,12 @@ class Product_model extends CI_Model {
         }
     }
 
+    /**
+     * Used to get products added in wishlist
+     * 
+     * @method  get_wishlist
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_wishlist($user_id) {
         $this->db->select('product_id');
         $this->db->where('user_id', $user_id);
@@ -138,6 +216,12 @@ class Product_model extends CI_Model {
         return $ret;
     }
 
+    /**
+     * Used to get product details added in wishlist
+     * 
+     * @method  get_product_wishlist
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_product_wishlist($user_id) {
         $this->db->select('i.image_name,p.name,p.id,p.price,w.id as wishlist_id,p.short_description');
         $this->db->from('product as p');
@@ -148,6 +232,12 @@ class Product_model extends CI_Model {
         return $query;
     }
 
+    /**
+     * Used to get product details
+     * 
+     * @method  get_product_details
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_product_details($id) {
         $this->db->select('p.id,p.name,p.price,p.status,p.quantity,i.image_name,p.short_description');
         $this->db->from('product as p');
@@ -157,6 +247,12 @@ class Product_model extends CI_Model {
         return $query->row_array();
     }
 
+    /**
+     * Used to get attribute details
+     * 
+     * @method  get_attribute_details
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_attribute_details($id){
         $this->db->select('as.product_id,a.name,av.attribute_value');
         $this->db->from('product_attributes_assoc as as');
