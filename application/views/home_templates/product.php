@@ -4,6 +4,7 @@ $cart = $this->session->userdata('cart');
 <div class="col-sm-9 padding-right">
     <div class="features_items"><!--features_items-->
         <h2 class="title text-center"><?php echo $title; ?></h2>
+        <?php if(!empty($product)) {?>
         <?php foreach ($product AS $row) { ?>
             <div class="col-sm-4">
                 <div class="product-image-wrapper">
@@ -53,7 +54,10 @@ $cart = $this->session->userdata('cart');
                     </div>
                 </div>
             </div>
-        <?php } ?>
+        <?php } 
+        } else{?>
+            <h2>No Result Found</h2>
+       <?php } ?>
     </div>
     <div class="pagination">
         <?php
@@ -145,7 +149,7 @@ $cart = $this->session->userdata('cart');
                 }
             })
 <?php } else { ?>
-            window.location = "<?php echo base_url(); ?>home/login/login";
+        notify('Please Log In', "danger", "top", "right");
 <?php } ?>
     });
 

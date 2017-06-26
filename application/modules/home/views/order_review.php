@@ -1,6 +1,5 @@
 <?php
 $total = 0;
-pr($this->session->All_userdata());
 $discount = $this->session->userdata('coupon');
 ?>
 <section id="cart_items">

@@ -67,7 +67,7 @@
                         <li>Cart Sub Total 
                             <span><?php echo $currency; ?><span class="subtotal_bill"><?php echo $total;?></span></span></li>
                         
-                        <li>Shipping Cost <span><?php echo $currency; ?><?php if ($total > 5000) { ?>
+                        <li>Shipping Cost <span><?php echo $currency; ?><?php if ($total > 5000 || empty($cart)) { ?>
                                                 <span class='shipping_tax'>0</span>		
                                                 <?php
                                             } else {

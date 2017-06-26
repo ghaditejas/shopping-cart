@@ -142,7 +142,7 @@ body .dot {
         <div class="pacman"></div>
         <div class="dot"></div>
         <form  id="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-            <input type="hidden" name="business" value="admin@merchant.com">
+            <input type="hidden" name="business" value="tejasmerchant@neomail.com">
             <input type="hidden" name="cmd" value="_cart">
             <input type="hidden" name="upload" value="1" />
             <input type="hidden" name="rm" value="2" />
@@ -172,7 +172,7 @@ body .dot {
         $(document).ready(function () {
             setTimeout(function () {
                 $('#paypal').submit()
-            }, 10000);
+            }, 3000);
         });
     </script>
 </html>

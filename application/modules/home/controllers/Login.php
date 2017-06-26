@@ -53,7 +53,11 @@ class Login extends CI_Controller {
                         'email_id' => $user['email']
                     );
                     $this->session->set_userdata($session_data);
-                    redirect(base_url());
+                    if ($this->session->userdata('redirect')) {
+                        redirect($this->session->userdata('redirect'));
+                    } else {
+                        redirect(base_url());
+                    }
                 }
             }
         } else {
@@ -61,7 +65,7 @@ class Login extends CI_Controller {
             $this->load->view('home_template', $data);
         }
     }
-    
+
     /**
      * Used to logout a  user
      * 
@@ -104,7 +108,7 @@ class Login extends CI_Controller {
                 $role_array[] = array('user_id' => $result, 'role_id' => $role);
                 $result_ins = $this->login->insert_roles($role_array);
                 if ($result && $result_ins) {
-                    send_mail($email,'Registeration Successfull','Congrats you have been registered Successfully');
+                    send_mail($email, 'Registeration Successfull', 'Congrats you have been registered Successfully');
                     $this->session->set_flashdata('success', 'User added Successfully');
                     redirect('/home/login/login');
                 } else {
@@ -122,13 +126,13 @@ class Login extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function reset($id, $tokken) {
-        $accessed_date = $this->login->get_date($id,$tokken);
+        $accessed_date = $this->login->get_date($id, $tokken);
         if ($accessed_date) {
             $current_datetime = strtotime(date('y-m-d H:i:s'));
             $tokken_datetime = strtotime($accessed_date['created_on']);
             if (($current_datetime - $tokken_datetime) < 86400) {
-                $data['id']=$id;
-                $data['tokken']=$tokken;
+                $data['id'] = $id;
+                $data['tokken'] = $tokken;
                 $data['page'] = "home/resetpass";
                 $this->load->view('home_template', $data);
             } else {
@@ -138,14 +142,14 @@ class Login extends CI_Controller {
             $this->load->view('notfound');
         }
     }
-    
+
     /**
      * Used to reset user password
      * 
      * @method  resetpass
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
-    public function resetpass($id){
+    public function resetpass($id) {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
             if ($this->form_validation->run() == False) {
@@ -156,7 +160,7 @@ class Login extends CI_Controller {
                     'user_id' => $id,
                     'password' => md5($this->input->post('password')),
                 );
-                $result = $this->login->update_user($id,$data);
+                $result = $this->login->update_user($id, $data);
                 if ($result) {
                     $this->login->update_status($tokken);
                     $this->session->set_flashdata('success', 'Password Changed Successfully');

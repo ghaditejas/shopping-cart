@@ -40,6 +40,7 @@ class Checkout extends CI_Controller {
             $data['address'] = $this->account->get_addresses($user_id);
             $data['page'] = 'home/checkout';
         } else {
+            $this->session->set_userdata('redirect',base_url('home/checkout/checkout'));
             $data['error'] = "";
             $data['page'] = 'home/login';
         }

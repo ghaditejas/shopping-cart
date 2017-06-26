@@ -50,16 +50,16 @@
                                     </div>-->
                     </div><!--/category-products-->
                     <form  id='filter' action="<?php echo base_url(); ?>home/product/view" method="post">
-                       <div class="price-range">
-                           <h2>Filter</h2>
-                        <select class="form-control" name="sort">
-                            <option value="">Sort By</option>
-                            <option value="asc modified_on">Newest Product</option>
-                            <option value="desc modified_on">Oldest Product</option>
-                            <option value="asc price">Lowest to Highest Price</option>
-                            <option value="desc price">Highest to Lowest Price</option>
-                        </select>
-                       </div>
+                        <div class="price-range">
+                            <h2>Filter</h2>
+                            <select class="form-control" name="sort">
+                                <option value="">Sort By</option>
+                                <option value="asc modified_on">Newest Product</option>
+                                <option value="desc modified_on">Oldest Product</option>
+                                <option value="asc price">Lowest to Highest Price</option>
+                                <option value="desc price">Highest to Lowest Price</option>
+                            </select>
+                        </div>
                         <div class="price-range"><!--price-range-->
                             <h2>Price Range</h2>
                             <div class="well text-center">
@@ -95,15 +95,23 @@
                             echo $id;
                         } else {
                             echo 0;
-                        }?>'>
+                        }
+                        ?>'>
                         <input type="hidden" id="offset" name='offset' value="<?php
                         if (isset($offset)) {
                             echo $offset;
                         } else {
                             echo 1;
-                        }?>">
-                        <button type="submit" value="login" class="btn btn-success" name="login">Filter</button>
+                        }
+                        ?>">
+                        <button type="button" value="login" class="btn btn-success frm_sub" name="filter">Filter</button>
                     </form>
                 </div>
             </div>
+            <script>
+                $(document).on('click','.frm_sub',function(){
+                    $('#offset').val(1);
+                    $('#filter').submit();
+                })
+            </script>
 

@@ -195,6 +195,7 @@ $total = 0;
             $('#state').val(address.state);
             $('#country').val(address.country);
             $('#zip').val(address.zipcode);
+            $('#mobile').val(address.mobile);
         } else {
             $('#address_1').val('');
             $('#address_2').val('');
@@ -202,6 +203,7 @@ $total = 0;
             $('#state').val('');
             $('#country').val('');
             $('#zip').val('');
+            $('#mobile').val('');
         }
     }
     function set_addr_values1(address) {
@@ -212,6 +214,7 @@ $total = 0;
             $('#state2').val(address.state);
             $('#country2').val(address.country);
             $('#zip2').val(address.zipcode);
+            $('#mobile2').val(address.mobile);
         } else {
             $('#address_12').val('');
             $('#address_22').val('');
@@ -219,6 +222,7 @@ $total = 0;
             $('#state2').val('');
             $('#country2').val('');
             $('#zip2').val('');
+            $('#mobile2').val('');
         }
     }
     $(document).ready(function () {
@@ -264,6 +268,7 @@ $total = 0;
                 $('#state2').val($('#state').val());
                 $('#country2').val($('#country').val());
                 $('#zip2').val($('#zip').val());
+                $('#mobile2').val($('#mobile').val());
             } else {
                 $('#first_name2').val('');
                 $('#last_name2').val('');
@@ -274,6 +279,7 @@ $total = 0;
                 $('#state2').val('');
                 $('#country2').val('');
                 $('#zip2').val('');
+                $('#mobile2').val('');
             }
         });
 
