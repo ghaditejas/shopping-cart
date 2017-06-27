@@ -7,8 +7,18 @@ if (isset($roless)) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Add Users
+            Users
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>user/user/view">Users</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

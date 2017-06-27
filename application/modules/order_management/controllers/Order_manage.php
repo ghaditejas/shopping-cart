@@ -18,6 +18,7 @@ class Order_manage extends CI_Controller {
         parent::__construct();
         $this->load->model('order_manage_model', 'order');
         $this->load->library('upload');
+        $this->load->model('permission_model');
         check_session();
         check_permission('orders');
     }
@@ -68,8 +69,12 @@ class Order_manage extends CI_Controller {
         $recordsFiltered = $recordsTotal = $this->order->get_record_count($search);
         $data = $this->order->get_order_list($offset, $limit, $search, $sort);
         foreach ($data as $row) {
+            $currency = $this->permission_model->get_currency('currency');
+            $grand_total = '<p>'.$currency.' '.$row['grand_total'].'</p>';
+            $discount = '<p>'.$currency.' '.$row['discount'].'</p>';
             $fullname = $row['firstname'] . $row['lastname'];
             $payable = $row['grand_total'] - $row['discount'];
+            $payable = '<p>'.$currency.' '.$payable.'</p>';
             $invoice = '<a href="javascript:void(0)" class="bill" id="' . $row['id'] . '">View Invoice</a>';
             $action = '<select class="form-control status" data-id="' . $row['id'] . '">
                         <option value="pending"';
@@ -94,7 +99,7 @@ class Order_manage extends CI_Controller {
                 $action = $action . '<option value="delivered">delivered</option>';
             }
             $action = $action . '</select> ';
-            $ret[] = array($row['id'], $fullname, $row['created_on'], $row['grand_total'], $row['discount'], $payable, $row['name'], $invoice, $action);
+            $ret[] = array($row['id'], $fullname, $row['created_on'], $grand_total, $discount, $payable, $row['name'], $invoice, $action);
         }
         $return = array(
             'draw' => $draw,
@@ -134,6 +139,7 @@ class Order_manage extends CI_Controller {
         $data['order_id']=$id;
         $data['user_order'] = $this->order->get_user_order($id);
         $data['order_details'] = $this->order->get_order_details($id);
+        $data['currency'] = $this->permission_model->get_currency('currency');
         foreach ($data['order_details'] as $_k => $_v) {
             $product = $this->order->get_product($_v['product_id']);
             $_v['name'] = $product['name'];

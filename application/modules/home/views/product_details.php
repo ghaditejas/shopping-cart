@@ -1,4 +1,11 @@
-<?php $this->load->view('home_templates/category'); ?>
+<section id="slider"><!--slider-->
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">Product Details</li>
+            </ol>
+        </div>
 <div class="col-sm-9 padding-right">
     <div class="product-details"><!--product-details-->
         <div class="col-sm-5">
@@ -52,6 +59,7 @@
         </div>
     </div><!--/product-details-->
 </div>
+    </div></section>
 <script>
      $(document).on('click','.add-to-cart',function () {
         $(this).removeClass("add-to-cart");

@@ -16,11 +16,11 @@ class Coupon_used extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('coupon_used_model','coupons');
+        $this->load->model('coupon_used_model', 'coupons');
         check_session();
         check_permission('used coupons');
     }
-    
+
     /**
      * Used to load coupons used list page
      * 
@@ -28,7 +28,7 @@ class Coupon_used extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function view() {
-            $data['page'] = "coupon_used/coupon_used_list";
+        $data['page'] = "coupon_used/coupon_used_list";
         $this->load->view('main_template', $data);
     }
 
@@ -38,8 +38,8 @@ class Coupon_used extends CI_Controller {
      * @method  get_data
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
-    public function get_data(){
-         if (isset($_GET['draw'])) {
+    public function get_data() {
+        if (isset($_GET['draw'])) {
             $draw = $_GET['draw'];
         } else {
             $draw = 1;
@@ -64,12 +64,14 @@ class Coupon_used extends CI_Controller {
         $records = $this->coupons->get_used_coupons($offset, $limit);
         foreach ($records as $_k => $_v) {
             $username = $this->coupons->get_name($_v['user_id']);
-            $_v['fullname'] = $username['firstname'].' '.$username['lastname'];
+            $_v['fullname'] = $username['firstname'] . ' ' . $username['lastname'];
             $records[$_k] = $_v;
         }
         $data = [];
+        $currency = $this->permission_model->get_currency('currency');
         foreach ($records as $row) {
-            $data[] = array($row['id'], $row['fullname'], $row['order_id'],$row['code'],$row['discount'],);
+            $discount = '<p>' . $currency . ' ' .$row['discount']. '</p>';
+            $data[] = array($row['id'], $row['fullname'], $row['order_id'], $row['code'], $discount);
         }
         $return = array(
             'draw' => $draw,
@@ -79,6 +81,7 @@ class Coupon_used extends CI_Controller {
         );
         echo json_encode($return);
     }
+
 }
 ?>
 

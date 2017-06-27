@@ -1,5 +1,11 @@
 <section id="slider"><!--slider-->
     <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">My Account</li>
+            </ol>
+        </div>
         <div class="row" style="align-content:center">
             <?php $this->load->view('my_account_sidebar'); ?>
             <div class="col-sm-7 col-sm-offset-1" style="align-content:center">	

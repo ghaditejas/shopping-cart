@@ -1,5 +1,11 @@
 <section id="cart_items">
     <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">Invoice</li>
+            </ol>
+        </div>
         <div>
             <div class="table-responsive cart_info">
                 <table class="table table-condensed">

@@ -1,4 +1,10 @@
 <div id="contact-page" class="container">
+    <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">Contact Us</li>
+            </ol>
+        </div>
     <div class="bg">
         <div class="row">    		
             <div class="col-sm-12">    			   			

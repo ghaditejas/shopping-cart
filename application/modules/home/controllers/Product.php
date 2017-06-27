@@ -35,12 +35,14 @@ class Product extends CI_Controller {
         $max_price = "";
         $sort = "";
         $field = "";
+        $price='0,10000';
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $search = $this->input->post('search');
             $id = $this->input->post('category_id');
             $offset=$this->input->post('offset');
             if ($this->input->post('price')) {
-                $price_arr = explode(',', $this->input->post('price'));
+                $price = $this->input->post('price');
+                $price_arr = explode(',', $price);
                 $min_price = $price_arr[0];
                 $max_price = $price_arr[1];
                 $sort_array = explode(' ', $this->input->post('sort'));
@@ -76,6 +78,7 @@ class Product extends CI_Controller {
         $data['search'] = $search;
         $data['offset']=($offset/$limit)+1;
         $data['limit']=$limit;
+        $data['price']='['.$price.']';
         $data['error'] = "";
         $data['page'] = 'home/product_view';
         $this->load->view('home_template', $data);
@@ -207,6 +210,7 @@ class Product extends CI_Controller {
         } else {
             $data['wishlist'] = array();
         }
+        $data['currency'] = $this->product->get_currency('currency');
         $data['page'] = 'home/wishlist';
         $this->load->view('home_template', $data);
     }

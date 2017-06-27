@@ -2,8 +2,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Banner
+            <a href="<?php echo base_url(); ?>banner/banner/banner_view">Banner</a>
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>banner/banner/banner_view">Banner</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">
@@ -55,7 +65,7 @@
 
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="javascript:window.location.assign('<?php echo base_url(); ?>banner/banner/banner_view')" class="btn btn-danger">Cancel</button>
+                            <button type="button" onclick="javascript:window.location.assign('c')" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
                 </div>

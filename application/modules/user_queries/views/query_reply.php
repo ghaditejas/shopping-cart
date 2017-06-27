@@ -4,6 +4,10 @@
         <h1>
             User Query
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>user_queries/user_queries/view">User Query</a></li>
+            <li class="active">Edit</li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

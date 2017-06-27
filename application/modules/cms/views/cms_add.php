@@ -3,6 +3,16 @@
         <h1>
             CMS
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>cms/cms/view">CMS</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

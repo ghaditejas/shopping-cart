@@ -20,9 +20,9 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3><?php echo 150;?></h3>
+                        <h3><?php echo $orders;?></h3>
 
-                        <p>Total Orders</p>
+                        <p>Total No. of Orders</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -34,9 +34,9 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3><?php echo 150;?>
-                        <?php echo 150;?></h3>
-                        <p>Bounce Rate</p>
+                        <h3><?php echo $currency;?>
+                        <?php echo $sale;?></h3>
+                        <p>Totsl Sale</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -48,7 +48,7 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3><?php echo 150;?></h3>
+                        <h3><?php echo $users;?></h3>
                         <p>Total Users</p>
                     </div>
                     <div class="icon">
@@ -61,7 +61,7 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3><?php echo 150;?></h3>
+                        <h3><?php echo $products;?></h3>
                         <p>Total Products</p>
                     </div>
                     <div class="icon">

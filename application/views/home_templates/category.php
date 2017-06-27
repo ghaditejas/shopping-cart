@@ -77,7 +77,11 @@
                                         </div>
                                         <div class="tooltip-inner">2500 : 4500</div>
                                     </div>
-                                    <input type="text" class="span2" value="[0,10000]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="[0,10000]" id="sl2" name="price">
+                                    <input type="text" class="span2" value="[0,10000]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="<?php if (isset($price)) {
+                            echo $price;
+                        } else {
+                            echo "[0,10000]";
+                        }?>" id="sl2" name="price">
                                 </div>
                                 <br>
                                 <b class="pull-left">$ 0</b> <b class="pull-right">$ 100000</b>

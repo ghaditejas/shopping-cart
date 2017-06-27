@@ -4,6 +4,16 @@
         <h1>
             Attribute
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>product/product/attribute_view">Attribute</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

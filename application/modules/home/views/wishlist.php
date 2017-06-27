@@ -4,7 +4,13 @@ $cart = $this->session->userdata('cart');
 <section id="cart_items">
     <div class="container">
         <div class="breadcrumbs">
-            <h2>Cart</h2>
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">Wishlist</li>
+            </ol>
+        </div>
+        <div>
+            <h2>Wishlist</h2>
         </div>
         <div class="table-responsive cart_info">
             <table class="table">
@@ -33,7 +39,8 @@ $cart = $this->session->userdata('cart');
                                     <p><?php echo $row['short_description'] ?></p>
                                 </td>
                                 <td class="cart_price" style="vertical-align:middle;border:0px">
-                                    <p><?php echo $row['price'] ?></p>
+                                    <p><?php echo $currency; ?>
+                                        <?php echo $row['price']; ?></p>
                                 </td>
                                 <td class="cart_delete" style="border:0px;border:0px">
                                     <a class="btn btn-primary remove-from-wishlist" href="javascript:void(0)" id="<?php echo $row['id']; ?>"><i class="fa fa-times"></i><span>Remove From Wishlist</span></a>

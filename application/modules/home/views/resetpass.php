@@ -1,4 +1,10 @@
 <div class="container">
+    <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">My Account</li>
+            </ol>
+        </div>
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
             <div class="login-form" id="login_form"><!--login form-->

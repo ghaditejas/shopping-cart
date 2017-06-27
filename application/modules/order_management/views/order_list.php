@@ -37,9 +37,19 @@
             </div>
         </div>
     </section>
-    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+    <section class="content-header">
+        <h3>
+            Graph
+        </h3>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body table-responsive no-padding">
+                <div id="container" style="width: 550px; height: 400px; margin: 0 auto;" ></div>
+            </div>
+        </div>
+    </section>
     <div id="myModal" class="modal" style='display:none'>
-
     </div>
 </div>
 <script src="<?php echo base_url(); ?>public/dist/js/checkall.js"></script>
@@ -105,6 +115,7 @@
                     // Instantiate and draw the chart.
                     var chart = new google.charts.Line(document.getElementById('container'));
                     chart.draw(data, options);
+
                 });
             }
         });

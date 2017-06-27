@@ -73,7 +73,11 @@ class Login extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function logout() {
-        $this->session->sess_destroy();
+        $this->session->unset_userdata('loggedin');
+        $this->session->unset_userdata('userid');
+        $this->session->unset_userdata('fname');
+        $this->session->unset_userdata('lname');
+        $this->session->unset_userdata('email_id');
         redirect();
     }
 

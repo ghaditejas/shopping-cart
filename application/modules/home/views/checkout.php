@@ -3,13 +3,12 @@ $total = 0;
 ?>
 <section id="cart_items">
     <div class="container">
-        <!--			<div class="breadcrumbs">
-                                        <ol class="breadcrumb">
-                                          <li><a href="#">Home</a></li>
-                                          <li class="active">Check out</li>
-                                        </ol>
-                                </div>/breadcrums-->
-
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li class="active">Check out</li>
+            </ol>
+        </div>
         <div class="review-payment">
             <h2>Review &amp; Payment</h2>
         </div>

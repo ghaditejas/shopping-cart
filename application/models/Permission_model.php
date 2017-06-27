@@ -18,6 +18,15 @@ class Permission_model extends CI_Model {
         }
     }
 
+    public function get_currency($currency) {
+        $this->db->select('v.config_value,t.config_type');
+        $this->db->from('configuration_value as v');
+        $this->db->join('configuration_type as t', 'v.config_type_id=t.config_type_id');
+        $this->db->where('t.config_type', $currency);
+        $query = $this->db->get()->row_array();
+        return $query['config_value'];
+    }
+
 }
 
 //$this->db->where('modules', $module);

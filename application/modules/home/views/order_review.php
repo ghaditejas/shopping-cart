@@ -4,6 +4,13 @@ $discount = $this->session->userdata('coupon');
 ?>
 <section id="cart_items">
     <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li><a href="<?php echo base_url();?>home/checkout/checkout">Checkout</a></li>
+                <li class="active">Order Review</li>
+            </ol>
+        </div>
         <div class='row'>
             <div class='col-sm-4'>
                 <h2>Billing Address</h2>

@@ -37,5 +37,29 @@ class Dashboard_model extends CI_Model{
         $query = $this->db->get();        
         return $query->result_array();
     }
+    
+    public function get_orders() {
+       $this->db->select('Count(id) as cnt');
+       $query = $this->db->get('user_order')->row_array();
+       return $query['cnt'];
+    }
+    
+    public function get_sale() {
+       $this->db->select('Sum(grand_total)-Sum(discount) as total');
+       $query = $this->db->get('user_order')->row_array();
+       return $query['total'];
+    }
+    
+    public function count_users() {
+       $this->db->select('Count(user_id) as cnt');
+       $query = $this->db->get('user')->row_array();
+       return $query['cnt'];
+    }
+    
+    public function get_products() {
+       $this->db->select('Count(id) as cnt');
+       $query = $this->db->get('product')->row_array();
+       return $query['cnt'];
+    }
 }
 ?>

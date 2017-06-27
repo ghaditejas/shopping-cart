@@ -3,6 +3,10 @@
         <h1>
             Product
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>product/product/view">Product</a></li>
+            <li class="active">Edit</li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

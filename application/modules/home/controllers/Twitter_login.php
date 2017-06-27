@@ -103,7 +103,7 @@ class Twitter_login extends CI_Controller {
         $user = $this->login->check_user($data['user_id'], 'twitter');
         if ($user) {
             $this->session->set_userdata('loggedin', 1);
-            $this->session->set_userdata('userig', $user['user_id']);
+            $this->session->set_userdata('userid', $user['user_id']);
             $this->session->set_userdata('fname', $user['firstname']);
             $this->session->set_userdata('lname', $user['lastname']);
             $this->session->set_userdata('email_id', $user['email']);

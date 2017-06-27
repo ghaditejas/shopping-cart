@@ -4,6 +4,16 @@
         <h1>
             Coupons
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>coupon/coupon/view">Coupons</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

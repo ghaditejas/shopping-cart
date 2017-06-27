@@ -1,5 +1,12 @@
 <section id="slider"><!--slider-->
     <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url(); ?>">Home</a></li>
+                <li><a href="<?php echo base_url(); ?>home/my_account/view">My Account</a></li>
+                <li class="active">Change Password</li>
+            </ol>
+        </div>
         <div class="row" style="align-content:center">
          <?php $this->load->view('my_account_sidebar');?>
             <div class="col-sm-4 col-sm-offset-1" style="align-content:center">	

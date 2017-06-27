@@ -4,6 +4,16 @@
         <h1>
             Configuration
         </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url(); ?>config/config/config_view">Configuration</a></li>
+            <li class="active"><?php
+                if (isset($edit_id)) {
+                    echo 'Edit';
+                } else {
+                    echo 'Add';
+                }
+                ?></a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

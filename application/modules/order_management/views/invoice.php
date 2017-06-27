@@ -30,7 +30,7 @@
                                     <p><?php echo $_k['rowid']; ?></p>
                                 </td>
                                 <td class="cart_price" style="vertical-align:middle">
-                                    <p><?php // echo $currency; ?>
+                                    <p><?php echo $currency; ?>
                                         <?php echo $_v['price']; ?></p>
                                 </td>
                                 <td class="cart_quantity" style="vertical-align:middle">
@@ -38,7 +38,7 @@
                                         <p><?php echo $_v['quantity']; ?></p>
                                 </td>
                                 <td class="cart_total" style="vertical-align:middle">
-                                    <p class="cart_total_price"><?php // echo $currency; ?><span class="total">
+                                    <p class="cart_total_price"><?php echo $currency; ?><span class="total">
                                             <?php echo $_v['amount']; ?></span></p>
                                 </td>
                             </tr>
@@ -64,12 +64,12 @@
                 <div class="total_area">
                     <h2>Total</h2>
                     <ul>
-                        <li>Shipping Cost <span><?php // echo $currency; ?>
+                        <li>Shipping Cost <span><?php echo $currency; ?>
                                 <span class="shipping_tax">
                                     <?php echo $user_order['shipping_charges']; ?></span>
                             </span></li>
-                        <li>Total<span><?php // echo $currency; ?>
-                                <span class='total_bill'> <?php echo $user_order['grand_total']; ?></span></span></li>
+                        <li>Total <span><?php echo $currency;?>
+                                <span class='total_bill'> <?php echo $user_order['grand_total'];?></span></span></li>
                     </ul>
                 </div>
             </div>

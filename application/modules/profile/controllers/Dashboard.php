@@ -5,18 +5,28 @@ class Dashboard extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('dashboard_model');
+        $this->load->model('permission_model');
     }
 
     public function view() {
         if (!($this->session->userdata('logged_in'))) {
             redirect('admin');
         }
+        $data['orders'] = $this->dashboard_model->get_orders();
+        $data['sale'] = $this->dashboard_model->get_sale();
+        $data['users'] = $this->dashboard_model->count_users();
+        $data['products'] = $this->dashboard_model->get_products();
+        $data['currency'] = $this->permission_model->get_currency('currency');
         $data['page'] = "profile/dashboard";
         $this->load->view('main_template', $data);
     }
 
     public function signout() {
-        $this->session->sess_destroy();
+        $this->session->unset_userdata('logged_in');
+        $this->session->unset_userdata('user_id');
+        $this->session->unset_userdata('firstname');
+        $this->session->unset_userdata('lastname');
+        $this->session->unset_userdata('email');
         redirect('admin');
     }
 

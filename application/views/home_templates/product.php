@@ -6,7 +6,7 @@ $cart = $this->session->userdata('cart');
         <h2 class="title text-center"><?php echo $title; ?></h2>
         <?php if(!empty($product)) {?>
         <?php foreach ($product AS $row) { ?>
-            <div class="col-sm-4">
+            <div class="col-sm-4" style="height:400px;">
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">

@@ -19,6 +19,7 @@ class Product extends CI_Controller {
         $this->load->model('product_model');
         $this->load->model('category/category_model');
         $this->load->library('upload');
+        $this->load->model('permission_model');
         check_session();
         check_permission('product');
 //        error_reporting(E_ALL);
@@ -71,7 +72,9 @@ class Product extends CI_Controller {
         $recordsFiltered = $recordsTotal = $this->product_model->get_record_count($search);
         $records = $this->product_model->get_products_list($offset, $limit, $search, $sort);
         $data = [];
+        $currency = $this->permission_model->get_currency('currency');
         foreach ($records as $row) {
+            $price = '<p>'.$currency.' '.$row['price'].'</p>';
             if ($row['status'] == 1) {
                 $stat = '<span class="label label-success">Active</span>';
             } else {
@@ -80,7 +83,7 @@ class Product extends CI_Controller {
             $action = '<a href="' . base_url() . 'product/product/edit/' . $row['id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
             $image = '<img class="product-image" src="' . base_url() . 'upload/product/' . $row['image_name'] . '" style="height:120px;width:150px" /></td>';
-            $data[] = array($row['id'], $row['name'], $image, $row['price'], $row['quantity'], $stat, $action,);
+            $data[] = array($row['id'], $row['name'], $image, $price, $row['quantity'], $stat, $action,);
         }
         $return = array(
             'draw' => $draw,
