@@ -30,7 +30,7 @@ class Login extends CI_Controller {
      */
     public function login() {
         $data['error'] = "";
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
             if ($this->form_validation->run() == False) {
@@ -89,7 +89,7 @@ class Login extends CI_Controller {
      */
     public function register() {
         $data['error'] = "";
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('fname', 'First Name', 'required|alpha');
             $this->form_validation->set_rules('lname', 'Last Name', 'required|alpha');
             $this->form_validation->set_rules('email_id', 'Email', 'required|valid_email|is_unique[user.email]');
@@ -154,7 +154,7 @@ class Login extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function resetpass($id) {
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
             if ($this->form_validation->run() == False) {
                 $data['page'] = "home/resetpass";

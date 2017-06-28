@@ -9,16 +9,7 @@
         </div>
         <div class="row" style="align-content:center">
             <?php $this->load->view('my_account_sidebar'); ?>
-            <div class="col-sm-8" style="align-content:center">	
-                <?php
-                $success = "";
-                $success = $this->session->flashdata('success');
-                if (!empty($success)) {
-                    ?><div class="alert alert-adminLTE alert-success">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <strong><?php echo $success; ?></strong> 
-                    </div>
-                <?php } ?>
+            <div class="col-sm-8" style="align-content:center">
                 <h2>Address</h2>
                 <p align="right"><button type="button" class="btn btn-info btn-lg" id="btn">Add</button></p>
                 <div class="box box-primary">
@@ -103,6 +94,13 @@
                                 <div class="col-sm-4">
                                     <input type="text" placeholder="Post Code" class="form-control" id= "postcode" name="postcode">
                                     <label class="error"><?php echo form_error('postcode'); ?></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">Mobile NO.</label>
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="Mobile" class="form-control" id= "mobile" name="mobile">
+                                    <label class="error"><?php echo form_error('mobile'); ?></label>
                                 </div> 
                             </div>
                         </form>
@@ -117,51 +115,60 @@
 </section>
 <script src="<?php echo base_url(); ?>public/bootstrap/js/custom_validation.js"></script>
 <script>
-                            function set_addr_values(address) {
-                                if (address != false) {
-                                    $('#address1').val(address.address_1);
-                                    $('#address2').val(address.address_2);
-                                    $('#city').val(address.city);
-                                    $('#state').val(address.state);
-                                    $('#country').val(address.country);
-                                    $('#address_form').attr('action','<?php echo base_url();?>home/my_account/address/'+address.id)
-                                    $('#postcode').val(address.zipcode);
-                                } else {
-                                    $('#address1').val('');
-                                    $('#address2').val('');
-                                    $('#city').val('');
-                                    $('#state').val('');
-                                    $('#country').val('');
-                                    $('#postcode').val('');
-                                    $('#address_form').attr('action','<?php echo base_url();?>home/my_account/address')
-                                }
-                            }
-                            function edit_address(id) {
-                                $.ajax({
-                                    url: "<?php echo base_url() ?>home/my_account/get_address_byid/" + id,
-                                    dataType: 'json',
-                                    success: function (address) {
-                                        set_addr_values(address);
-                                        $('.modal').css('display', "block");
-                                    }
-                                })
-                            }
+$(document).ready(function () {
+<?php if ($this->session->flashdata('success')) { ?>
+       var message= '<?php echo $this->session->flashdata('success'); ?>';
+       console.log(message);
+         notify(message,"success","top","right");
+    <?php }
+    ?>
+    });
+    function set_addr_values(address) {
+        if (address != false) {
+            $('#address1').val(address.address_1);
+            $('#address2').val(address.address_2);
+            $('#city').val(address.city);
+            $('#state').val(address.state);
+            $('#country').val(address.country);
+            $('#address_form').attr('action', '<?php echo base_url(); ?>home/my_account/address//' + address.id);
+            $('#postcode').val(address.zipcode);
+            $('#mobile').val(address.mobile);
+        } else {
+            $('#address1').val('');
+            $('#address2').val('');
+            $('#city').val('');
+            $('#state').val('');
+            $('#country').val('');
+            $('#postcode').val('');
+            $('#address_form').attr('action', '<?php echo base_url(); ?>home/my_account/address')
+        }
+    }
+    function edit_address(id) {
+        $.ajax({
+            url: "<?php echo base_url() ?>home/my_account/get_address_byid/" + id,
+            dataType: 'json',
+            success: function (address) {
+                set_addr_values(address);
+                $('.modal').css('display', "block");
+            }
+        })
+    }
 
 
 
-                            $(document).ready(function () {
-                                $("#address_table").DataTable({
-                                    "paging": false,
-                                    "processing": false,
-                                    "serverSide": false,
-                                    "autoWidth": true,
-                                    "searching": false,
-                                    "ordering": false,
-                                    "ajax": "<?php echo base_url(); ?>home/my_account/get_addresses",
-                                });
-                                $("#btn").click(function () {
-                                    $('.modal').css('display', "block");
-                                });
+    $(document).ready(function () {
+        $("#address_table").DataTable({
+            "paging": false,
+            "processing": false,
+            "serverSide": false,
+            "autoWidth": true,
+            "searching": false,
+            "ordering": false,
+            "ajax": "<?php echo base_url(); ?>home/my_account/get_addresses",
+        });
+        $("#btn").click(function () {
+            $('.modal').css('display', "block");
+        });
         $(".close").click(function () {
             $('.modal').css('display', "none");
             set_addr_values(false);
@@ -170,58 +177,70 @@
             $('.modal').css('display', "none");
             set_addr_values(false);
         });
-                                $("#submit").click(function () {
-                                    $("#address_form").submit();
-                                });
-                                $("#address_form").validate({
-                                    rules: {
-                                        address1: {
-                                            required: true,
-                                        },
-                                        city: {
-                                            required: true,
-                                            sentence: true
-                                        },
-                                        state: {
-                                            required: true,
-                                            sentence: true
-                                        },
-                                        country: {
-                                            required: true,
-                                            sentence: true
-                                        },
-                                        postcode: {
-                                            required: true,
-                                            digits: true,
-                                            minlength: 6,
-                                            maxlength: 6
-                                        },
-                                    },
-                                    messages: {
-                                        address1: {
-                                            required: "This field is Required",
-                                        },
-                                        city: {
-                                            required: "This field is Required",
-                                        },
-                                        state: {
-                                            required: "This field is Required",
-                                        },
-                                        country: {
-                                            required: "This field is Required",
-                                        },
-                                        postcode: {
-                                            required: "This field is Required",
-                                            digits: "This field should contain only digit",
-                                            minlength: "Only 6 digits allowed",
-                                            maxlength: "Only 6 digits allowed"
-                                        },
-                                    },
-                                    submitHandler: function (form) {
-                                        form.submit();
-                                    }
-                                });
-                            });
+        $("#submit").click(function () {
+            $("#address_form").submit();
+        });
+        $("#address_form").validate({
+            rules: {
+                address1: {
+                    required: true,
+                },
+                city: {
+                    required: true,
+                    sentence: true
+                },
+                state: {
+                    required: true,
+                    sentence: true
+                },
+                country: {
+                    required: true,
+                    sentence: true
+                },
+                postcode: {
+                    required: true,
+                    digits: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+                mobile: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 10
+                }
+            },
+            messages: {
+                address1: {
+                    required: "This field is Required",
+                },
+                city: {
+                    required: "This field is Required",
+                },
+                state: {
+                    required: "This field is Required",
+                },
+                country: {
+                    required: "This field is Required",
+                },
+                postcode: {
+                    required: "This field is Required",
+                    digits: "This field should contain only digit",
+                    minlength: "Only 6 digits allowed",
+                    maxlength: "Only 6 digits allowed"
+                },
+                mobile: {
+                    required: "This field is Required",
+                    digits: "This field should contain only digit",
+                    minlength: "Only 10 digits allowed",
+                    maxlength: "Only 10 digits allowed"
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
 </script>
 
 

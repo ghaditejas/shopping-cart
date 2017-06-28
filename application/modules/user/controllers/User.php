@@ -91,7 +91,7 @@ class User extends CI_Controller {
     public function user_add($id = "") {
         $data['stat'] = 1;
         $data['error']='';
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('firstname', 'First Name', 'required');
             $this->form_validation->set_rules('lastname', 'Last Name', 'required');
             if (empty($id)) {

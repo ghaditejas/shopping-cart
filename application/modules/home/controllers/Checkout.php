@@ -73,7 +73,7 @@ class Checkout extends CI_Controller {
     public function bill() {
         $data['cart'] = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('firstname', 'First Name', 'required|callback_alpha_spaces');
             $this->form_validation->set_rules('lastname', 'Last Name', 'required|callback_alpha_spaces');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -152,7 +152,7 @@ class Checkout extends CI_Controller {
         $coupon = $this->session->userdata('coupon');
         $cart = $this->session->userdata('cart');
         $data['currency'] = $this->product->get_currency('currency');
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('pay', 'Payment Method', 'callback_select');
             if ($this->form_validation->run() == False) {
                 $data['bill'] = json_decode($this->input->post('address'), true);

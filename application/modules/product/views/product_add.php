@@ -352,7 +352,7 @@
                                         var extension = file.substr((file.lastIndexOf('.') + 1));
                                         if (extension == 'jpg' || extension == 'png') {
                                             var tmppath = URL.createObjectURL(event.target.files[0]);
-                                            $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': '150px'});
+                                            $("#image_preview").fadeIn("fast").attr('src', tmppath).css({'height': '120px', 'width': 'auto'});
                                         }
                                     });
                                 });

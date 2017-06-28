@@ -60,7 +60,7 @@ class Config extends CI_Controller {
 
     public function config_update($id = "") {
         $data['stat'] = 1;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
 //            $this->form_validation->set_rules('conf_key', 'Configuration key', 'required|alpha');
             $this->form_validation->set_rules('conf_val', 'Configuration value', 'required');
             if ($this->form_validation->run() == False) {

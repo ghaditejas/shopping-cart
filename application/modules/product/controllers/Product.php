@@ -82,7 +82,7 @@ class Product extends CI_Controller {
             }
             $action = '<a href="' . base_url() . 'product/product/edit/' . $row['id'] .
                     '" style="padding:0px"><span  class="btn btn-success"><i class="fa fa-edit"></i></span></a>';
-            $image = '<img class="product-image" src="' . base_url() . 'upload/product/' . $row['image_name'] . '" style="height:120px;width:150px" /></td>';
+            $image = '<img class="product-image" src="' . base_url() . 'upload/product/' . $row['image_name'] . '" style="height:120px;width:auto" /></td>';
             $data[] = array($row['id'], $row['name'], $image, $price, $row['quantity'], $stat, $action,);
         }
         $return = array(
@@ -194,7 +194,7 @@ class Product extends CI_Controller {
         $data['stat'] = 1;
         $data['feature'] = 0;
         $data['error_img'] = "";
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('product_name', 'Product Name', 'required');
             $this->form_validation->set_rules('category', 'Category', 'required');
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
@@ -336,7 +336,7 @@ class Product extends CI_Controller {
         $data['attribute'] = $this->product_model->get_attributes_assoc($id);
         $data['categories'] = $this->category_model->get_categories();
         $data['attributes'] = $this->product_model->get_attributes();
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('product_name', 'Product Name', 'required');
             $this->form_validation->set_rules('category', 'Category', 'required');
             $this->form_validation->set_rules('price', 'Price', 'required|callback_price');
@@ -539,7 +539,7 @@ class Product extends CI_Controller {
      */
     public function attribute_add($id = '') {
         $data['stat'] = 1;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('product_attribute', 'Product_attribute', 'required|alpha_numeric_spaces');
             if ($this->form_validation->run() == False) {
                 $data['page'] = "product/attribute_add";

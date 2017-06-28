@@ -90,7 +90,7 @@ class Category extends CI_Controller {
      */
     public function add($id = '') {
         $data['stat'] = 1;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('category_name', 'Category Name', 'required|alpha_numeric_spaces');
 //            $this->form_validation->set_rules('conf_val', 'Configuration value', 'required');
             if ($this->form_validation->run() == False) {

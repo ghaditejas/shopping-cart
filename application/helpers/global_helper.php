@@ -59,6 +59,19 @@ if (!function_exists('send_mail')) {
         }
 
     }
+    
+    if (!function_exists('isPost')) {
+
+        function isPost() {
+            $CI = & get_instance();
+            if($CI->input->server('REQUEST_METHOD') == 'POST'){
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+    }
 }
 ?>
 

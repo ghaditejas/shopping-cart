@@ -94,7 +94,7 @@ class My_account extends CI_Controller {
      */
     public function change_pass() {
         $data['error'] = "";
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('old_pass', 'Password', 'required|min_length[8]|max_length[12]|callback_verify');
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[12]|callback_verifynew');
             $this->form_validation->set_rules('cnf_password', 'Password', 'required|min_length[8]|max_length[12]|matches[password]');
@@ -130,12 +130,13 @@ class My_account extends CI_Controller {
     public function address($id = "") {
         $data['error'] = "";
         $user_id = $this->session->userdata('userid');
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('address1', 'Address1', 'required');
             $this->form_validation->set_rules('city', 'City', 'required|callback_alpha_spaces');
             $this->form_validation->set_rules('state', 'State', 'required|callback_alpha_spaces');
             $this->form_validation->set_rules('country', 'Country', 'required|callback_alpha_spaces');
             $this->form_validation->set_rules('postcode', 'Postcode', 'required|numeric|is_natural|min_length[6]|max_length[6]');
+            $this->form_validation->set_rules('mobile', 'Mobile', 'required|numeric|is_natural|min_length[10]|max_length[10]');
             if ($this->form_validation->run() == False) {
                 $data["modal"] = 1;
                 $data['page'] = 'home/address';
@@ -148,12 +149,13 @@ class My_account extends CI_Controller {
                     'city' => $this->input->post('city'),
                     'state' => $this->input->post('state'),
                     'country' => $this->input->post('country'),
-                    'zipcode' => $this->input->post('postcode')
+                    'zipcode' => $this->input->post('postcode'),
+                    'mobile' => $this->input->post('mobile')
                 );
                 if (empty($id)) {
                     $result = $this->account->insert_address($data);
                     if ($result) {
-                        $this->session->set_flashdata('success', 'Added added Successfully');
+                        $this->session->set_flashdata('success', 'Address added Successfully');
                         redirect('home/my_account/address');
                     } else {
                         $this->session->set_flashdata('success', 'Error occurred while adding Address');
@@ -162,11 +164,11 @@ class My_account extends CI_Controller {
                 } else {
                     $result = $this->account->update_address($id, $data);
                     if ($result) {
-                        $this->session->set_flashdata('success', 'Coupon modified Successfully');
+                        $this->session->set_flashdata('success', 'Address modified Successfully');
                         redirect('home/my_account/address');
                     } else {
-                        $this->session->set_flashdata('error', 'Error occurred while modifying Coupon');
-                        redirect('home/my_account/address' . $id);
+                        $this->session->set_flashdata('success', 'Error occurred while modifying Address');
+                        redirect('home/my_account/address/' . $id);
                     }
                 }
             }
@@ -281,7 +283,7 @@ class My_account extends CI_Controller {
         $data['error'] = '';
         $data['track'] = 0;
         $data['status']='';
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('order_id', 'Order Id', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             if ($this->form_validation->run() == False) {

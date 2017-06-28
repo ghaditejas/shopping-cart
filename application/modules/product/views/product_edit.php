@@ -39,7 +39,7 @@
                                 <div class="form-group col-md-6">
                                     <label>Product Image</label>
                                     <input class="form-control" name="product_img" id="product_img" type="file">
-                                    <label><img class="product-image" id="image_preview" src="<?php echo base_url(); ?>upload/product/<?php echo $result['image_name'] ?>" style="height:120px;width:150px" /></label>
+                                    <label><img class="product-image" id="image_preview" src="<?php echo base_url(); ?>upload/product/<?php echo $result['image_name'] ?>" style="height:120px;width:auto" /></label>
                                     <label class="error"><?php echo $error_img; ?></label>
                                 </div>
                             </div>

@@ -109,7 +109,7 @@ class Cms extends CI_Controller {
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
     public function update($id = "") {
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('title', 'Title', 'required|callback_alpha_dash_space');
             $this->form_validation->set_rules('content', 'Content', 'required');
             $this->form_validation->set_rules('meta_title', 'Meta Title', 'required|callback_alpha_dash_space');

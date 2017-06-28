@@ -92,7 +92,7 @@ class User_queries extends CI_Controller {
      */
     public function reply($id) {
         $data['edit_id'] = $id;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             $this->form_validation->set_rules('note', 'Note', 'required');
             if ($this->form_validation->run() == False) {
                 $data['query'] = $this->contact->get_query($id);

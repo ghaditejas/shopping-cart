@@ -130,7 +130,7 @@ class Banner extends CI_Controller {
         $file_name = '';
         $data['stat'] = 1;
         $data['error_img'] = "";
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (isPost()) {
             if (empty($id) && empty($_FILES['banner_img']['name'])) {
                 $data['error_img'] = "Banner Image File required";
                 $data['page'] = "banner/banner_add";
