@@ -20,6 +20,11 @@
                     </div>
                 <?php } ?>
                 <h1> "Welcome to Shopping Cart" </h1>
+                <div style="margin-top:150px">
+                    <p style="font-size: 25px"><label class="eroor">First Name :</label> <?php echo $this->session->userdata('fname'); ?></p>
+                    <p style="font-size: 25px"><label class="eroor">Last Name : </label><?php echo $this->session->userdata('fname'); ?></p>
+                    <p style="font-size: 25px"><label class="eroor">Email Id : </label><?php echo $this->session->userdata('email_id'); ?></p>
+                </div>
             </div>
         </div>
     </div>

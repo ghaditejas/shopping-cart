@@ -10,7 +10,7 @@
     <div class="product-details"><!--product-details-->
         <div class="col-sm-5">
             <div class="view-product">
-                <img src="<?php echo base_url(); ?>upload/product/<?php echo $product['image_name']; ?>" alt="" align="middle" >
+                <img src="<?php echo base_url(); ?>upload/product/<?php echo $product['image_name']; ?>" alt="" align="middle" style="height:auto;width:100%">
             </div>
         </div>
         <div class="col-sm-7">

@@ -29,42 +29,42 @@ class Product extends CI_Controller {
      * @method  view
      * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
      */
-    public function view($id = "",$offset=1) {
+    public function view($id = "", $offset = 1) {
         $search = "";
         $min_price = "";
         $max_price = "";
         $sort = "";
         $field = "";
-        $price='0,10000';
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            $search = $this->input->post('search');
-            $id = $this->input->post('category_id');
-            $offset=$this->input->post('offset');
-            if ($this->input->post('price')) {
-                $price = $this->input->post('price');
+        $price = '[0,10000]';
+        if ($this->input->server('REQUEST_METHOD') == 'GET') {
+            $search = $this->input->get('search');
+            if ($this->input->get('price')) {
+                $id = $this->input->get('category_id');
+                $offset = $this->input->get('offset');
+                $price = $this->input->get('price');
                 $price_arr = explode(',', $price);
                 $min_price = $price_arr[0];
                 $max_price = $price_arr[1];
-                $sort_array = explode(' ', $this->input->post('sort'));
+                $sort_array = explode(' ', $this->input->get('sort'));
                 if (!empty($sort_array[0])) {
                     $sort = $sort_array[0];
                     $field = $sort_array[1];
                 }
             }
         }
-        $limit=2;
-        $offset=($offset-1)*$limit;
-        $count=$this->product->get_product_count($id, $search, $min_price, $max_price);
-        if($count % $limit == 0){
-            $data['pages']=$count/$limit;
-        }else{
-            $data['pages']=floor(($count/$limit)+1);
+        $limit = 2;
+        $offset = ($offset - 1) * $limit;
+        $count = $this->product->get_product_count($id, $search, $min_price, $max_price);
+        if ($count % $limit == 0) {
+            $data['pages'] = $count / $limit;
+        } else {
+            $data['pages'] = floor(($count / $limit) + 1);
         }
         $data['currency'] = $this->product->get_currency('currency');
         $data['parent_category'] = $this->product->get_parent_category();
         $data['category'] = $this->product->get_category();
         $data['attribute'] = $this->product->get_attribute();
-        $data['product'] = $this->product->get_product($id, $search, $min_price, $max_price, $sort, $field,$offset,$limit);
+        $data['product'] = $this->product->get_product($id, $search, $min_price, $max_price, $sort, $field, $offset, $limit);
         $category = $this->product->get_category_name($id);
         $data['title'] = $category['name'];
         $data['in'] = $category['parent_id'];
@@ -76,9 +76,12 @@ class Product extends CI_Controller {
         }
         $data['id'] = $id;
         $data['search'] = $search;
-        $data['offset']=($offset/$limit)+1;
-        $data['limit']=$limit;
-        $data['price']='['.$price.']';
+        $data['offset'] = ($offset / $limit) + 1;
+        $data['limit'] = $limit;
+        $price = str_replace('[','',$price);
+        $price = str_replace(']','',$price);
+        $price = '[' . $price . ']'; 
+        $data['price'] = $price;
         $data['error'] = "";
         $data['page'] = 'home/product_view';
         $this->load->view('home_template', $data);
@@ -214,7 +217,7 @@ class Product extends CI_Controller {
         $data['page'] = 'home/wishlist';
         $this->load->view('home_template', $data);
     }
-    
+
     /**
      * Used to load product details page
      * 

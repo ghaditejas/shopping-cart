@@ -161,7 +161,6 @@ class My_account_model extends CI_Model {
         $this->db->where('billing_email',$email);
         $this->db->or_where('shipping_email',$email)->group_end();
         $query = $this->db->get('user_order')->row_array();
-        pr($this->db->last_query());
         if($query){
             return $query['status'];
         }else{

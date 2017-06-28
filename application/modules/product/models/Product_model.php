@@ -96,16 +96,15 @@ class Product_model extends CI_Model {
     public function insert_product($data) {
         $query = "call insert_product('" . $data['name'] . "','" . $data['sku'] . "','" . $data['short_description'] . "','" . $data['long_description'] . "','" . $data['price'] . "','" . $data['status'] . "','" . $data['quantity'] . "','" . $data['meta_title'] . "','" . $data['meta_description'] . "','" . $data['meta_keywords'] . "','" . $data['is_featured'] . "','" . $data['created_on'] . "','" . $data['created_by'] . "'";
         if (isset($data['special_price'])) {
-            $query = $query . ",'" . $data['special_price'] . "','" . $data['special_price_from'] . "','" . $data['special_price_to'] . "',@roduct_id)";
+            $query = $query . ",'" . $data['special_price'] . "','" . $data['special_price_from'] . "','" . $data['special_price_to'] . "')";
         } else {
-            $query = $query . ",' ',' ',' ','@product_id')";
+            $query = $query . ",' ',' ',' ')";
         }
 
         $insert = $this->db->query($query);
         if($this->db->affected_rows()){
             $this->db->select_max('id');
             $id=$this->db->get('product')->row_array();
-            pr($this->db->last_query());
             return $id['id'];
         } else {
             return false;

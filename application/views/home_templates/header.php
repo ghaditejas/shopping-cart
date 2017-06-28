@@ -38,17 +38,6 @@
                                 </ul>
                             </div>
                         </div>
-<!--                        <div class="col-sm-6">
-                            <div class="social-icons pull-right">
-                                <ul class="nav navbar-nav">
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div><!--/header_top-->
@@ -102,10 +91,9 @@
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <form  id="search_form" action="<?php echo base_url();?>home/product/view" method="post">
+                            <form  id="search_form" action="<?php echo base_url();?>home/product/view" method="get">
                                 <div class="search_box pull-right">
                                     <input type="text" placeholder="Search" name="search" id='Search'/>
-                                    <input type='hidden' id="category_id" name ="category_id" value='0'>                             
                                 </div>
                             </form>
                         </div>

@@ -71,7 +71,7 @@ class Product_model extends CI_Model {
         $this->db->join('product_categories as c', 'p.id=c.product_id');
         $this->db->where('p.status', 1);
         if (!empty($search)) {
-            $this->db->where('p.name', $search);
+            $this->db->like('p.name', $search);
         }
         if (!empty($id)) {
             $this->db->where('c.category_id', $id);
@@ -102,7 +102,7 @@ class Product_model extends CI_Model {
         $this->db->join('product_categories as c', 'p.id=c.product_id');
         $this->db->where('p.status', 1);
         if (!empty($search)) {
-            $this->db->where('p.name', $search);
+            $this->db->like('p.name', $search);
         }
         if (!empty($id)) {
             $this->db->where('c.category_id', $id);

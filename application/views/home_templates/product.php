@@ -10,7 +10,7 @@ $cart = $this->session->userdata('cart');
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">
-                            <a href="<?php echo base_url(); ?>home/product/product_details/<?php echo $row['id']; ?>"> <img src="<?php echo base_url(); ?>upload/product/<?php echo $row['image_name'] ?>" alt="" style="height:200px;width:180px"/></a>
+                            <a href="<?php echo base_url(); ?>home/product/product_details/<?php echo $row['id']; ?>"> <img src="<?php echo base_url(); ?>upload/product/<?php echo $row['image_name'] ?>" alt="" style="height:200px;width:auto"/></a>
                             <h2><?php echo $currency ?>
                                 <?php echo $row['price'] ?></h2>
                             <p><?php echo $row['name']; ?></p>

@@ -112,20 +112,20 @@ class Category extends CI_Controller {
                     $data['created_on'] = date('Y-m-d');
                     $result = $this->category_model->insert_category($data);
                     if ($result) {
-                        $this->session->set_flashdata('success', 'Configuration added Successfully');
+                        $this->session->set_flashdata('success', 'Category added Successfully');
                         redirect('category/category/view');
                     } else {
-                        $this->session->set_flashdata('error', 'Error occurred while adding user');
+                        $this->session->set_flashdata('error', 'Error occurred while adding Category');
                         redirect('category/category/add');
                     }
                 } else {
                     $data['modified_by'] = $this->session->userdata('user_id');
                     $result = $this->category_model->update_category($id, $data);
                     if ($result) {
-                        $this->session->set_flashdata('success', 'Configuration modified Successfully');
+                        $this->session->set_flashdata('success', 'Category modified Successfully');
                         redirect('category/category/view');
                     } else {
-                        $this->session->set_flashdata('error', 'Error occurred while modifying user');
+                        $this->session->set_flashdata('error', 'Error occurred while modifying Category');
                         redirect('category/category/add/' . $id);
                     }
                 }

@@ -455,6 +455,7 @@ class Product extends CI_Controller {
                 }
             }
         } else {
+            $data['categories'] = $this->category_model->get_categories();
             $data['result'] = $this->product_model->get_products($id);
             $data['attribute'] = $this->product_model->get_attributes_assoc($id);
             $data['edit_id'] = $id;

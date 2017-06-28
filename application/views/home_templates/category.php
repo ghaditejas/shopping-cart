@@ -1,8 +1,4 @@
-<?php
-// pr($category);
-//pr($id);
-//exit; 
-?>
+
 <section>
     <div class="container">
         <div class="row">
@@ -49,10 +45,10 @@
                                         </div>
                                     </div>-->
                     </div><!--/category-products-->
-                    <form  id='filter' action="<?php echo base_url(); ?>home/product/view" method="post">
+                    <form  id='filter' action="<?php echo base_url(); ?>home/product/view" method="get">
                         <div class="price-range">
                             <h2>Filter</h2>
-                            <select class="form-control" name="sort">
+                            <select class="form-control" name="sort" id="sort">
                                 <option value="">Sort By</option>
                                 <option value="asc modified_on">Newest Product</option>
                                 <option value="desc modified_on">Oldest Product</option>
@@ -77,11 +73,13 @@
                                         </div>
                                         <div class="tooltip-inner">2500 : 4500</div>
                                     </div>
-                                    <input type="text" class="span2" value="[0,10000]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="<?php if (isset($price)) {
-                            echo $price;
-                        } else {
-                            echo "[0,10000]";
-                        }?>" id="sl2" name="price">
+                                    <input type="text" class="span2" value="[0,10000]" data-slider-min="0" data-slider-max="10000" data-slider-step="5" data-slider-value="<?php
+                                    if (isset($price)) {
+                                        echo $price;
+                                    } else {
+                                        echo "[0,10000]";
+                                    }
+                                    ?>" id="sl2" name="price">
                                 </div>
                                 <br>
                                 <b class="pull-left">$ 0</b> <b class="pull-right">$ 100000</b>
@@ -108,12 +106,12 @@
                             echo 1;
                         }
                         ?>">
-                        <button type="button" value="login" class="btn btn-success frm_sub" name="filter">Filter</button>
+                        <button type="button" value="filter" class="btn btn-success frm_sub" name="filter">Filter</button>
                     </form>
                 </div>
             </div>
             <script>
-                $(document).on('click','.frm_sub',function(){
+                $(document).on('click', '.frm_sub', function () {
                     $('#offset').val(1);
                     $('#filter').submit();
                 })
