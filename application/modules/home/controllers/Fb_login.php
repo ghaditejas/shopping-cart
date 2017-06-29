@@ -1,16 +1,12 @@
 <?php
-
 class Fb_login extends CI_Controller {
-
     private $uid;
     private $access_tokken;
-
     public function __construct() {
         parent::__construct();
         error_reporting(E_ALL);
         ini_set("display_errors", "1");
     }
-
     public function index() {
         $this->load->library('facebook',array(
             //'appId' => '1918734348368216',
@@ -45,7 +41,5 @@ class Fb_login extends CI_Controller {
             header('Location: ' . $login_url);
         }
     }
-
 }
-
 ?>
