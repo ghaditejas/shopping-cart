@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Dashboard Controller
+ *
+ * PHP Version 5.6
+ * It contains crud and logoutfunctionality definition of dashboard
+ *
+ * @category Dashboard
+ * @package  Controller
+ * @author   Tejas <tejas.ghadigaonkar@neosofttech.com>
+ * @license  http://neosofttech.com/  Neosoft
+ * @link     NA
+ */
 class Dashboard extends CI_Controller {
 
     public function __construct() {
@@ -8,6 +20,12 @@ class Dashboard extends CI_Controller {
         $this->load->model('permission_model');
     }
 
+    /**
+     * Used to load dashboard page
+     * 
+     * @method  view
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function view() {
         if (!($this->session->userdata('logged_in'))) {
             redirect('admin');
@@ -21,6 +39,12 @@ class Dashboard extends CI_Controller {
         $this->load->view('main_template', $data);
     }
 
+    /**
+     * Used to signout
+     * 
+     * @method  signout
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function signout() {
         $this->session->unset_userdata('logged_in');
         $this->session->unset_userdata('user_id');
@@ -30,8 +54,14 @@ class Dashboard extends CI_Controller {
         redirect('admin');
     }
 
+    /**
+     * Used to get recent 10 orders
+     * 
+     * @method  get_order
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_order() {
-        $draw=1;
+        $draw = 1;
         $offset = 0;
         $limit = 10;
         $sort = "asc";
@@ -48,12 +78,18 @@ class Dashboard extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to get recent 10 user queries
+     * 
+     * @method  get_contact
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_contact() {
-        $draw=1;
+        $draw = 1;
         $offset = 0;
         $limit = 10;
         $sort = "asc";
-        $records = $this->dashboard_model->get_query_list($offset, $limit,$sort);
+        $records = $this->dashboard_model->get_query_list($offset, $limit, $sort);
         $data = [];
         foreach ($records as $row) {
             $data[] = array($row['id'], $row['name'], $row['email'], $row['subject'], $row['message'], $row['created_on']);
@@ -65,12 +101,18 @@ class Dashboard extends CI_Controller {
         echo json_encode($return);
     }
 
+    /**
+     * Used to get recent 10 registered users
+     * 
+     * @method  get_user
+     * @author  Tejas <tejas.ghadigaonkar@neosofttech.com>
+     */
     public function get_user() {
-        $draw=1;
+        $draw = 1;
         $offset = 0;
         $limit = 10;
         $sort = "asc";
-        $records = $this->dashboard_model->get_users($offset, $limit,$sort);
+        $records = $this->dashboard_model->get_users($offset, $limit, $sort);
         $data = [];
         foreach ($records as $row) {
             if ($row['status'] == 1) {
